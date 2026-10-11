@@ -1,0 +1,31 @@
+{
+  "id": "bad-grade5-kreditoren-dunkelbuchung",
+  "title": "FALSCHES Beispiel: Kreditoren-Dunkelbuchung als Grad 5 — alle drei Rule-of-Two-Felder ohne Mandat im System",
+  "level": 5,
+  "who_plans": "model",
+  "human_role": "exception_only",
+  "foreign_input": true,
+  "sensitive_data": true,
+  "external_action": true,
+  "money_effect": true,
+  "customer_facing": false,
+  "customer_text_in_decisions": false,
+  "safety_critical": false,
+  "data_class": "intern",
+  "data_residency": "eu",
+  "governance": {
+    "owner": "Controlling",
+    "audit_log": true,
+    "incident_log": true,
+    "automatic_rollback": true,
+    "kill_switch_tested": true,
+    "agent_identity_min_privilege": true,
+    "adoption_rate_monitored": false,
+    "exception_queue": false,
+    "sampling_audit": false,
+    "decides_new_on_model_prompt_tool_change": true,
+    "shadow_run_first": true,
+    "proposal_mode_first": false
+  },
+  "mandate": {"limits_in_system": false}
+}

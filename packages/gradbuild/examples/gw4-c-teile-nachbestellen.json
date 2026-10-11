@@ -1,0 +1,37 @@
+{
+  "id": "gw4-c-teile-nachbestellen",
+  "title": "C-Teile beim Rahmenlieferanten nachbestellen, Mandat bis CHF 2'000 pro Bestellung (nur EDI/ERP, keine Freitext-Eingaben)",
+  "level": 4,
+  "who_plans": "model",
+  "human_role": "mandate",
+  "foreign_input": false,
+  "sensitive_data": true,
+  "external_action": true,
+  "money_effect": true,
+  "customer_facing": false,
+  "customer_text_in_decisions": false,
+  "safety_critical": false,
+  "data_class": "intern",
+  "data_residency": "ch",
+  "mandate": {
+    "limits_in_system": true,
+    "money_limit": "CHF 2000 pro Bestellung (ERP-Freigabestrategie)"
+  },
+  "measurement": {
+    "method": "pass^k"
+  },
+  "governance": {
+    "owner": "AI-Lead",
+    "audit_log": true,
+    "incident_log": true,
+    "automatic_rollback": true,
+    "kill_switch_tested": true,
+    "agent_identity_min_privilege": true,
+    "adoption_rate_monitored": true,
+    "exception_queue": true,
+    "sampling_audit": true,
+    "decides_new_on_model_prompt_tool_change": true,
+    "shadow_run_first": true,
+    "proposal_mode_first": true
+  }
+}

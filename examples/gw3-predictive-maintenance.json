@@ -1,0 +1,38 @@
+{
+  "id": "gw3-predictive-maintenance",
+  "title": "OPC UA → Historian → Anomalieerkennung (ohne LLM im Datenpfad) → Ticket + Fenstervorschlag; Freigabe im CMMS",
+  "level": 3,
+  "who_plans": "fixed_chain",
+  "human_role": "per_gate",
+  "foreign_input": false,
+  "sensitive_data": true,
+  "external_action": true,
+  "money_effect": false,
+  "customer_facing": false,
+  "customer_text_in_decisions": false,
+  "safety_critical": true,
+  "data_class": "intern",
+  "data_residency": "on_prem",
+  "ceiling": {
+    "max_level": 3,
+    "reason": "Schutzfunktionen bleiben ausserhalb der KI; Maschinenverordnung + ISO/IEC TR 5469",
+    "regulation": "EU Machinery Regulation 2023/1230; ISO/IEC TR 5469:2024"
+  },
+  "measurement": {
+    "method": "shadow"
+  },
+  "governance": {
+    "owner": "AI-Lead",
+    "audit_log": true,
+    "incident_log": true,
+    "automatic_rollback": true,
+    "kill_switch_tested": true,
+    "agent_identity_min_privilege": true,
+    "adoption_rate_monitored": true,
+    "exception_queue": true,
+    "sampling_audit": true,
+    "decides_new_on_model_prompt_tool_change": true,
+    "shadow_run_first": true,
+    "proposal_mode_first": false
+  }
+}
