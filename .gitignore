@@ -19,3 +19,6 @@ venv/
 .pytest_cache/
 .coverage
 htmlcov/
+
+# uv-Lock aus gelegentlichen Validierungs-Läufen (Repo nutzt pip install -e)
+uv.lock
