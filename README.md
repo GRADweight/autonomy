@@ -1,6 +1,6 @@
 # gradautonomy — Autonomiegrade für KI in KMU-Prozessen
 
-**Ein Modell, ein Validator und sechs getestete Bausteine, die festhalten:
+**Ein Modell, ein Validator und acht getestete Bausteine, die festhalten:
 welcher Mensch greift bei welchem Schritt einer KI-Aktion ein — und was es
 kostet, eine Stufe mehr Autonomie zu geben.**
 
@@ -47,7 +47,7 @@ Wie der Grad erkannt wird (3 Fragen, in dieser Reihenfolge):
 ```
 packages/
   gradbuild/     → Das Modell: GB-01…GB-16, JSON-Schema, CLI-Validator (zero-deps)
-  gw_core/       → Sechs getestete Governance-Bausteine (Freigabe, Audit, Prüfung, AuthZ, Tracing, Zielsystem)
+  gw_core/       → Acht getestete Governance-Bausteine (Freigabe, Audit, Prüfung, AuthZ, Tracing, Zielsystem, **ExceptionQueue, SamplingAudit** — die letzten zwei für Grad ≥ 4)
 examples/        → Validierte Referenzfälle: gw0 (Grad 0) … gw5 (Grad 05) + ein bewusst
                    abgelehnter Fall (counterexample.json)
 docs/            → Das Vorgehen je Phase (Plan → Inbetriebnahme), je Grad 01–05:
@@ -81,7 +81,7 @@ python -m gradbuild.cli examples/gw3-predictive-maintenance.json
 python -m gradbuild.cli examples/counterexample.json   # Exit 1, mit Gründen
 ```
 
-## Die sechs Bausteine (Grad 01 + 02, Code + Tests)
+## Die acht Bausteine (Grad 01 + 02, plus zwei für Grad ≥ 4)
 
 | Baustein | Was er tut | Tests |
 |---|---|---|
@@ -91,6 +91,10 @@ python -m gradbuild.cli examples/counterexample.json   # Exit 1, mit Gründen
 | `FreigabePolicy` | Rolle × Kontext, Least Privilege, admin-VETO landet im Log | 6 |
 | `Tracer` | LLM-Request-Protokoll (Dauer, Status, Mandant) | 2 |
 | `ZielsystemAdapter` | systemseitige Limits (Betrag, Tagesvolumen), Dry-Run und Produktionsmodus | 3 |
+| `ExceptionQueue` **†** | deterministische Policy-Schwelle (Geld/sensibel/Fehlerhäufung); jeder Treffer in die Menschen-Queue, Append-only | 14 |
+| `SamplingAudit` **†** | reproduzierbare systematische Stichproben-Audits über den Audit-Trail, mit Kriterien + Evidenz | 8 |
+
+**†** = für Grad ≥ 4; schliessen die Lücke aus `docs/roadmap-grad-03-05.md` 2.2.
 
 Zusammen ergeben diese Bausteine den Unterschied zwischen
 «Das Modell hat geantwortet» und «Eine freigegebene, geprüfte und protokollierte

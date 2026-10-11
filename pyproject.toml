@@ -1,24 +1,34 @@
 # Ruff-Konfiguration für gradautonomy.
 #
-# Grundsatz (PROJEKT.md §4): packages/gradbuild und packages/gw_core werden
-# UNVERÄNDERT aus den verifizierten Quellen gekopiert. Wir legen keine
-# Style-Regeln über fremden Code. Unsere eigenen Dateien (governance/,
-# tests_/, eigene Skripte) müssen dagegen fehlerfrei sein.
+# Grundsatz (PROJEKT.md §4): `packages/` enthält (a) UNVERÄNDERT kopierten
+# Quell-Code aus den verifizierten Original-Projekten und (b) NEUE
+# Governance-Bausteine, die wir im Rahmen der Autonomie-Roadmap gebaut
+# haben. Wir legen keine Style-/Bug-Regeln über den kopierten Code (der
+# darf nicht für die Lint-Linie umgeschrieben werden), aber unsere eigenen
+# Bausteine müssen die bug-relevanten Regeln einhalten.
 #
 # Geprüft wird die BUG-relevante Regelmenge (F = pyflakes, E/W = pycodestyle
 # Kern, SIM102/F601 = Logik-Bugs, RUF059 = gebrochene Unpacking).
-# Style-Fixes (UP006, I001, RUF012, RUF022, TRY004) sind bewusst AUS —
-# sie würden entweder Code-Bloat erzeugen oder den Kopierprinzip
-# ("unverändert") verletzen.
+# Style-Fixes (UP006, I001, RUF012, RUF022, TRY004) sind bewusst AUS.
 
 [tool.ruff]
 line-length = 100
-target-version = "py310"
+target-version = "py311"
 
 [tool.ruff.lint]
 select = ["F", "E", "W", "SIM102", "SIM110", "F601", "RUF059"]
-ignore = ["E501"]
+ignore = ["E501", "E731", "E741"]
 
+# Nur der UNVERÄNDERT kopierte Quell-Code ist von der Lint-Linie ausgenommen.
+# Die NEUEN Bausteine (exception_queue.py, sampling_audit.py, __init__.py,
+# governance/**, tests_*) werden voll geprüft.
 [tool.ruff.lint.per-file-ignores]
-# Verifizierte Quellen (Kopie): bewusst unverändert, keine Lint-Regeln.
-"packages/**" = ["E", "W", "SIM102", "SIM110", "F601", "RUF059"]
+# gradbuild: unveränderte Kopie aus dem Original-Projekt.
+"packages/gradbuild/**" = ["E", "W", "F", "SIM102", "SIM110", "F601", "RUF059"]
+# gw_core: die 6 unveränderten Original-Bausteine.
+"packages/gw_core/gw_core/audit.py" = ["E", "W", "F", "SIM102", "SIM110"]
+"packages/gw_core/gw_core/approval.py" = ["E", "W", "F", "SIM102", "SIM110"]
+"packages/gw_core/gw_core/authz.py" = ["E", "W", "F", "SIM102", "SIM110", "TRY004"]
+"packages/gw_core/gw_core/tracing.py" = ["E", "W", "F", "SIM102", "SIM110"]
+"packages/gw_core/gw_core/verify.py" = ["E", "W", "F", "SIM102", "SIM110"]
+"packages/gw_core/gw_core/bexio.py" = ["E", "W", "F", "SIM102", "SIM110"]
