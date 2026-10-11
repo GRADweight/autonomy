@@ -89,7 +89,9 @@ Stand: 2026-10-11 · Branch-Modell: `feature/<thema>` → Squash nach `main`
 | 2026-10-11 | P5: Doku je Phase (plan, umsetzen, wie, abschluss, inbetriebnahme) — je Grad 01–05 mit GB-Regel-Matrix | docs/ |
 | 2026-10-11 | P6: governance/ (checks + Vorlagen). governance_check.py: **13/13** Checks (Deckel GB-03/06/09/02, Injection DE+EN, Log-PII/Secrets inkl. Telefon-CH und Negativfall) | python3 governance/checks/governance_check.py |
 | 2026-10-11 | P7: Community — CI (Tests + Gov-Checks + Validation + counter-example-Verweigerung), 3 Issue-Templates, PR-Vorlage, CODE_OF_CONDUCT, SECURITY, .gitignore | .github/ |
-| 2026-10-11 | **v1.0 Committed und auf origin/main pushed (982472b)**: 49 Tests + 6 Subtests grün, 49+13 Selftests, 6 Beispiele validiert, Secret-Scan sauber (nur Test-Fixturen CHF-Beträge, kein Preis/Secret) | git log + gh api |
+| 2026-10-11 | **Release-Gate abgenommen**: Gate 1/2 (nur Fachdaten, keine Preise/Secrets/echte Tokens), 3 (49+6 grün), 4 (6/6 validiert, counter abgelehnt), 5 (ruff clean nach 3 echten Fixes + ruff-Konfig, verifizierte Quellen via per-file-ignores), 6 (README: Rechtsrat/Grenzen/Stand) |pytest+gov-check+ruff |
+| 2026-10-11 | **PUBLIK** (Edin-Green-Light): `gh repo edit --visibility public`, Description + 8 Topics, HTTP 200 auf Repo + raw README | gh api + curl |
+| 2026-10-11 | CI-Fehler gefixt: `datetime.UTC` (Python 3.11+) → requires-python >=3.11, CI-Matrix 3.11/3.12 → **CI grün (both jobs)** | gh run (success) |
 
 ## 7 · Release-Gate (vor Public, jede mal)
 
