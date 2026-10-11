@@ -1,8 +1,10 @@
 # gw_core — Governance-Bausteine
 
-Sechs ausgewählte, getestete Bausteine aus dem gemeinsamen GRADweight-Kern.
-Sie alle lösen ein und dasselbe Problem: **eine KI-Aktion ist erst gültig,
-wenn sie freigegeben, geprüft und protokolliert wurde.**
+Acht getestete Bausteine aus dem gemeinsamen GRADweight-Kern — sechs für
+Grad 01–02, zwei für Grad ≥ 4 (die fehlenden `exception_queue` und
+`sampling_audit` aus der Roadmap). Alle lösen ein und dasselbe Problem:
+**eine KI-Aktion ist erst gültig, wenn sie freigegeben, geprüft und
+protokolliert wurde.**
 
 | Baustein | Modul | Aufgabe |
 |---|---|---|
@@ -12,6 +14,12 @@ wenn sie freigegeben, geprüft und protokolliert wurde.**
 | Freigabe-Policy | `authz.py` | Rolle × Kontext, Least Privilege, admin-VETO |
 | Tracing | `tracing.py` | LLM-Request-Protokoll (Dauer, Status, Mandant) |
 | Zielsystem-Adapter | `bexio.py` | systemseitige Limiten (Betrag, Tagesvolumen), Dry-Run |
+| **Exception-Queue** † | `exception_queue.py` | deterministische Schwelle (Geld/sensibel/Fehler); jeder Treffer → Menschen-Queue, Append-only |
+| **Stichproben-Audit** † | `sampling_audit.py` | reproduzierbare systematische Stichprobe über den Audit-Trail, Kriterien + Evidenz |
+
+† = für Grad ≥ 4 (GB-11). Schliesst die Lücke aus
+`docs/roadmap-grad-03-05.md` §2.2: `exception_queue` und `sampling_audit`
+sind hier **im Code**, nicht nur im JSON behauptet.
 
 Alle Bausteine sind **in sich geschlossen**: es gibt kein "vertrauenswürdiger
 LLM dahinter" — Input, Freigabe, Prüfung, Logik und Log sind explizite,

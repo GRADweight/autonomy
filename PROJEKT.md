@@ -92,6 +92,8 @@ Stand: 2026-10-11 · Branch-Modell: `feature/<thema>` → Squash nach `main`
 | 2026-10-11 | **Release-Gate abgenommen**: Gate 1/2 (nur Fachdaten, keine Preise/Secrets/echte Tokens), 3 (49+6 grün), 4 (6/6 validiert, counter abgelehnt), 5 (ruff clean nach 3 echten Fixes + ruff-Konfig, verifizierte Quellen via per-file-ignores), 6 (README: Rechtsrat/Grenzen/Stand) |pytest+gov-check+ruff |
 | 2026-10-11 | **PUBLIK** (Edin-Green-Light): `gh repo edit --visibility public`, Description + 8 Topics, HTTP 200 auf Repo + raw README | gh api + curl |
 | 2026-10-11 | CI-Fehler gefixt: `datetime.UTC` (Python 3.11+) → requires-python >=3.11, CI-Matrix 3.11/3.12 → **CI grün (both jobs)** | gh run (success) |
+| 2026-10-11 | **Roadmap Grad 03–05** (`docs/roadmap-grad-03-05.md`): drei Kategorien (geliefert/valides Modell/nicht gebaut), 3 offene WARN-Befunde gw3/4/5 (GB-06/14/05), 7 ungebauten Kontrollen benannt, Beweis-Befehle verifiziert | gradbuild.cli + grep + CI grün |
+| 2026-10-11 | **Two Lücken geschlossen**: `gw_core.exception_queue.ExceptionQueue` (deterministische Policy, GB-09/15/12, Append-only, KPI) + `gw_core.sampling_audit.SamplingAudit` (reproduzierbare systematische Stichprobe, Kriterien, Evidenz, Audit-von-Audit) — 21 neue Tests (Total 70). Roadmap 2.2/2.3/3/4 + README (acht Bausteine) + gw_core-README aktualisiert. Ruff-Konfig geschärft (nur unveränderte Quellen ausgenommen) | pytest (70) + ruff + Import-OK |
 
 ## 7 · Release-Gate (vor Public, jede mal)
 
