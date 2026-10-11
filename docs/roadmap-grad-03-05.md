@@ -62,23 +62,25 @@ Jeder der drei Fälle gilt (0 Fehler), aber jeder wirft genau eine
 | **gw4** (Grad 4, C-Teile nachbestellen) | `WARN GB-14` — `pass^k ohne steps` | Der Grad-4-Fall verlangt einen **messbaren Test-Satz** (pass^k), hat aber keine `steps`. Die Messung ist deklariert, nicht ausbuchstabiert. |
 | **gw5** (Grad 5, Standardretouren) | `WARN GB-05` — `customer_text_in_decisions=true` | Fremde Inhalte fliessen in die Entscheidung ein. Das Modell löst das (nach Regel GB-05/Rule-of-Two) damit, dass ein **separates Tool-freies Modell** vorher klassifiziert — **dieser Klassifikator ist nicht im Repo.** |
 
-### 2.2 Die Kontrollen, die `true` behaupten, aber keinen Code haben
+### 2.2 Die Kontrollen: was Code hat, was noch nicht
 
-Alle drei Beispiele setzen diese Flags auf `true`. Der Validator prüft
-nur **die Behauptung**. Das **Bauen** fehlt:
+Die Beispiele setzen diese Flags auf `true`. Zwei davon hat die Lücke
+zwischen «Modelle» und «liefern» **geschlossen** — die restlichen
+offen:
 
-| Kontrolle | Im JSON | Im Code | Was fehlt, um «geliefert» zu sein |
+| Kontrolle | Im JSON | Im Code | Status |
 |---|---|---|---|
-| `exception_queue` | ✅ `true` (gw3/4/5) | ❌ nur in `validate.py` abgefragt | Eine Ausnahme-Queue, die bei Schwellenriss Fälle **deterministisch** ausgliedert und einem Menschen reicht |
-| `sampling_audit` | ✅ `true` | ❌ nur abgefragt | Stichproben-Selektoren + Audit-Read-out über den `AuditTrail` |
-| `automatic_rollback` | ✅ `true` | ❌ nur abgefragt | Technischer Rollback-Pfad (Zielsystem-State → vorheriger), nicht nur Doku |
-| `shadow_run_first` | ✅ `true` | ❌ nur abgefragt | Schatten-Betrieb: Modell läuft parallel, trifft **keine** Wirkung, bis die Quote stimmt |
-| `agent_identity_min_privilege` | ✅ `true` | ⚠️ `FreigabePolicy` deckt Rollen ab, **keine** Agent-ID/Servicekonto | Eine pro-Agent-Identität mit minimalen Rechten (Entra Agent ID / Servicekonto) |
-| `decides_new_on_model_prompt_tool_change` | ✅ `true` | ❌ nur abgefragt | Ein Stufen-Entscheid-Trigger, der bei jedem Modell-/Prompt-/Toolwechsel zwingend neu läuft |
+| `exception_queue` | ✅ `true` (gw3/4/5) | ✅ **`gw_core.exception_queue.ExceptionQueue`** + 14 Tests | **Geliefert** — deterministische Policy, Append-only, KPI-Einseiter |
+| `sampling_audit` | ✅ `true` | ✅ **`gw_core.sampling_audit.SamplingAudit`** + 8 Tests | **Geliefert** — reproduzierbare Stichprobentechnik + Kriterien + Evidenz |
+| `automatic_rollback` | ✅ `true` | ❌ nur in `validate.py` abgefragt | **Offen** — technischer Rollback-Pfad (Zielsystem-State → vorheriger) |
+| `shadow_run_first` | ✅ `true` | ⚠️ **indirekt** — die `shadow`-Messmethode + Shadow-Betrieb ist Teil des Modells; der **parallele Lauf ohne Wirkung** ist keine einzelne Baustein, sondern eine **Betriebs-Konfiguration** | **Offen als Code-Baustein**, aber als **Betriebs-Konfiguration** vorhanden |
+| `agent_identity_min_privilege` | ✅ `true` | ⚠️ `FreigabePolicy` deckt Rollen ab, **keine** Agent-ID/Servicekonto | **Offen** — eine pro-Agent-Identität mit minimalen Rechten (Entra Agent ID / Servicekonto) |
+| `decides_new_on_model_prompt_tool_change` | ✅ `true` | ❌ nur abgefragt | **Offen** — ein Stufen-Entscheid-Trigger, der bei jedem Modell-/Prompt-/Toolwechsel zwingend neu läuft |
 
 > **Der Unterschied in einem Satz:** Grad 01–02 = die Bausteine **sind**
 > die Kontrolle. Grad 03–05 = die Bausteine **müssen dazukommen** —
-> und `gw_core` hat sie heute nicht.
+> `exception_queue` und `sampling_audit` **haben** diesen Stand;
+> die restlichen vier sind noch «Modelle», nicht «geliefert».
 
 ### 2.3 Was für jeden einzelnen Grad konkret fehlt
 
@@ -96,7 +98,8 @@ nur **die Behauptung**. Das **Bauen** fehlt:
 - ⬜ **`steps` definieren** (GB-14-Warnung): der konkrete Schrittplan mit
   `planned_by`/`human_role` je Schritt, damit der Validator die Achsen je
   Schritt prüfen kann.
-- ⬜ **Sampling-Audit + Exception-Queue** als Code (siehe 2.2).
+- ✅ **ExceptionQueue + SamplingAudit** als Code (siehe 2.2) — der
+  deterministische Entlastungs- und Audit-Pfad für Grad 4 ist **geliefert**.
 - ⬜ **Agent-Identität** (Servicekonto), die nur die ERP-Schnittstelle
   erreicht — nicht die ganze Datenbank.
 - ⬜ **pass^k-Testset** (30–50 echte CH-Belege), gegen das der Agent
@@ -105,16 +108,19 @@ nur **die Behauptung**. Das **Bauen** fehlt:
 **Grad 05 (Multi-Agent, gw5):**
 - ✅ Modell: `model` + `exception_only`, Mandat mit Limit, Shadow-Messung —
   korrekt validiert.
+- ✅ **ExceptionQueue** (GB-11): der Entlastungs-Pfad, der bei Schwellenriss
+  Fälle deterministisch ausgliedert, ist **geliefert** (siehe 2.2). Das ist
+  der zentrale Grad-5-Baustein neben dem Text-Klassifikator.
 - ⬜ **Text-Klassifikator** (GB-05-Warnung): ein separates, **tool-freies**
   Modell, das Kundentexte **vor** der Entscheidung klassifiziert, damit der
   Entscheid-Agent nur strukturierte Daten sieht. **Dies ist der
   wichtigste fehlende Baustein für Grad 5** (Rule of Two).
-- ⬜ **Orchestrator**: heute gibt es **keinen**
-  im Repo. `gw_core` kennt einen `BexioZielsystemAdapter` als
+- ⬜ **Orchestrator**: `gw_core` kennt einen `BexioZielsystemAdapter` als
   einzelnes Ziel — eine **Multi-Ziel-Planung** (mehrere Agents,
   gemeinsame Mandate, koordinierte Freigabe) ist nicht gebaut.
 - ⬜ **Deterministische Policy-Schicht** für Geld und Daten (Grad-5-Pflicht
-  nach GB-08/GB-09) als separate, prüfbare Komponente.
+  nach GB-08/GB-09) als separate, prüfbare Komponente — `ExceptionPolicy`
+  ist der Grundstein, noch nicht die vollständige Multi-System-Komponente.
 
 ---
 
@@ -123,20 +129,26 @@ nur **die Behauptung**. Das **Bauen** fehlt:
 Damit «valides Modell» nicht zu «wir liefern alles» verkommt:
 
 1. **Wir liefern Grad 01–02 als Code.** Das ist der Beitrag, der
-   verifizierbar ist: `gw_core` + 49 Tests + 6 Bausteine.
-2. **Wir liefern Grad 03–05 als validiertes Modell.** Das JSON mit allen
-   Pflicht-Controls und die Doku, die sagt, was jeder braucht. Das ist
-   der Beitrag, der ein Projekt **rahmen** kann — aber noch nicht **ausführt**.
-3. **Die Gap (2.2/2.3) sind der eigentliche Auftrag** für Custom-
-   Engineering pro Kunde. Sie sind **bewusst nicht** in diesem Open-
-   Source-Repo, weil sie Kundendaten, Zielsysteme und Compliance-
-   Kontext brauchen, die wir hier nicht haben.
+   verifizierbar ist: `gw_core` + Tests + 8 Bausteine.
+2. **Wir liefern einen Teil der Grad-4/5-Kontrollen als Code.** Konkret
+   `exception_queue` und `sampling_audit` (die zwei wichtigsten Grad-4
+   Pflicht-Controls nach GB-11). Das schliesst die Lücke zwischen
+   «im JSON behauptet» und «im System erzwingt» für diese zwei Punkte.
+3. **Wir liefern die restlichen Grad-4/5-Kontrollen als validiertes Modell.**
+   Das JSON mit allen Pflicht-Controls und die Doku, die sagt, was jeder
+   braucht. Das ist der Beitrag, der ein Projekt **rahmen** kann —
+   aber noch nicht **ausführt**.
+4. **Die verbleibende Gap (2.2/2.3) ist der eigentliche Auftrag** für
+   Custom-Engineering pro Kunde. Sie ist **bewusst nicht** in diesem
+   Open-Source-Repo, weil sie Kundendaten, Zielsysteme und Compliance-
+   Kontext braucht, die wir hier nicht haben.
 
 > **Was «grad 03–05 aufzeigen» hier heisst:** das Modell zeigen, die
-> Grenzen zeigen, die fehlenden Bausteine **benennen** (2.2/2.3) —
-> und dem Betreiber ein **validiertes JSON in die Hand** geben, gegen
-> das er sein eigenes Projekt validieren kann. Nicht: den Agenten für
-> ihn bauen.
+> Grenzen zeigen, zwei der fünf fehlenden Bausteine **schon geliefert**
+> (2.2), die restlichen **benennen** (2.2/2.3) — und dem Betreiber ein
+> **validiertes JSON in die Hand** geben, gegen das er sein eigenes
+> Projekt validieren kann. Nicht: den Orchestrator oder den
+> Text-Klassifikator für ihn bauen.
 
 ---
 
@@ -149,13 +161,18 @@ for f in examples/gw*.json; do python -m gradbuild.cli "$f" >/dev/null && echo "
 # 2. Die 3 offenen WARN-Lücken (GB-05/06/14) sichtbar machen:
 python -m gradbuild.cli examples/gw3-*.json examples/gw4-*.json examples/gw5-*.json
 
-# 3. Beweis, dass exception_queue+sampling_audit keinen Code haben:
-grep -rln "class" packages/gw_core --include="*.py" | grep -Ec "Exception|Sampling|Orchestr|Shadow"   # → 0
+# 3. Beweis, dass exception_queue + sampling_audit IM CODE sind (und nicht
+#    nur im JSON), und dass Orchestrator + Text-Klassifikator NICHT sind:
+python -c "
+from gw_core import ExceptionQueue, SamplingAudit   # ✅ geliefert
+print('OK  ExceptionQueue + SamplingAudit sind importierbar')
+" 
+grep -rn "class TextKlassif\|class Orchestrat" packages/gw_core/gw_core/*.py  # → 0 Zeilen: fehlt
 ```
 
-Wenn Schritt 3 **0** ergibt, ist der Befund korrekt: **Die Kontrollen
-für Grad ≥ 4 sind im Modell, nicht im Code.** Das ist der ehrliche
-Stand, den diese Roadmap ausweist.
+Wenn Schritt 3 **geliefert** meldet, ist der Befund korrekt: **Zwei der
+fünf fehlenden Kontrollen sind im Code, die restlichen sind im Modell.**
+Das ist der ehrliche Stand, den diese Roadmap ausweist.
 
 ---
 
