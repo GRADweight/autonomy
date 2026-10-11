@@ -5,7 +5,6 @@ import copy
 import unittest
 
 from gradbuild import examples
-from gradbuild import schema
 from gradbuild.validate import evaluate_case
 
 
