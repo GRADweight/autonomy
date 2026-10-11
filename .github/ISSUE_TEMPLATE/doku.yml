@@ -1,0 +1,20 @@
+name: "Doku-Korrektur"
+about: "Eine Regulierung hat sich geändert oder die Doku ist unklar"
+title: "[doku] "
+labels: ["doku"]
+body:
+  - type: textarea
+    attributes:
+      label: "Welche Datei?"
+      description: "Pfad im Repo, z.B. docs/plan.md"
+    required: true
+  - type: textarea
+    attributes:
+      label: "Was ist veraltet oder falsch?"
+      description: "Aktuelle Aussage, korrekte Aussage, Quelle."
+    required: true
+  - type: textarea
+    attributes:
+      label: "Quelle (Pflicht)"
+      description: "Gesetz/Norm, Artikel/Anhang, Stand/Datum, URL bei Verfügbarkeit."
+    required: true

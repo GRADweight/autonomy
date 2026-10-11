@@ -1,0 +1,25 @@
+name: "Fehler-Bericht"
+about: "Ein Baustein, Validator oder Beispiel verhält sich nicht korrekt"
+title: "[fehler] "
+labels: ["bug"]
+body:
+  - type: textarea
+    attributes:
+      label: "Was ist passiert?"
+      description: "Erwarteter und tatsächlicher Zustand, je ein Satz."
+    required: true
+  - type: textarea
+    attributes:
+      label: "Reproduktion"
+      description: "Schritt-für-Schritt, ohne diese Schritte kann nicht geprüft werden."
+    required: true
+  - type: textarea
+    attributes:
+      label: "Umgebung"
+      description: "Python-Version, OS, Installationsart (pip/uv/Kopie)."
+    required: true
+  - type: textarea
+    attributes:
+      label: "Bereits versucht"
+      description: "Ehrlich. 'Nichts' ist auch eine Antwort."
+    required: false
