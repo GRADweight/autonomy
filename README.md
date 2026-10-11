@@ -56,6 +56,7 @@ docs/            → Das Vorgehen je Phase (Plan → Inbetriebnahme), je Grad 01
   wie.md         →    wie der Code greift (Freigabe-Queue, Audit, Prüfung)
   abschluss.md   →    Kill-Kriterien und Abnahme, je Grad
   inbetriebnahme.md → Rollout, Betrieb, Rollback, Ausserbetriebnahme
+  roadmap-grad-03-05.md → was «geliefert», was «valides Modell», was noch nicht gebaut ist
 governance/      → Unternehmen KI-governance-sicher machen:
   checks/        →    lauffähige Prüf-Skripte (Grad-Deckel, Injection, PII, Kill-Switch)
   vorlagen/      →    Richtlinie, KI-Register, Rollen (Markdown, anpassbar)
@@ -66,7 +67,7 @@ tests_*/         → Test-Suites beider Pakete (unittest, keine versteckten Depe
 ## Schnellstart
 
 ```bash
-# Umgebung (Python >= 3.10)
+# Umgebung (Python >= 3.11, gw_core nutzt datetime.UTC)
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e packages/gradbuild -e packages/gw_core pytest
 
@@ -95,6 +96,12 @@ Zusammen ergeben diese Bausteine den Unterschied zwischen
 «Das Modell hat geantwortet» und «Eine freigegebene, geprüfte und protokollierte
 Aktion hat einen Zustand verändert». Details in
 [packages/gw_core/README.md](packages/gw_core/README.md).
+
+> **Wo endet «geliefert» und wo fängt «liefern» an?** Die
+> [Roadmap Grad 03–05](docs/roadmap-grad-03-05.md)
+> zieht diese Linie: was im Code ist (Grad 01–02), was ein valides
+> Modell ist (Grad 03–05 in `examples/`), und welche Kontrollen
+> noch nicht gebaut sind.
 
 ## Was dieses Repo NICHT ist
 
