@@ -58,9 +58,11 @@ docs/            → Das Vorgehen je Phase (Plan → Inbetriebnahme), je Grad 01
   inbetriebnahme.md → Rollout, Betrieb, Rollback, Ausserbetriebnahme
   roadmap-grad-03-05.md → was «geliefert», was «valides Modell», was noch nicht gebaut ist
   technologie-stack.md  → für jeden Baustein: Technik, Alternativen, Begründung
+  grad4-5-multiagent-design.md → Entwurf Grad 4/5: Team, Kontrolllogik, State, Monitoring, A2A/MCP
 governance/      → Unternehmen KI-governance-sicher machen:
   checks/        →    lauffähige Prüf-Skripte (Grad-Deckel, Injection, PII, Kill-Switch)
   vorlagen/      →    Richtlinie, KI-Register, Rollen (Markdown, anpassbar)
+  a2a-agent-card.json → Agent-Card (A2A v0.3) für den Haupt-Agent (Design §4.1)
 .github/         → CI, Issue-Templates, Pull-Request-Vorlage
 tests_*/         → Test-Suites beider Pakete (unittest, keine versteckten Dependencies)
 ```
@@ -108,6 +110,13 @@ Aktion hat einen Zustand verändert». Details in
 > zieht diese Linie: was im Code ist (Grad 01–02), was ein valides
 > Modell ist (Grad 03–05 in `examples/`), und welche Kontrollen
 > noch nicht gebaut sind.
+>
+> **Wie ein Grad-4/5-System aufgebaut wird, wenn es gebaut wird** —
+> Team, Kontrolllogik, State, Monitoring, A2A/MCP — steht im
+> [Design-Entwurf](docs/grad4-5-multiagent-design.md).
+> Status: Entwurf (Soll), nicht Code; die gelieferten Bausteine
+> (ExceptionQueue, SamplingAudit, RollbackManager) sind in der
+> Zuordnungstabelle am Ende der Seite verankert.
 
 ## Was dieses Repo NICHT ist
 

@@ -1,0 +1,63 @@
+{
+  "protocolVersion": "0.3",
+  "name": "gradautonomy-entscheider",
+  "description": "Kontrollierte Entscheide für Grad-4/5 Prozessfälle (z. B. C-Teile-Nachbestellungen, Standard-Retouren): strukturierter Vorschlag, Validierung durch deterministische Regeln und Zweit-Modell, limit-geprüfte kontrollierte Ausführung (Schattenlauf zuerst). Fremder Kundentext gelangt nicht in den Entscheid — er wird von einem tool-freien Modell vorklassifiziert (GB-05). Geldentscheide nur innerhalb systemseitiger Limits (GB-09).",
+  "url": "https://agent.example.com/a2a/v1",
+  "provider": {
+    "organization": "GRADweight GmbH",
+    "url": "https://gradweight.ch"
+  },
+  "version": "1.0.0",
+  "documentationUrl": "https://github.com/GRADweight/gradautonomy/blob/main/docs/grad4-5-multiagent-design.md",
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": true,
+    "stateTransitionHistory": true
+  },
+  "securitySchemes": {
+    "oidc": {
+      "type": "openIdConnect",
+      "openIdConnectUrl": "https://auth.example.com/.well-known/openid-configuration"
+    }
+  },
+  "security": [
+    { "oidc": ["case:decide", "case:classify", "audit:read"] }
+  ],
+  "defaultInputModes": ["application/json"],
+  "defaultOutputModes": ["application/json"],
+  "skills": [
+    {
+      "id": "case-decide",
+      "name": "Fall entscheiden (Grad 4/5)",
+      "description": "Nimmt einen strukturierten Fall (gradbuild-Schema Grad 4/5) an, erzeugt einen validierten Aktionsvorschlag und führt ihn aus, sofern die systemseitigen Limits greifen — Modus `shadow` (kein Write) oder `production`. Kein Freitext in Entscheiden.",
+      "tags": ["autonomy", "governance", "kmu", "gb-09"],
+      "examples": [
+        "{\"fall_id\": \"ct-2026-0117\", \"level\": 4, \"use_case\": \"c-teile-nachbestellen\", \"strukturiert\": {\"artikel\": \"C-0042\", \"menge\": 200, \"betrag\": \"CHF 1480.00\"}, \"modus\": \"shadow\"}"
+      ],
+      "inputModes": ["application/json"],
+      "outputModes": ["application/json"]
+    },
+    {
+      "id": "case-classify",
+      "name": "Kundentext vorklassifizieren (GB-05)",
+      "description": "Klassifiziert einen freien Kundentext in ein striktes strukturiertes Schema (Retour-Typ, Zustand, beantragter Betrag, fehlende Felder). Tool-freies Modell: der Text selbst erreicht den Entscheid nie, nur das strukturierte Ergebnis.",
+      "tags": ["classification", "gb-05", "foreign-input"],
+      "examples": [
+        "Kundentext: 'Bei der Rücksendung war alles beschädigt. Ich erwarte eine Gutschrift.' → {\"retour_typ\": \"beschädigt\", \"antrag\": \"gutschrift\", \"betrag\": null, \"fehlt\": [\"betrag\"]}"
+      ],
+      "inputModes": ["text/plain", "application/json"],
+      "outputModes": ["application/json"]
+    },
+    {
+      "id": "audit-read",
+      "name": "Audit-Belegkette abfragen",
+      "description": "Lesezugriff auf die Belegkette eines Falls: Entscheide, Freigaben, Snapshots vorher/nachher, Ausnahmen, KPI-Counter. Append-only, keine Änderungen.",
+      "tags": ["audit", "governance", "read-only"],
+      "examples": [
+        "Belegkette für Fall ct-2026-0117, inklusive Exception-Ereignisse"
+      ],
+      "inputModes": ["application/json"],
+      "outputModes": ["application/json"]
+    }
+  ]
+}

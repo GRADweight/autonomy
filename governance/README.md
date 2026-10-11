@@ -13,6 +13,7 @@ Geprüfte auch **prüfbar** machen.
 | `vorlagen/richtlinie.md` | KI-Richtlinie als Vorlage — klein, anpassbar, mit harten Grenzen und Rollen |
 | `vorlagen/ki-register.md` | KI-Register als Tabelle (Markdown → CSV-Export), Regeln für Eintrag/Grad-Änderung/gelöschte Zeilen |
 | `vorlagen/rollen.md` | Rollenmodell: Fachverantwortlicher / KI-Verantwortlicher / Admin — wer darf was, Matrix und «wer darf was NICHT» |
+| `a2a-agent-card.json` | **Agent-Card (A2A v0.3)** für den Haupt-Agent: 3 Skills (`case-decide`, `case-classify`, `audit-read`), OIDC-Scopes, JSON-RPC/Streamable-HTTP-Kontext. **Platzhalter-URLs** — vor jeder Publikation gegen Deployment-Werte ersetzen. Doku: [docs/grad4-5-multiagent-design.md](../docs/grad4-5-multiagent-design.md) §4 |
 
 ## So prüft man konkret (drei Beispiele, lauffähig)
 
