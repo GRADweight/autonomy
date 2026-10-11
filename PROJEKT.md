@@ -93,7 +93,9 @@ Stand: 2026-10-11 · Branch-Modell: `feature/<thema>` → Squash nach `main`
 
 ## 7 · Release-Gate (vor Public, jede mal)
 
-1. `grep -rniE 'chf|franken|kalkulation|marge' .` — keine Treffer.
+1. `grep -rniE 'chf|franken|kalkulation|marge' .` — keine Verkaufspreise/
+   Kalkulation. (Fachdaten wie Rechnungsbeträge in Code/Tests/Doku sind
+   korrekt so — das ist Domäne, nicht Preis.)
 2. `grep -rniE 'bexio.*token|api_key|password' .` — nur Doku-Verweise, keine Werte.
 3. `uv run pytest -q` — alle grün.
 4. `uv run gradbuild validate examples/*.json` — alle Exit 0.

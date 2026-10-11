@@ -1,0 +1,24 @@
+# Ruff-Konfiguration für gradautonomy.
+#
+# Grundsatz (PROJEKT.md §4): packages/gradbuild und packages/gw_core werden
+# UNVERÄNDERT aus den verifizierten Quellen gekopiert. Wir legen keine
+# Style-Regeln über fremden Code. Unsere eigenen Dateien (governance/,
+# tests_/, eigene Skripte) müssen dagegen fehlerfrei sein.
+#
+# Geprüft wird die BUG-relevante Regelmenge (F = pyflakes, E/W = pycodestyle
+# Kern, SIM102/F601 = Logik-Bugs, RUF059 = gebrochene Unpacking).
+# Style-Fixes (UP006, I001, RUF012, RUF022, TRY004) sind bewusst AUS —
+# sie würden entweder Code-Bloat erzeugen oder den Kopierprinzip
+# ("unverändert") verletzen.
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["F", "E", "W", "SIM102", "SIM110", "F601", "RUF059"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+# Verifizierte Quellen (Kopie): bewusst unverändert, keine Lint-Regeln.
+"packages/**" = ["E", "W", "SIM102", "SIM110", "F601", "RUF059"]
