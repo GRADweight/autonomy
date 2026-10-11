@@ -1,10 +1,10 @@
 # gw_core — Governance-Bausteine
 
-Acht getestete Bausteine aus dem gemeinsamen GRADweight-Kern — sechs für
-Grad 01–02, zwei für Grad ≥ 4 (die fehlenden `exception_queue` und
-`sampling_audit` aus der Roadmap). Alle lösen ein und dasselbe Problem:
-**eine KI-Aktion ist erst gültig, wenn sie freigegeben, geprüft und
-protokolliert wurde.**
+Neun getestete Bausteine aus dem gemeinsamen GRADweight-Kern — sechs für
+Grad 01–02, drei für Grad ≥ 4 (die fehlenden `exception_queue`,
+`sampling_audit` und `automatic_rollback` aus der Roadmap). Alle lösen ein
+und dasselbe Problem: **eine KI-Aktion ist erst gültig, wenn sie
+freigegeben, geprüft und protokolliert wurde.**
 
 | Baustein | Modul | Aufgabe |
 |---|---|---|
@@ -15,11 +15,13 @@ protokolliert wurde.**
 | Tracing | `tracing.py` | LLM-Request-Protokoll (Dauer, Status, Mandant) |
 | Zielsystem-Adapter | `bexio.py` | systemseitige Limiten (Betrag, Tagesvolumen), Dry-Run |
 | **Exception-Queue** † | `exception_queue.py` | deterministische Schwelle (Geld/sensibel/Fehler); jeder Treffer → Menschen-Queue, Append-only |
-| **Stichproben-Audit** † | `sampling_audit.py` | reproduzierbare systematische Stichprobe über den Audit-Trail, Kriterien + Evidenz |
+| `Stichproben-Audit` † | `sampling_audit.py` | reproduzierbare systematische Stichprobe über den Audit-Trail, Kriterien + Evidenz |
+| **Automatic-Rollback** † | `rollback.py` | Snapshot-Registry (Vorher/Nachher), deterministischer Reversal-Befehl, Append-only Ausführung, KPI |
 
-† = für Grad ≥ 4 (GB-11). Schliesst die Lücke aus
-`docs/roadmap-grad-03-05.md` §2.2: `exception_queue` und `sampling_audit`
-sind hier **im Code**, nicht nur im JSON behauptet.
+† = für Grad ≥ 4 (GB-11/12). Schliessen die Lücke aus
+`docs/roadmap-grad-03-05.md` §2.2: `exception_queue`, `sampling_audit`
+und `automatic_rollback` sind hier **im Code**, nicht nur im JSON
+behauptet.
 
 Alle Bausteine sind **in sich geschlossen**: es gibt kein "vertrauenswürdiger
 LLM dahinter" — Input, Freigabe, Prüfung, Logik und Log sind explizite,

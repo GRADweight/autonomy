@@ -22,6 +22,11 @@ from gw_core.exception_queue import (
     ExceptionPolicy,
     ExceptionQueue,
 )
+from gw_core.rollback import (
+    RollbackBefehl,
+    RollbackEintrag,
+    RollbackManager,
+)
 from gw_core.sampling_audit import (
     AuditBericht,
     SamplingAudit,
@@ -38,6 +43,7 @@ __all__ = [
     "BexioFehler", "BexioZielFehler", "BexioZielsystemAdapter",
     "ExceptionEntscheid", "ExceptionPolicy", "ExceptionQueue",
     "FreigabeEntscheid", "FreigabePolicy",
+    "RollbackBefehl", "RollbackEintrag", "RollbackManager",
     "SamplingAudit", "STANDARD_KRITERIEN",
     "Tracer", "TracingKontext", "TraceEvent",
 ]
