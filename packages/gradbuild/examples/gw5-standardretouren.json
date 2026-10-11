@@ -1,0 +1,37 @@
+{
+  "id": "gw5-standardretouren",
+  "title": "Standardretouren Ende-zu-Ende: Zustand per separatem Vision-Modell (ohne Tools), Gutschrift bis Limite",
+  "level": 5,
+  "who_plans": "model",
+  "human_role": "exception_only",
+  "foreign_input": false,
+  "sensitive_data": true,
+  "external_action": true,
+  "money_effect": true,
+  "customer_facing": true,
+  "customer_text_in_decisions": true,
+  "safety_critical": false,
+  "data_class": "intern",
+  "data_residency": "eu",
+  "mandate": {
+    "limits_in_system": true,
+    "money_limit": "pro Fall und pro Tag im ERP; nur auf ursprüngliches Zahlungsmittel"
+  },
+  "measurement": {
+    "method": "shadow"
+  },
+  "governance": {
+    "owner": "AI-Lead",
+    "audit_log": true,
+    "incident_log": true,
+    "automatic_rollback": true,
+    "kill_switch_tested": true,
+    "agent_identity_min_privilege": true,
+    "adoption_rate_monitored": true,
+    "exception_queue": true,
+    "sampling_audit": true,
+    "decides_new_on_model_prompt_tool_change": true,
+    "shadow_run_first": true,
+    "proposal_mode_first": true
+  }
+}
