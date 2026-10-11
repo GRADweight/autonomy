@@ -197,6 +197,13 @@ Im `AuditTrail` (sqlite) — `details={"model_id": ..., "prompt_hash": ...,
 braucht es **null neue Dependencies**. Das ist das Wichtigste, was
 diese Doku sagt.
 
+> **Weiter in die Architektur:** Wie ein Grad-4/5-System um diese
+> Bausteine herum aufgebaut wird — das Orchestrator-Muster (Entscheid:
+> zyklischer State-Graph, begründet), das State-Objekt, die
+> Endlosschleifen-Limits und die A2A/MCP-Anbindung — steht im
+> [Design-Entwurf](grad4-5-multiagent-design.md). Dort ist auch die
+> ehrliche Trennung: was im Repo Code ist, was Deployment-Baustein ist.
+
 ---
 
 ## 6 · Warum nicht [verfehlte Alternativen]

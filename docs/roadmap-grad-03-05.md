@@ -120,9 +120,13 @@ offen:
   Modell, das Kundentexte **vor** der Entscheidung klassifiziert, damit der
   Entscheid-Agent nur strukturierte Daten sieht. **Dies ist der
   wichtigste fehlende Baustein für Grad 5** (Rule of Two).
+  Entwurf (Rolle, Prompt-Fokus, State-Anbindung):
+  [grad4-5-multiagent-design.md](grad4-5-multiagent-design.md) §1/§3.1.
 - ⬜ **Orchestrator**: `gw_core` kennt einen `BexioZielsystemAdapter` als
   einzelnes Ziel — eine **Multi-Ziel-Planung** (mehrere Agents,
   gemeinsame Mandate, koordinierte Freigabe) ist nicht gebaut.
+  Entwurf (Kontrolllogik, Workflow-Graph, State-Objekt):
+  [grad4-5-multiagent-design.md](grad4-5-multiagent-design.md) §2.
 - ⬜ **Deterministische Policy-Schicht** für Geld und Daten (Grad-5-Pflicht
   nach GB-08/GB-09) als separate, prüfbare Komponente — `ExceptionPolicy`
   ist der Grundstein, noch nicht die vollständige Multi-System-Komponente.
@@ -148,6 +152,11 @@ Damit «valides Modell» nicht zu «wir liefern alles» verkommt:
    Custom-Engineering pro Kunde. Sie ist **bewusst nicht** in diesem
    Open-Source-Repo, weil sie Kundendaten, Zielsysteme und Compliance-
    Kontext braucht, die wir hier nicht haben.
+   — Aber der **Entwurf** der Architektur steht im Repo:
+   [grad4-5-multiagent-design.md](grad4-5-multiagent-design.md) definiert
+   das Team, die Kontrolllogik, das State-Objekt, die Monitoring-Grenzen
+   und die A2A/MCP-Anbindung — als **Soll** mit expliziter Abgrenzung
+   «Entwurf, nicht Code».
 
 > **Was «grad 03–05 aufzeigen» hier heisst:** das Modell zeigen, die
 > Grenzen zeigen, drei der fünf fehlenden Bausteine **schon geliefert**
