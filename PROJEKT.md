@@ -83,10 +83,13 @@ Stand: 2026-10-11 · Branch-Modell: `feature/<thema>` → Squash nach `main`
 
 | Datum | Schritt | Verifiziert |
 |---|---|---|
-| 2026-10-11 | Repository `GRADweight/gradautonomy` erstellt (private) | gh api |
-| 2026-10-11 | PROJEKT.md (diese) committed, Struktur entschieden | git log |
-| 2026-10-11 | P1: Struktur, MIT, LICENSE, Verzeichnisgerüst, PROJEKT.md | git log |
-| 2026-10-11 | P2+P3: OSS-Kern in `packages/` (gradbuild + gw_core-Subset), Layout korrigiert, `__init__.py`-Subset, 49 Tests + 6 Subtests grün, alle 6 Beispiele (gw0–gw5 + counterexample) per CLI validiert | pytest + gradbuild.cli |
+| 2026-10-11 | P1: Repo `GRADweight/gradautonomy` (private), Struktur, MIT, LICENSE, PROJEKT.md | gh api + git log |
+| 2026-10-11 | P2+P3: OSS-Kern in `packages/` (gradbuild v0.2.0 + gw_core-Subset, 6 Bausteine), 49 Tests + 6 Subtests grün | pytest |
+| 2026-10-11 | P4: Beispiele gw0–gw5 im Repo (Level 0–5), alle per `gradbuild.cli` validiert, counterexample korrekt abgelehnt | examples/ |
+| 2026-10-11 | P5: Doku je Phase (plan, umsetzen, wie, abschluss, inbetriebnahme) — je Grad 01–05 mit GB-Regel-Matrix | docs/ |
+| 2026-10-11 | P6: governance/ (checks + Vorlagen). governance_check.py: **13/13** Checks (Deckel GB-03/06/09/02, Injection DE+EN, Log-PII/Secrets inkl. Telefon-CH und Negativfall) | python3 governance/checks/governance_check.py |
+| 2026-10-11 | P7: Community — CI (Tests + Gov-Checks + Validation + counter-example-Verweigerung), 3 Issue-Templates, PR-Vorlage, CODE_OF_CONDUCT, SECURITY, .gitignore | .github/ |
+| 2026-10-11 | **v1.0 Committed und auf origin/main pushed (982472b)**: 49 Tests + 6 Subtests grün, 49+13 Selftests, 6 Beispiele validiert, Secret-Scan sauber (nur Test-Fixturen CHF-Beträge, kein Preis/Secret) | git log + gh api |
 
 ## 7 · Release-Gate (vor Public, jede mal)
 
