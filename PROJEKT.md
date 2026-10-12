@@ -1,4 +1,4 @@
-# PROJEKT.md — gradautonomy (GRADweight Org) · Sichtbarkeit: **privat** (verbleibt privat je Edin-Entscheidung)
+# PROJEKT.md — grad-autonomy (GRADweight Org) · Sichtbarkeit: **privat** (verbleibt privat je Edin-Entscheidung)
 
 Single Source of Truth. Jede Sitzung: diese Datei lesen + `git log -10` +
 `git status` → Einschätzung an Edin (Ist, offene Punkte, nächste 3 Schritte,
@@ -18,7 +18,7 @@ Stand: 2026-10-11 · Branch-Modell: `feature/<thema>` → Squash nach `main`
   Grad 03, 04, 05 als lauffähige, etablierte Beispiele (JSON, validiert mit
   dem gradBuild-Validator inkl. Grenzen und "was fehlt"-Markierung).
 - **Lizenz:** MIT.
-- **Ort:** `GRADweight/gradautonomy` (Org-Pfad), **privat** (aktuell
+- **Ort:** `GRADweight/grad-autonomy` (Org-Pfad), **privat** (aktuell
   `private` via `gh api`, Stand 2026-10-11). Verbleibt **bewusst privat** je
   Edin-Entscheidung; Release-Gate in §7 vorbereitet, Public erst nach
   Edin-Green-Light.
@@ -41,7 +41,7 @@ Stand: 2026-10-11 · Branch-Modell: `feature/<thema>` → Squash nach `main`
 | 25 Autonomie-Fälle | `~/code/gradweight/gw-prototypen/autonomy/01.json…25.json` | maschinenlesbar, gradBuild-Schema |
 | Rechnungs-Extraktion | `~/code/gradweight/gw-prototypen/prototypes/02-rechnungs-extraktion/` | lauffähig + Tests + Evaluierung |
 | RAG + Guardrails | `~/code/gradweight/gw-shared-lib/gw_shared_lib/` | rag_core.py, guardrails.py (Injection, PII, Zitat) |
-| Gate-Modell | `~/code/gradmap/doku/gate-modell.md` | Tore G0–G8, K.-o.-Kriterien |
+| Gate-Modell | `~/code/grad-governance/doku/gate-modell.md` | Tore G0–G8, K.-o.-Kriterien |
 | Architektur | `~/code/gradbuild/doku/architektur.md` | Multi-Agent, RAG, Guardrails, Deploy |
 | Digital Omnibus | verifizierte URLs (eur-lex, ai-act-service-desk) | VO (EU) 2026/1744, in Kraft 27.07.2026; Anh. III → 02.12.2027, Anh. I → 02.08.2028 |
 | DSG CH | fedlex.admin.ch/eli/cc/61/804900 (HTTP 200) | SR 235.1 |
@@ -73,9 +73,9 @@ Stand: 2026-10-11 · Branch-Modell: `feature/<thema>` → Squash nach `main`
 ## 5 · Offene Punkte / Entscheide
 
 - [x] Lizenz = MIT (11.10)
-- [x] Ort = `GRADweight/gradautonomy` (11.10)
+- [x] Ort = `GRADweight/grad-autonomy` (11.10)
 - [x] Publish = nach Bau, nach Edin-Green-Light (11.10)
-- [ ] Repo-Namen-Final: "gradautonomy" (Vorschlag) — Edin kann rename vor Public
+- [ ] Repo-Namen-Final: "grad-autonomy" (Vorschlag) — Edin kann rename vor Public
 - [ ] Bexio-Sandbox-Tokens für Live-Durchlauf (fremde Secrets — nie ins Repo)
 - [ ] Golden-Set #02: 30–50 echte CH-Belege (heute: Platzhalter-3er)
 - [ ] AI-Gov-Modul: FINMA 08/2024 miteinbeziehen? (nur wenn Regulierte)
@@ -85,7 +85,7 @@ Stand: 2026-10-11 · Branch-Modell: `feature/<thema>` → Squash nach `main`
 
 | Datum | Schritt | Verifiziert |
 |---|---|---|
-| 2026-10-11 | P1: Repo `GRADweight/gradautonomy` (private), Struktur, MIT, LICENSE, PROJEKT.md | gh api + git log |
+| 2026-10-11 | P1: Repo `GRADweight/grad-autonomy` (private), Struktur, MIT, LICENSE, PROJEKT.md | gh api + git log |
 | 2026-10-11 | P2+P3: OSS-Kern in `packages/` (gradbuild v0.2.0 + gw_core-Subset, 6 Bausteine), 49 Tests + 6 Subtests grün | pytest |
 | 2026-10-11 | P4: Beispiele gw0–gw5 im Repo (Level 0–5), alle per `gradbuild.cli` validiert, counterexample korrekt abgelehnt | examples/ |
 | 2026-10-11 | P5: Doku je Phase (plan, umsetzen, wie, abschluss, inbetriebnahme) — je Grad 01–05 mit GB-Regel-Matrix | docs/ |

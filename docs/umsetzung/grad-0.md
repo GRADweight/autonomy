@@ -1,6 +1,6 @@
 # Level 0 — Keine Autonomie (Mensch steuert jeden Schritt)
 
-> **Stand:** 2026-10-11 · **Repo:** `GRADweight/gradautonomy` · **Level 0**
+> **Stand:** 2026-10-11 · **Repo:** `GRADweight/grad-autonomy` · **Level 0**
 >
 > **Achsen** (`schema.py::ALLOWED_AXES[0]`): `(human, full_control)` — der
 > **Mensch plant den Weg** und **führt jeden Schritt selbst aus/ausgelöst**.
