@@ -1,4 +1,4 @@
-# PROJEKT.md — gradautonomy (GRADweight Org, private bis Release)
+# PROJEKT.md — gradautonomy (GRADweight Org, public seit 2026-10-11)
 
 Single Source of Truth. Jede Sitzung: diese Datei lesen + `git log -10` +
 `git status` → Einschätzung an Edin (Ist, offene Punkte, nächste 3 Schritte,
@@ -18,9 +18,9 @@ Stand: 2026-10-11 · Branch-Modell: `feature/<thema>` → Squash nach `main`
   Grad 03, 04, 05 als lauffähige, etablierte Beispiele (JSON, validiert mit
   dem gradBuild-Validator inkl. Grenzen und "was fehlt"-Markierung).
 - **Lizenz:** MIT.
-- **Ort:** `GRADweight/gradautonomy` (Org-Pfad), **private während des Baus**,
-  **publiziert nach dem Bau** (Release-Gate in §7).
-- **Kern:** Original-Code (`gw_core` 8 Governance-Bausteine + Tests) +
+- **Ort:** `GRADweight/gradautonomy` (Org-Pfad), **public seit 2026-10-11**
+  (Release-Gate in §7 abgenommen, Edin-Green-Light).
+- **Kern:** Original-Code (`gw_core`, 9 Governance-Bausteine + Tests) +
   `gradbuild` (GB-01…16, Validator) — nicht verlinkt, sondern hier drin,
   mit einem lauffähigen Referenzbeispiel (Rechnungs-Extraktion #02).
 - **AI-Governance-Modul** (`governance/`): Unternehmen KI-governance-sicher
@@ -98,6 +98,9 @@ Stand: 2026-10-11 · Branch-Modell: `feature/<thema>` → Squash nach `main`
 | 2026-10-11 | **Dritte Lücke geschlossen**: `gw_core.rollback.RollbackManager` (GB-12): Snapshot-Registry (Vorher/Nachher), deterministischer Reversal-Befehl aus Template+Snapshot, Append-only Ausführung, KPI-Zähler. 14 neue Tests (Total **84**). RLock-Fix (Self-Deadlock). Roadmap 2.2/2.3/3/4 + README (neun Bausteine, ExQ 13 Tests korrigiert) + gw_core-README aktualisiert | pytest (84) + ruff + Import-OK |
 | 2026-10-11 | **Design-Entwurf Grad 4/5** (`docs/grad4-5-multiagent-design.md`, Status: Entwurf nicht Code): §0 autonome Aktionen A1–A8 mit GB-Referenz; §1 Team (6 Rollen, je: Rolle/L4/L5/Kernkompetenz+Prompt-Fokus/Tools-APIs — Klassifikator tool-frei = GB-05); §2 Kontrolllogik (Entscheid: zyklischer State-Graph «LangGraph-Muster», 4 Begründungen + Gegenargument; ASCII-Workflow-Graph mit Loop-Guard ≤2 Runden + Budget-Kanten; `FallZustand`-State-Objekt: Identität, strukturierte Falle, Limits, Zähler, Snapshots, Audit-Refs); §3 Monitoring (5 Tracing-Strenge-Punkte, 6 Endlosschleifen-Risiken mit numerischen Limits — systemseitig nie prompt, 8 KPIs); §4 A2A (v0.3-Card-JSON inline, OIDC-Scopes, Signed-Card) + MCP (5 Server je Rolle, Credentials in Server-Layer, Shadow = Write-Tool nicht exponiert) | JSON valid, Querverweise (README/Roadmap/technologie-stack/governance) |
 | 2026-10-11 | **A2A Agent-Card als Repo-Artefakt** (`governance/a2a-agent-card.json`): v0.3, 3 Skills, OIDC-Scopes, Platzhalter-URLs (vor Publish gegen Deployment austauschen) | `write_file`-Verifikation |
+| 2026-10-11 | **Schwächen-Reinigung** (kritischer Durchgang): 10× GB-Regel-Referenzen korrigiert (A3 GB-09→GB-08/09, A4 GB-14-Kontext, A5 GB-12→GB-13, A6 GB-11→(GB-11+GB-12), A7 GB-12 bestätigt, A8 `sampling_audit`-Feld; §1/§2.1/§3/§4/§6 synchron), Typo `Gütterschrift→Gutschrift`, §2.2 Workflow-Graph: ASCII-Kasten ersetzt durch lesbares Graph + **Übergangstabelle** (14 Übergänge, jede mit GB-Referenz), `FallZustand` mit `kill_state`-Feld ergänzt (GB-12), §6: 7 Punkte statt 6 (Signature-Praxis ergänzt), CrewAI-Abgrenzung präzisiert, `modus`-Konsistenz durch Doku | `grep -n GB-` Verifikation, `uv run python -c "json.load(...)"` |
+| 2026-10-11 | **Unternehmens-Implementierung** (`docs/unternehmens-implementierung.md`): §1 Pflicht-Kreuztabelle (16 GB-Regeln × 5 Grade, jede Zelle: Pflicht/empfohlen/—/Error), §2 Umsetzung je Grad 01–05 (Pflicht im Unternehmen + was im Repo steht + was NICHT), §3 Infrastruktur/Hardware/Standort (drei Schichten: Control/RAG/Inferenz, Standortbestimmung CH/On-Prem/GPU, Hardware-Set je Grad, Netzwerk-Architektur [Model-LAN ohne Internet], harte Grenze GB-15 «geheim+grad4 = on-prem ohne Netz oder keine KI») | grep/valid; Exoscale/Infomaniak-Quellen |
+| 2026-10-11 | **Querverweise**: `unternehmens-implementierung.md` in README-Docs-Baum + «Soll»-Block, PROJEKT.md-Protokoll 2 Punkte | README.md, PROJEKT.md |
 
 ## 7 · Release-Gate (vor Public, jede mal)
 
