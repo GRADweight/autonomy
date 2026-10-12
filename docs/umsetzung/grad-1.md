@@ -1,6 +1,6 @@
 # Level 1 — Assistent (Mensch plant und steuert jede Aktion)
 
-> **Stand:** 2026-10-11 · **Repo:** `GRADweight/gradautonomy` · **Level 1**
+> **Stand:** 2026-10-11 · **Repo:** `GRADweight/grad-autonomy` · **Level 1**
 >
 > **Achsen** (`schema.py::ALLOWED_AXES[1]`): `(human, full_control)` oder
 > `(human, per_action)` — **der Mensch plant den Weg**; jede Aktion wird vom

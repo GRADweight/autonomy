@@ -1,6 +1,6 @@
 # Level 5 — Eigentlich (Modell plant, Ausnahme-Queue + Stichprobe)
 
-> **Stand:** 2026-10-11 · **Repo:** `GRADweight/gradautonomy` · **Level 5**
+> **Stand:** 2026-10-11 · **Repo:** `GRADweight/grad-autonomy` · **Level 5**
 >
 > **Achsen** (`schema.py::ALLOWED_AXES[5]`):
 > - `(model, exception_only)` — **Modell plant**, Ausnahmen gehen in

@@ -1,6 +1,6 @@
 # Design: Multi-Agent-System — Grad 4 (Agent) und 5 (Multi-Agent)
 
-> **Stand:** 2026-10-11 · **Repo:** `GRADweight/gradautonomy`
+> **Stand:** 2026-10-11 · **Repo:** `GRADweight/grad-autonomy`
 >
 > **Status: Entwurf (Soll), nicht Code.**
 > Diese Seite definiert den Entwurf eines Grad-4/5-Systems: das Agenten-Team,
@@ -283,7 +283,7 @@ Registry-Integration, §6 Punkt 4).
 ```json
 {
   "protocolVersion": "0.3",
-  "name": "gradautonomy-entscheider",
+  "name": "grad-autonomy-entscheider",
   "description": "Kontrollierte Entscheide für Grad-4/5 Prozessfälle (z. B. C-Teile-Nachbestellungen, Standard-Retouren): strukturierter Vorschlag, Validierung durch deterministische Regeln und Zweit-Modell, limit-geprüfte kontrollierte Ausführung (Schattenlauf zuerst). Fremder Kundentext gelangt nicht in den Entscheid — er wird von einem tool-freien Modell vorklassifiziert (GB-05). Geldentscheide nur innerhalb systemseitiger Mandats-Limits (GB-08/GB-09).",
   "url": "https://agent.example.com/a2a/v1",
   "provider": {
@@ -291,7 +291,7 @@ Registry-Integration, §6 Punkt 4).
     "url": "https://gradweight.ch"
   },
   "version": "1.0.0",
-  "documentationUrl": "https://github.com/GRADweight/gradautonomy/blob/main/docs/grad4-5-multiagent-design.md",
+  "documentationUrl": "https://github.com/GRADweight/grad-autonomy/blob/main/docs/grad4-5-multiagent-design.md",
   "capabilities": {
     "streaming": false,
     "pushNotifications": true,

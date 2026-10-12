@@ -1,6 +1,6 @@
 # Level 3 — Workflow (Feste Kette, Gate-Freigabe)
 
-> **Stand:** 2026-10-11 · **Repo:** `GRADweight/gradautonomy` · **Level 3**
+> **Stand:** 2026-10-11 · **Repo:** `GRADweight/grad-autonomy` · **Level 3**
 >
 > **Achsen** (`schema.py::ALLOWED_AXES[3]`):
 > - `(fixed_chain, per_gate)` — **feste Kette**, Freigabe **je Gate**

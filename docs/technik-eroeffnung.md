@@ -1,6 +1,6 @@
 # Weitere technische Möglichkeiten (Technik-Eröffnung)
 
-> **Stand:** 2026-10-11 · **Repo:** `GRADweight/gradautonomy`
+> **Stand:** 2026-10-11 · **Repo:** `GRADweight/grad-autonomy`
 >
 > **Status: Entwurf — diese Doku listet keine TODOs, sondern
 > bewertete technische Weiterentwicklungen** mit konkretem Aufwand,
