@@ -1,4 +1,4 @@
-# gradautonomy — Autonomiegrade für KI in KMU-Prozessen
+# grad-autonomy — Autonomiegrade für KI in KMU-Prozessen
 
 **Ein Modell, ein Validator und neun getestete Bausteine, die festhalten:
 welcher Mensch greift bei welchem Schritt einer KI-Aktion ein — und was es
