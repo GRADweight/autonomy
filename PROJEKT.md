@@ -1,4 +1,4 @@
-# PROJEKT.md — gradautonomy (GRADweight Org, public seit 2026-10-11)
+# PROJEKT.md — gradautonomy (GRADweight Org) · Sichtbarkeit: **privat** (verbleibt privat je Edin-Entscheidung)
 
 Single Source of Truth. Jede Sitzung: diese Datei lesen + `git log -10` +
 `git status` → Einschätzung an Edin (Ist, offene Punkte, nächste 3 Schritte,
@@ -18,8 +18,10 @@ Stand: 2026-10-11 · Branch-Modell: `feature/<thema>` → Squash nach `main`
   Grad 03, 04, 05 als lauffähige, etablierte Beispiele (JSON, validiert mit
   dem gradBuild-Validator inkl. Grenzen und "was fehlt"-Markierung).
 - **Lizenz:** MIT.
-- **Ort:** `GRADweight/gradautonomy` (Org-Pfad), **public seit 2026-10-11**
-  (Release-Gate in §7 abgenommen, Edin-Green-Light).
+- **Ort:** `GRADweight/gradautonomy` (Org-Pfad), **privat** (aktuell
+  `private` via `gh api`, Stand 2026-10-11). Verbleibt **bewusst privat** je
+  Edin-Entscheidung; Release-Gate in §7 vorbereitet, Public erst nach
+  Edin-Green-Light.
 - **Kern:** Original-Code (`gw_core`, 9 Governance-Bausteine + Tests) +
   `gradbuild` (GB-01…16, Validator) — nicht verlinkt, sondern hier drin,
   mit einem lauffähigen Referenzbeispiel (Rechnungs-Extraktion #02).
@@ -101,6 +103,10 @@ Stand: 2026-10-11 · Branch-Modell: `feature/<thema>` → Squash nach `main`
 | 2026-10-11 | **Schwächen-Reinigung** (kritischer Durchgang): 10× GB-Regel-Referenzen korrigiert (A3 GB-09→GB-08/09, A4 GB-14-Kontext, A5 GB-12→GB-13, A6 GB-11→(GB-11+GB-12), A7 GB-12 bestätigt, A8 `sampling_audit`-Feld; §1/§2.1/§3/§4/§6 synchron), Typo `Gütterschrift→Gutschrift`, §2.2 Workflow-Graph: ASCII-Kasten ersetzt durch lesbares Graph + **Übergangstabelle** (14 Übergänge, jede mit GB-Referenz), `FallZustand` mit `kill_state`-Feld ergänzt (GB-12), §6: 7 Punkte statt 6 (Signature-Praxis ergänzt), CrewAI-Abgrenzung präzisiert, `modus`-Konsistenz durch Doku | `grep -n GB-` Verifikation, `uv run python -c "json.load(...)"` |
 | 2026-10-11 | **Unternehmens-Implementierung** (`docs/unternehmens-implementierung.md`): §1 Pflicht-Kreuztabelle (16 GB-Regeln × 5 Grade, jede Zelle: Pflicht/empfohlen/—/Error), §2 Umsetzung je Grad 01–05 (Pflicht im Unternehmen + was im Repo steht + was NICHT), §3 Infrastruktur/Hardware/Standort (drei Schichten: Control/RAG/Inferenz, Standortbestimmung CH/On-Prem/GPU, Hardware-Set je Grad, Netzwerk-Architektur [Model-LAN ohne Internet], harte Grenze GB-15 «geheim+grad4 = on-prem ohne Netz oder keine KI») | grep/valid; Exoscale/Infomaniak-Quellen |
 | 2026-10-11 | **Querverweise**: `unternehmens-implementierung.md` in README-Docs-Baum + «Soll»-Block, PROJEKT.md-Protokoll 2 Punkte | README.md, PROJEKT.md |
+| 2026-10-11 | **Sichtbarkeit: privat** (verbleibt privat je Edin-Entscheidung; `gh api` → visibility=private) — Header + §1 «Ort» auf *aktuell privat* korrigiert (statt *public seit 2026-10-11*) | gh api |
+| 2026-10-11 | **6 Umsetzungsdokus je Level** (`docs/umsetzung/`: `README.md` Überblick + `grad-0.md`…`grad-5.md`): je Level Definition, GB-Pflichten (harte Errors), Referenz-Cauch `gw0…gw5`, technische Umsetzung, `gw_core`-Bausteine, Infra/Hardware/Standort, was NICHT Overkill, Absicherung, offene Punkte; Numbering-Brücke Level 0–5 ↔ Grad 01–05 | geerdet an `validate.py`/`schema.py`/`examples`; Typos/Links geprüft |
+| 2026-10-11 | **Technik-Eröffnung** (`docs/technik-eroeffnung.md`): weitere technische Möglichkeiten (Release-Prozess, JSON-Schema-Export, i18n, Audit-Export, **Mandat-Engine**, **Kill-Switch-Code**, **A2A-Card-Validator**, Mandant-Deployment-Grenze) — je Aufwand (PD), Abhängigkeit, **Repo-vs-Mandant**, Priorisierung P0–P4 | README §9 + validate.py + bexio.py + a2a-agent-card.json |
+| 2026-10-11 | **Querverweise**: `docs/umsetzung/` + `technik-eroeffnung.md` in README-Docs-Baum + «Soll»-Block | README.md |
 
 ## 7 · Release-Gate (vor Public, jede mal)
 
