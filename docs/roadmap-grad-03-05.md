@@ -26,7 +26,8 @@ müssten zu Code werden, damit Grad X geliefert statt nur modelliert ist.**
 
 ## 1 · Was ist heute im Code (Grad 01–02 = geliefert)
 
-`gw_core` liefert sechs Bausteine. Sie sind es, die einen Assistenten
+`gw_core` liefert neun Bausteine; **sechs** von ihnen tragen unmittelbar
+Grad 1–2. Sie sind es, die einen Assistenten
 (Grad 1) und einen Copiloten (Grad 2) technisch möglich machen:
 
 | Baustein | Was er erzwingt | Grad, den er trägt |
@@ -40,7 +41,7 @@ müssten zu Code werden, damit Grad X geliefert statt nur modelliert ist.**
 
 > **Schlusssatz Grad 01–02:** Hier ist der Mensch **in** der Kette —
 > jede wirkungsvolle Aktion läuft durch FreigabeQueue oder Gate. Das ist
-> im Code und mit Tests gedeckt (`tests_gwcore/`, 49 grün).
+> im Code und mit Tests gedeckt (`tests_gwcore/`, 84 grün).
 
 ---
 
