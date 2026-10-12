@@ -60,6 +60,10 @@ docs/            → Das Vorgehen je Phase (Plan → Inbetriebnahme), je Grad 01
   technologie-stack.md  → für jeden Baustein: Technik, Alternativen, Begründung
   grad4-5-multiagent-design.md → Entwurf Grad 4/5: Team, Kontrolllogik, State, Monitoring, A2A/MCP
   unternehmens-implementierung.md → Umsetzung im Unternehmen: Gesichtspunkte je Grad, Infrastruktur & Hardware, Standort
+  umsetzung/         → JE LEVEL eine technische Umsetzungsdoku (0–5): Bausteine, GB-Pflichten, Infra/HW/Standort, was NICHT Overkill
+    README.md        →    Überblick über die sechs Doku + gemeinsame Grundlage + gw_core-Mapping
+    grad-0.md … grad-5.md → eine Doku je Level; Referenz-Cauch gw0…gw5 (valid)
+  technik-eroeffnung.md → weitere technische Möglichkeiten (Mandat-Engine, Kill-Switch-Code, A2A-Validator, JSON-Schema, i18n) — Aufwand/Abhängigkeit/Repo-vs-Mandant
 governance/      → Unternehmen KI-governance-sicher machen:
   checks/        →    lauffähige Prüf-Skripte (Grad-Deckel, Injection, PII, Kill-Switch)
   vorlagen/      →    Richtlinie, KI-Register, Rollen (Markdown, anpassbar)
@@ -118,6 +122,14 @@ Aktion hat einen Zustand verändert». Details in
 > **Wie alle fünf Grade im Unternehmen umgesetzt werden** —
 > Gesichtspunkte, Infrastruktur, Hardware, Standort — steht in der
 > [Unternehmens-Implementierung](docs/unternehmens-implementierung.md).
+> **Je eine technische Umsetzungsdoku pro Autonomielevel (Level 0–5)** —
+> welche `gw_core`-Bausteine tragen, welche GB-Regeln hart greifen (Error),
+> was infrastrukturell/Hardware-seitig stehen muss, und was bewusst
+> **kein Overkill** ist — steht in [docs/umsetzung/](docs/umsetzung/README.md).
+> **Weitere technische Möglichkeiten** (Mandat-Engine, Kill-Switch-Code,
+> A2A-Card-Validator, JSON-Schema-Export, i18n) sind in
+> [docs/technik-eroeffnung.md](docs/technik-eroeffnung.md) bewertet
+> (Aufwand, Abhängigkeit, **Repo-vs-Mandant**).
 > Status beider Seiten: Entwurf (Soll), nicht Code; die gelieferten
 > Bausteine (ExceptionQueue, SamplingAudit, RollbackManager) sind in
 > den Zuordnungstabellen verankert.
