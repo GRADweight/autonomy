@@ -1,7 +1,7 @@
 {
   "protocolVersion": "0.3",
   "name": "gradautonomy-entscheider",
-  "description": "Kontrollierte Entscheide für Grad-4/5 Prozessfälle (z. B. C-Teile-Nachbestellungen, Standard-Retouren): strukturierter Vorschlag, Validierung durch deterministische Regeln und Zweit-Modell, limit-geprüfte kontrollierte Ausführung (Schattenlauf zuerst). Fremder Kundentext gelangt nicht in den Entscheid — er wird von einem tool-freien Modell vorklassifiziert (GB-05). Geldentscheide nur innerhalb systemseitiger Limits (GB-09).",
+  "description": "Kontrollierte Entscheide für Grad-4/5 Prozessfälle (z. B. C-Teile-Nachbestellungen, Standard-Retouren): strukturierter Vorschlag, Validierung durch deterministische Regeln und Zweit-Modell, limit-geprüfte kontrollierte Ausführung (Schattenlauf zuerst). Fremder Kundentext gelangt nicht in den Entscheid — er wird von einem tool-freien Modell vorklassifiziert (GB-05). Geldentscheide nur innerhalb systemseitiger Mandats-Limits (GB-08/GB-09).",
   "url": "https://agent.example.com/a2a/v1",
   "provider": {
     "organization": "GRADweight GmbH",

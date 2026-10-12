@@ -59,6 +59,7 @@ docs/            → Das Vorgehen je Phase (Plan → Inbetriebnahme), je Grad 01
   roadmap-grad-03-05.md → was «geliefert», was «valides Modell», was noch nicht gebaut ist
   technologie-stack.md  → für jeden Baustein: Technik, Alternativen, Begründung
   grad4-5-multiagent-design.md → Entwurf Grad 4/5: Team, Kontrolllogik, State, Monitoring, A2A/MCP
+  unternehmens-implementierung.md → Umsetzung im Unternehmen: Gesichtspunkte je Grad, Infrastruktur & Hardware, Standort
 governance/      → Unternehmen KI-governance-sicher machen:
   checks/        →    lauffähige Prüf-Skripte (Grad-Deckel, Injection, PII, Kill-Switch)
   vorlagen/      →    Richtlinie, KI-Register, Rollen (Markdown, anpassbar)
@@ -74,7 +75,7 @@ tests_*/         → Test-Suites beider Pakete (unittest, keine versteckten Depe
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e packages/gradbuild -e packages/gw_core pytest
 
-# Alle Tests (49)
+# Alle Tests (84)
 python -m pytest tests_gradbuild tests_gwcore -v
 
 # Einen Autonomie-Prüffall validieren
@@ -114,9 +115,12 @@ Aktion hat einen Zustand verändert». Details in
 > **Wie ein Grad-4/5-System aufgebaut wird, wenn es gebaut wird** —
 > Team, Kontrolllogik, State, Monitoring, A2A/MCP — steht im
 > [Design-Entwurf](docs/grad4-5-multiagent-design.md).
-> Status: Entwurf (Soll), nicht Code; die gelieferten Bausteine
-> (ExceptionQueue, SamplingAudit, RollbackManager) sind in der
-> Zuordnungstabelle am Ende der Seite verankert.
+> **Wie alle fünf Grade im Unternehmen umgesetzt werden** —
+> Gesichtspunkte, Infrastruktur, Hardware, Standort — steht in der
+> [Unternehmens-Implementierung](docs/unternehmens-implementierung.md).
+> Status beider Seiten: Entwurf (Soll), nicht Code; die gelieferten
+> Bausteine (ExceptionQueue, SamplingAudit, RollbackManager) sind in
+> den Zuordnungstabellen verankert.
 
 ## Was dieses Repo NICHT ist
 

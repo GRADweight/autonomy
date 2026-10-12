@@ -25,12 +25,12 @@ Aktion trägt, steht in §1.
 | # | Autonome Aktion | Was sie technisch heisst | GB-Referenz | State |
 |---|---|---|---|---|
 | **A1** | Fall annehmen und strukturieren | Eingangs-Daten gegen das Grad-Schema prüfen, Mandats-Limits aus `governance`-Feld laden | — (Grundlage) | geliefert (Schema + Validator) |
-| **A2** | Fremdtext klassifizieren (Grad 5) | Kundentext → striktes strukturiertes Schema; **tool-freies** Modell, das Ergebnis darf kein Freitext sein | GB-05 (Rule of Two) | Entwurf (diese Doku) |
-| **A3** | Entscheid vorschlagen | Eine konkrete Aktion: Ziel-System, Parameter, Betrag, Währung — nie «kann» oder «vielleicht» | GB-09 (Money-Effects) | Entwurf (diese Doku) |
-| **A4** | Vorschlag validieren | zuerst deterministische Regeln (Limits, Währung, Pflichtfelder), dann Zweitmodell-Plausibilität | GB-14-Kontext (messbar) | `pruefe_antwort` geliefert (G1/2), Critic = Entwurf |
-| **A5** | Ausführen (kontrolliert) | Schattenlauf zuerst; nur bei PASS + Limits greifen Snapshot + Write | GB-12 | `RollbackManager` geliefert, Adapter = Deployment |
-| **A6** | Ausnahmen gliedern | Schwellenriss, Limit verletzt, nicht-reversibel → deterministisch ausgliedern an einen Menschen | GB-11 | `ExceptionQueue` geliefert (13 Tests) |
-| **A7** | Rückrollen | Vorher/Nachher-Snapshot, deterministischer Reversal-Befehl, append-only Ausführen | GB-12 | `RollbackManager` geliefert (14 Tests) |
+| **A2** | Fremdtext klassifizieren (Grad 5) | Kundentext → striktes strukturiertes Schema; **tool-freies** Modell, das Ergebnis darf kein Freitext sein | GB-05 (Kundentexte isoliert) | Entwurf (diese Doku) |
+| **A3** | Entscheid vorschlagen | Eine konkrete Aktion: Ziel-System, Parameter, Betrag, Währung — nie «kann» oder «vielleicht» | GB-08 (Mandat-Limits im System) / GB-09 (money_limit) | Entwurf (diese Doku) |
+| **A4** | Vorschlag validieren | zuerst deterministische Regeln (Limits, Währung, Pflichtfelder), dann Zweitmodell-Plausibilität | — (Design-Prinzip; die Qualität misst GB-14) | `pruefe_antwort` geliefert (G1/2), Critic = Entwurf |
+| **A5** | Ausführen (kontrolliert) | Schattenlauf zuerst; nur bei PASS + Limits greifen Snapshot + Write | GB-13 (shadow_run_first + proposal_mode_first) | `RollbackManager` geliefert, Adapter = Deployment |
+| **A6** | Ausnahmen gliedern | Schwellenriss, Limit verletzt, nicht-reversibel → deterministisch ausgliedern an einen Menschen | GB-11 (exception_queue + audit_log) | `ExceptionQueue` geliefert (13 Tests) |
+| **A7** | Rückrollen | Vorher/Nachher-Snapshot, deterministischer Reversal-Befehl, append-only Ausführen | GB-12 (automatic_rollback + kill_switch_tested) | `RollbackManager` geliefert (14 Tests) |
 | **A8** | Belegen und messen | Sampling, KPI, Eskalation — ohne Content-Entscheid | `sampling_audit` | `SamplingAudit` geliefert (8 Tests) |
 
 **Faustregel:** A2 und A3 sind die zwei Bausteine, die noch nicht existieren
@@ -62,8 +62,10 @@ Notizen:
   Der Rest des Teams ist identisch. Das ist der Punkt, den «wenn möglich
   auf 4» braucht: ein Entwurf, der für beide Grade gilt.
 - **Geldentscheide laufen nie durch ein Prompt, sondern durch
-  systemseitige Limits** (GB-09, `mandate.limits_in_system=true` in gw4/gw5).
-  Kein Agent «entscheidet über Geld» — er schlägt vor, das System deckelt.
+  systemseitige Limits** (GB-08: `mandate.limits_in_system`; bei
+  money_effect zusätzlich GB-09: `mandate.money_limit` — beide in
+  gw4/gw5 gesetzt). Kein Agent «entscheidet über Geld» — er schlägt vor,
+  das System deckelt.
 - **Kein Agent sieht den Prompt eines anderen.** Kommunikation zwischen
   Rollen läuft über den State (§2.3) und strukturierte Übergabe-Objekte —
   nie via freiem Text (das ist dieselbe Grenze, die A2A in §4 zieht).
@@ -77,26 +79,28 @@ Notizen:
 **Entscheid: zyklischer State-Graph — das LangGraph-Muster.** Vier Gründe:
 
 1. **Der Entscheid-Kreislauf ist ein Zyklus mit Abbruchbedingung.**
-   Entscheider → Critic → (bei FAIL) zurück zum Entscheider. Ein
-   Rollen-Sequenzmodell (CrewAI) kann Zyklen nur als «Fluss noch einmal
-   aufrufen» abbilden — dann liegt der Zustand in der Rolle statt im
-   expliziten State-Objekt, und die Max-Runden-Logik (§3.2) hat keinen
-   Ort, wo sie deterministisch geprüft werden kann.
+   Entscheider → Critic → (bei FAIL) zurück zum Entscheider. Bei einem
+   Rollensequenzmodell (CrewAI-Crews, sequenziell oder hierarchisch) liegt
+   die Zustandsübergabe in der LLM-Ausgabe zwischen den Rollen; ein
+   Rücksetz-Zyklus mit deterministischer Runden- und Budgetzählung ist
+   dort eine Umgebungs-Konstruktion, keine Kernabstraktion (CrewAI-Flows
+   erlauben zwar eventgesteuerte Graphen — sie machen State und Guards
+   aber nicht zum primären Konstrukt).
 2. **Der Ausnahmepfad ist eine deterministische Kanten-Entscheidung**
    (Limit verletzt, nicht reversibel, Schwellenriss). State-Graphs haben
    *conditional edges* und Max-Iterationen als Kernkonstrukt; ein
-   Rollen-Durchlauf hat beides nicht. `ExceptionQueue` (geliefert) ist genau
-  eine solche deterministische Kante.
+   Rollen-Durchlauf hat beides weniger explizit. `ExceptionQueue`
+   (geliefert) ist genau eine solche deterministische Kante (GB-11).
 3. **Der State überlebt Agenten- und Neu-Läufe** (SQLite, auditierbar).
    Das explizite gemeinsame State-Objekt ist bei einem Graph die
-   Architektur, bei Rollen-Hand-off nur die Übergabe-Nebeneffekt.
+   Architektur, bei Rollen-Hand-off nur die Übergabe-Nebeneffekt
+   (GB-11/GB-12: Audit + Identität sind Pflicht).
 4. **Repo-Prinzip:** kontrollierbare, deterministische Control-Flow,
    kein Framework-Fetisch (CONTRIBUTING, Roadmap §2.3).
-   **Wichtig: entschieden ist das Muster** (expliziter State,
+   **Wichtig: entschieden ist das Kontrollmodell** (expliziter State,
    Conditional Edges, Max-Iterationen) — *nicht* die Bibliothek. Wer das
-   Deployment baut, darf jede Runtime wählen, die diese drei Eigenschaften
-   hat; LangGraph erfüllt sie und ist deshalb genannt. CrewAI-Sequenz
-   (Flow of Roles) hat sie nicht.
+   Deployment baut, darf jede Runtime wählen, die dieses Modell klar
+   abbildet; LangGraph tut das als Kernkonzept und ist deshalb genannt.
 
 > Gegenargument, das man sich vorwerfen lassen muss: L4 (gw4) ist fast
 > eine strikte Pipeline — dort würde ein Sequenzmodell auch durchlaufen.
@@ -107,37 +111,53 @@ Notizen:
 ### 2.2 Workflow-Graph (textbasiert)
 
 ```
-START (strukturierter Fall, mode = shadow | production)
+START (Fall; modus ∈ {shadow, production} — unveränderlich, pro Fall)
  │
- ├─ [NUR L5] KLASSIFIKATOR: Fremdtext → strukturierte Felder
- │            fehlende Pflichtfelder → AUSNAHME
- ├─ [L4] Überspringen: kein Fremdtext im Fall (gw4)
+ ├─[L5] KLASSIFIKATOR: Fremdtext → strukturierte Felder
+ │         (fehlende Pflichtfelder → AUSNAHME)
+ ├─[L4] übersprungen (gw4: foreign_input = false)
  ▼
-┌────────────────────────────────────────────────────────┐
-│        (Loop-Guard: Critic-Runden ≤ 2, sonst AUSNAHME) │
-│                                                        │
-│   ENTSCHEIDER: Vorschlag {aktion, system, param, betrag}│
-│        ▼                                               │
-│   CRITIC: 1) deterministische Regeln  2) Zweitmodell   │
-│        │ PASS                         │ FAIL (Runde<2) │
-│        ▼                              └──────┬─────────┘
-│   PRE-CHECK: Limits · Währung · Pflichtfelder │
-│        │ OK                       │ verletzt  │
-│        ▼                          ▼           │
-│   EXECUTOR: Snapshot → Write    ┌─────────────┤
-│   (mode=shadow: kein Write)     │             │
-└────────┬────────────────────────┴─────────────┘
-         │                                          │
-         ▼                                          ▼
-   OBSERVER (Sampling, KPI)              AUSNAHME → ExceptionQueue → Mensch
-         │                                          (Menschen-Entscheid ≤ 2)
-         ▼
-ENDE (status + audit-refs + fingerprint)
+ ┌────────── LOOP  ·  Guard: critic_rounds ≤ 2, sonst AUSNAHME ──────────┐
+ │   ENTSCHEIDER ─► Vorschlag {aktion, zielsystem, parameter, betrag}     │
+ │        │                                                              │
+ │        ▼                                                              │
+ │   CRITIC: 1) deterministische Regeln   2) Zweitmodell                 │
+ │        │                                                             │
+ │        ▼ PASS                                                        │
+ │   PRE-CHECK: Mandats-Limits · Währung · Pflichtfelder                │
+ └────┬───────────────────────────────────────────────────────────────────┘
+      │ PRE-CHECK OK
+      ▼
+   EXECUTOR: Snapshot (vorher/nachher) → Write      (modus=shadow ⇒ kein Write)
+      │
+      ▼
+   OBSERVER: Sampling · KPI · Eskalation
+      │
+      ▼
+   ENDE (status · audit-refs · fingerprint)
 ```
 
-**Gültig für beide Grade**; die eckige `[L5]`-Kante ist die einzige
-Unterschied. Jede Kanten-Übergang ist ein Budget-Check (LLM-Calls, Tokens,
-Zeit) — Verletzung führt in AUSNAHME, nie in «weiter, aber mit Warnung».
+Jede Kante, deterministisch (die Graph-Logik in Worte):
+
+| # | Von | Bedingung | Nach | GB-Hintergrund |
+|---|---|---|---|---|
+| 1 | START | `level=5` | Klassifikator | — |
+| 2 | START | `level=4` | Entscheider (Klassifikator übersprungen) | — |
+| 3 | Klassifikator | Pflichtfelder fehlen | **AUSNAHME** | GB-05 (strukturiert, keine Raten) |
+| 4 | Entscheider | — | Critic | GB-08/GB-09 (Vorschlag trägt Limit) |
+| 5 | Critic | `PASS` | Pre-Check | — |
+| 6 | Critic | `FAIL` **und** `critic_rounds < 2` | **Entscheider** (neuer Vorschlag) | Loop-Guard |
+| 7 | Critic | `FAIL` **und** `critic_rounds = 2` | **AUSNAHME** | Loop-Guard, GB-11 |
+| 8 | Pre-Check | Limits/Währung/Pflichtfelder OK | **Executor** | GB-08 (Limits im System) |
+| 9 | Pre-Check | verletzt | **AUSNAHME** | GB-08/GB-09 |
+| 10 | Executor | `modus=production` | Zielsystem-Write + Snapshot | GB-12 (Reversalität, `RollbackManager`) |
+| 11 | Executor | `modus=shadow` | *kein* Write, Ergebnis nur protokolliert | GB-13 (`shadow_run_first`) |
+| 12 | Observer | KPI-Schwelle verletzt | **AUSNAHME** (Eskalation) | GB-11/GB-14 |
+| 13 | AUSNAHME | `mensch_entscheide ≤ 2` | Mensch entscheidet | GB-11 (`exception_queue`) |
+| 14 | AUSNAHME | `mensch_entscheide > 2` | `status=abgebrochen` | Loop-Guard |
+
+**Konsistenz:** `modus` ist der eine Begriff durch die ganze Doku — im
+State-Objekt, im Graph und in der Card (`"modus": "shadow"`).
 
 ### 2.3 State-Objekt
 
@@ -170,6 +190,8 @@ class FallZustand:            # Pseudocode — nicht Repo-Code
     budget: dict              # {max_llm_calls: 8, max_tokens: 150_000,
                               #  zeit_s: 600, critic_rounds_max: 2,
                               #  mensch_entscheide_max: 2}
+    kill_state: bool          # True wenn Kill-Switch ausgelöst (GB-12)
+                              # — systemseitig, nicht im Prompt
     # Beleg
     snapshots: dict           # {vorher: ref, nachher: ref}   (RollbackManager)
     audit_refs: list[str]     # ID in der AuditTrail (append-only)
@@ -194,7 +216,7 @@ warum strikt:
 | Schritt | Warum striktes Tracing | Was protokolliert wird | Baustein (State) |
 |---|---|---|---|
 | **Klassifikator** | Einziger Eingangspunkt für fremden Content — die klassische Injektionsfläche (GB-05) | Volle Eingabe (Fremdtext), Modell-ID + Version, voller Output (Strukturfelder), Hashes beider Seiten | `Tracer` + `AuditTrail` (geliefert) |
-| **Entscheider** | Vorschlag mit Geld- und Auswirkung (GB-09) | Kontext (die strukturierten Daten, nicht der volle Prompt), voller Output (Aktion, Parameter, Betrag), Loop-Counter bei der Übergabe | `Tracer` + `AuditTrail` (geliefert) |
+| **Entscheider** | Vorschlag mit Geld- und Auswirkung (GB-08/GB-09) | Kontext (die strukturierten Daten, nicht der volle Prompt), voller Output (Aktion, Parameter, Betrag), Loop-Counter bei der Übergabe | `Tracer` + `AuditTrail` (geliefert) |
 | **Critic** | Das Urteil ist das einzige Tor — ein falscher PASS ist das hauptsächliche Risiko | Regelergebnisse **je Regelseparat**, Zweitmodell-Output, finales Urteil + Runde | `pruefe_antwort` (geliefert, G1/2), Critic (Entwurf) |
 | **Executor** | Einziger Punkt mit **fremder Wirkung** | Pre-Check-Ergebnis, Snapshot vorher/nachher (Ref), Zielsystem-Anteil (maskiert), Modus (shadow/production) | `RollbackManager` (geliefert), Adapter (Deployment) |
 | **Orchestrator-Transitionen** | Jede Phasen-Übergang ist eine Entscheidung | von → nach, Grund, alle Zähler, Rest-Budget | `Tracer` (geliefert) |
@@ -214,8 +236,8 @@ Charakter wie `audit.py`.
 | **Kreuz-Fall-Kopplung** | Sampling-Ergebnis ändert automatische Policy | Kein Selbst-Optimieren — Policy-Change braucht immer einen menschlichen Entscheid + Re-Validierung (`decides_new`) | Entwurfsregel (§3.3) |
 
 Alle Limits sind **systemseitig** im State — nicht im Prompt. Dieselbe
-Logik wie GB-09: ein Limit, das ein Modell «kennt», ist kein Limit.
-Die Ziffern sind Kalibrierwerte für die Referenzfälle — sie werden je
+Logik wie GB-08 (Limits wohnen im Zielsystem, nicht im Prompt) und GB-12
+(Rückstufung greift technisch). Die Ziffern sind Kalibrierwerte für die
 Use-Case gesetzt und sind keine universellen Konstanten.
 
 ### 3.3 KPIs: was gemessen wird
@@ -225,7 +247,7 @@ Use-Case gesetzt und sind keine universellen Konstanten.
 | **Latenz** | p50/p95 je Schritt + gesamt pro Fall | p95 ≤ 600 s | Observer → Incident-Log |
 | **Token-Menge** | Prompts + Completion pro Fall (Kosten hängen am Deployment — deshalb Tokens, nicht CHF) | ≤ 150'000 | Budget-Alarm (→ AUSNAHME) |
 | **Tool-Erfolgsrate** | MCP- / Tool-Calls OK im ersten Versuch / gesamt | ≥ 95 % (Trend) | Observer |
-| **Erstvalidierungsrate** | Vorschläge, die im ersten Critic-Runde PASS | ≥ 80 % (abfallend = Drift bei Entscheider oder Regelerklärung) | Observer |
+| **Erstvalidierungsrate** | Vorschläge, die in der ersten Critic-Runde PASS | ≥ 80 % (abfallend = Drift beim Entscheider oder bei der Regelsetzung) | Observer |
 | **Ausnahmequote** | Fälle → `ExceptionQueue` / alle Fälle | abnehmender Trend; plötzliches Ansteigen = Abbruch + Analyse | Observer → Mensch |
 | **`adoption_rate`** | (GB-Feld in allen L4/5-Fällen: `adoption_rate_monitored=true`) | überwacht, je Fall kalibriert | KPI-Report |
 | **Rollback** | Anzahl, erfolgreich/fehlgeschlagen | 0 Fehl | Incident-Log |
@@ -262,7 +284,7 @@ Registry-Integration, §6 Punkt 4).
 {
   "protocolVersion": "0.3",
   "name": "gradautonomy-entscheider",
-  "description": "Kontrollierte Entscheide für Grad-4/5 Prozessfälle (z. B. C-Teile-Nachbestellungen, Standard-Retouren): strukturierter Vorschlag, Validierung durch deterministische Regeln und Zweit-Modell, limit-geprüfte kontrollierte Ausführung (Schattenlauf zuerst). Fremder Kundentext gelangt nicht in den Entscheid — er wird von einem tool-freien Modell vor-kassifiziert (GB-05). Geldentscheid nur innerhalb systemseitiger Limits (GB-09).",
+  "description": "Kontrollierte Entscheide für Grad-4/5 Prozessfälle (z. B. C-Teile-Nachbestellungen, Standard-Retouren): strukturierter Vorschlag, Validierung durch deterministische Regeln und Zweit-Modell, limit-geprüfte kontrollierte Ausführung (Schattenlauf zuerst). Fremder Kundentext gelangt nicht in den Entscheid — er wird von einem tool-freien Modell vorklassifiziert (GB-05). Geldentscheide nur innerhalb systemseitiger Mandats-Limits (GB-08/GB-09).",
   "url": "https://agent.example.com/a2a/v1",
   "provider": {
     "organization": "GRADweight GmbH",
@@ -300,11 +322,11 @@ Registry-Integration, §6 Punkt 4).
     },
     {
       "id": "case-classify",
-      "name": "Kundentext vor-klassifizieren (GB-05)",
+      "name": "Kundentext vorklassifizieren (GB-05)",
       "description": "Klassifiziert einen freien Kundentext in ein striktes strukturiertes Schema (Retour-Typ, Zustand, beantragter Betrag, fehlende Felder). Tool-freies Modell: der Text selbst erreicht den Entscheid nie, nur das strukturierte Ergebnis.",
       "tags": ["classification", "gb-05", "foreign-input"],
       "examples": [
-        "Kundentext: 'Bei der Rücksendung war alles beschädigt. Ich erwarte eine Gütterschrift.' → {\"retour_typ\": \"beschädigt\", \"antrag\": \"gutschrift\", \"betrag\": null, \"fehlt\": [\"betrag\"]}"
+        "Kundentext: 'Bei der Rücksendung war alles beschädigt. Ich erwarte eine Gutschrift.' → {\"retour_typ\": \"beschädigt\", \"antrag\": \"gutschrift\", \"betrag\": null, \"fehlt\": [\"betrag\"]}"
       ],
       "inputModes": ["text/plain", "application/json"],
       "outputModes": ["application/json"]
@@ -348,7 +370,11 @@ Registry-Integration, §6 Punkt 4).
   `FreigabePolicy` erzwingt es intern.
 - **`url` und `openIdConnectUrl`** sind Platzhalter (Konvention der
   A2A-Spezifikation) und müssen vor jeder Veröffentlichung gegen
-  Deployment-Werte ausgetauscht werden.
+  Deployment-Werte ausgetauscht werden. Die Card im Repo enthält bewusst
+  **kein** `signature`-Feld: die Signatur (JWS über die canonicalisierte
+  Card, RFC 8785) wird im Deployment erzeugt und kann hier nicht
+  vorweggenommen werden. Ein Client, der Cards ohne Signaturprüfung
+  konsumiert, ist nicht produktionsreif.
 
 ### 4.2 MCP: wie Datenquellen und Sandboxes angebunden werden
 
@@ -426,9 +452,11 @@ Klassifikator: keine MCP (tool-frei = die Kontrolle)
 4. **A2A-v1.0-Migration** — die Card im Repo ist v0.3; die Registry
    unterstützt beide (v1.0: `supportedInterfaces`). Vor Produktion:
    Version pinnen + Migrationspfad dokumentieren. (LF-Ankündigung 04/2026)
-5. **Agent-Identität / Service-Konto** — noch offen als Code (Roadmap
+5. **Card-Signatur** — v0.3 erlaubt `signature`, v1.0 erwartet sie;
+   ein Client ohne Signaturprüfung ist nicht produktionsreif. (Doku §4.1)
+6. **Agent-Identität / Service-Konto** — noch offen als Code (Roadmap
    §2.2); die Card (§4.1) ist nur die öffentliche Deklaration.
-6. **`kill_switch_tested`** — das Flag steht in den JSONs (gw4/gw5); ein
+7. **`kill_switch_tested`** — das Flag steht in den JSONs (gw4/gw5); ein
    *getesteter* Kill-Switch ist im Deployment noch ausstehend
    (Roadmap §2.3 Grad 03: «heute nur ein Flag im JSON»).
 
