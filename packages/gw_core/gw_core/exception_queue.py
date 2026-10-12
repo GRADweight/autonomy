@@ -160,7 +160,7 @@ class ExceptionQueue:
                                    titel=vorschlag.titel, payload=vorschlag.payload,
                                    entscheid=bescheid))
       # Menschen entlasten jede offene Ausnahme:
-      q.entscheide(eids[0], actor="Edin", status="entlastet")
+      q.entscheide(eids[0], actor="ai-lead", status="entlastet")
     """
 
     def __init__(

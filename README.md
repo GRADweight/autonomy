@@ -1,5 +1,7 @@
 # grad-autonomy — Autonomiegrade für KI in KMU-Prozessen
 
+> **[CI](https://github.com/GRADweight/grad-autonomy/actions/workflows/ci.yml)** · Python 3.11 / 3.12 · **zero runtime dependencies** (outgoing httpx für den Bexio-Adapter) · Alle Rechte vorbehalten (Referenz-Nutzung + Attribution s. [LICENSE](LICENSE))
+
 **Ein Modell, ein Validator und neun getestete Bausteine, die festhalten:
 welcher Mensch greift bei welchem Schritt einer KI-Aktion ein — und was es
 kostet, eine Stufe mehr Autonomie zu geben.**
@@ -79,8 +81,12 @@ tests_*/         → Test-Suites beider Pakete (unittest, keine versteckten Depe
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e packages/gradbuild -e packages/gw_core pytest
 
-# Alle Tests (84)
+# Alle Tests (87)
 python -m pytest tests_gradbuild tests_gwcore -v
+
+# Der komplette Freigabe-Pfad in einem Durchlauf:
+# Vorschlag → Freigabe → Zweitmodell-Prüfung → Audit-Trail
+python -m gw_core.demo --case examples/gw1-produktwissen-innendienst.json
 
 # Einen Autonomie-Prüffall validieren
 python -m gradbuild.cli examples/gw3-predictive-maintenance.json
@@ -159,7 +165,8 @@ und das JSON-Schema in [packages/gradbuild/gradbuild/schema.py](packages/gradbui
 
 ## Lizenz
 
-MIT — Details in [LICENSE](LICENSE).
+Alle Rechte vorbehalten (GRADweight GmbH) — Referenz-Nutzung mit Attribution
+und Community-PRs: s. [LICENSE](LICENSE).
 
 **Kein Rechtsrat.** Stand der Doku: 2026-10. Regulierung (Digital Omnibus
 VO (EU) 2026/1744 in Kraft 27.07.2026, DSG SR 235.1, ISO/IEC 42001) wird

@@ -90,9 +90,9 @@ class TestExceptionQueueLebenszyklus(unittest.TestCase):
         offene = q.offene(mandant="K1")
         self.assertEqual(len(offene), 1)
         self.assertEqual(offene[0].id, eid)
-        a = q.entscheide(eid, status="entlastet", actor="Edin")
+        a = q.entscheide(eid, status="entlastet", actor="ai-lead")
         self.assertEqual(a.status, "entlastet")
-        self.assertEqual(a.erledigt_von, "Edin")
+        self.assertEqual(a.erledigt_von, "ai-lead")
         self.assertEqual(q.offene(mandant="K1"), [])
 
     def test_doppeltentlastet_verboten(self):
@@ -101,7 +101,7 @@ class TestExceptionQueueLebenszyklus(unittest.TestCase):
             mandant="K1", prototyp="04", titel="t",
             payload={}, entscheid=q.pruefe(betrag=3000.0),
         )
-        q.entscheide(eid, status="entlastet", actor="Edin")
+        q.entscheide(eid, status="entlastet", actor="ai-lead")
         with self.assertRaises(RuntimeError):
             q.entscheide(eid, status="entlastet", actor="Anderer")
 
@@ -112,7 +112,7 @@ class TestExceptionQueueLebenszyklus(unittest.TestCase):
             payload={}, entscheid=q.pruefe(betrag=3000.0),
         )
         with self.assertRaises(ValueError):
-            q.entscheide(eid, status="offen", actor="Edin")
+            q.entscheide(eid, status="offen", actor="ai-lead")
 
     def test_audit_kette_vollstaendig(self):
         # GB-11: jeder Schritt in der Queue MUSS im Trail nachweisbar sein.
@@ -122,7 +122,7 @@ class TestExceptionQueueLebenszyklus(unittest.TestCase):
             mandant="K1", prototyp="04", titel="t",
             payload={"betrag": 3000.0}, entscheid=q.pruefe(betrag=3000.0),
         )
-        q.entscheide(eid, status="entlastet", actor="Edin")
+        q.entscheide(eid, status="entlastet", actor="ai-lead")
         acts = [r["action"] for r in audit.query(mandant="K1")]
         self.assertIn("ausnahme_einreichte", acts)
         self.assertIn("ausnahme_entlastet", acts)
@@ -135,8 +135,8 @@ class TestExceptionQueueLebenszyklus(unittest.TestCase):
                 payload={"betrag": betrag}, entscheid=q.pruefe(betrag=betrag),
             )
         # 2 ueber limit, 2 unter: alle 4 in der Queue (Einreichung ist frei).
-        q.entscheide(q.offene()[0].id, status="entlastet", actor="Edin")
-        q.entscheide(q.offene()[0].id, status="abgelehnt", actor="Edin")
+        q.entscheide(q.offene()[0].id, status="entlastet", actor="ai-lead")
+        q.entscheide(q.offene()[0].id, status="abgelehnt", actor="ai-lead")
         kpi = q.einseiter(mandant="K1")
         self.assertEqual(kpi["total"], 4)
         self.assertEqual(kpi["entlastet"], 1)
@@ -162,7 +162,7 @@ class TestStichprobe(unittest.TestCase):
         sampler = SamplingAudit(audit=audit)
         for i in range(n):
             # Halb Mensch, halb System — damit die Kriterien sichtbar sind.
-            actor = "Edin" if i % 2 == 0 else "llm"
+            actor = "ai-lead" if i % 2 == 0 else "llm"
             sampler.beobachte(
                 mandant="K1", prototyp="04", actor=actor,
                 action="freigabe" if i % 2 == 0 else "entlastung",
@@ -196,7 +196,7 @@ class TestAuditBericht(unittest.TestCase):
             gut = i % 2 == 0
             sampler.beobachte(
                 mandant="K1", prototyp="04",
-                actor="Edin" if gut else "llm",
+                actor="ai-lead" if gut else "llm",
                 action="freigabe",
                 details={"begruendung": "betrag plausibel" if gut else ""},
             )

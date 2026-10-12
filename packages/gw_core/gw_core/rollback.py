@@ -245,7 +245,7 @@ class RollbackManager:
         # Host führt den Befehl aus, z. B.:
         #   resp = httpx.delete(f"{base}/kb_bill/12903", headers=auth)
         rb.ausfuehren(rid, success=True, resultat="Buchung #12903 gelöscht",
-                      on_behalf_of="Edin")
+                      on_behalf_of="ai-lead")
         # Append-only: ein zweiter Aufruf wirft
         # RollbackBereitsAbgeschlossenFehler.
     """
