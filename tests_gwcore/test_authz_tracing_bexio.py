@@ -42,7 +42,7 @@ class TestAuthZ(unittest.TestCase):
         q, _ = _queue()
         aid = q.vorschlage(mandant="K1", prototyp="02-rechnungs-extraktion",
                            titel="b", payload={})
-        akt = q.freigabe(aid, actor="Edin", rolle="buchhaltung")
+        akt = q.freigabe(aid, actor="ai-lead", rolle="buchhaltung")
         self.assertEqual(akt.status, "freigegeben")
 
     def test_fremde_rolle_wird_abgelehnt(self):
