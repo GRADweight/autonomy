@@ -4,7 +4,7 @@ version = "0.2.0"
 description = "Autonomiegrade für KI in KMU-Prozessen: Modell, Regeln (GB-01…GB-16) und Validator — zero-deps."
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "MIT" }
+license = { text = "All Rights Reserved (s. LICENSE)" }
 authors = [{ name = "Edin Avdija" }]
 keywords = ["ai-governance", "autonomy", "agents", "kmu", "audit"]
 classifiers = [

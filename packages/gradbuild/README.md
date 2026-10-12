@@ -286,4 +286,4 @@ referenziert):
 
 ## 10 · Lizenz
 
-MIT © 2026 Edin Avdija / GRADweight GmbH
+© 2026 GRADweight GmbH — Alle Rechte vorbehalten (s. LICENSE im Repo-Root)

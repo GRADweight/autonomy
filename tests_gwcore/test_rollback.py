@@ -147,7 +147,7 @@ class TestAppendOnly(unittest.TestCase):
     def test_doppelt_unverbaubar(self):
         rb = RollbackManager()
         rid = rb.registrieren(**_params())
-        rb.ausfuehren(rid, success=True, resultat="ok", on_behalf_of="Edin")
+        rb.ausfuehren(rid, success=True, resultat="ok", on_behalf_of="ai-lead")
         with self.assertRaises(RollbackBereitsAbgeschlossenFehler) as ctx:
             rb.ausfuehren(rid, success=True, resultat="ok", on_behalf_of="x")
         self.assertIn("bereits", str(ctx.exception))
@@ -155,11 +155,11 @@ class TestAppendOnly(unittest.TestCase):
     def test_ausfuehrung_verandert_nicht_vorher(self):
         rb = RollbackManager()
         rid = rb.registrieren(**_params())
-        rb.ausfuehren(rid, success=True, resultat="ok", on_behalf_of="Edin")
+        rb.ausfuehren(rid, success=True, resultat="ok", on_behalf_of="ai-lead")
         e = rb.read(rid)
         self.assertEqual(e.status, "durchgefuert")
         self.assertEqual(e.status_begruendung, "ok")
-        self.assertEqual(e.aufgabe_von, "Edin")
+        self.assertEqual(e.aufgabe_von, "ai-lead")
 
     def test_ausfuehrung_mit_fehlermeldung(self):
         rb = RollbackManager()
@@ -174,7 +174,7 @@ class TestAppendOnly(unittest.TestCase):
         rb = RollbackManager()
         rid = rb.registrieren(**_params(), ts="2026-01-01T00:00:00Z")
         rb.ausfuehren(rid, success=True, resultat="ok",
-                      on_behalf_of="Edin", ts="2026-01-02T00:00:00Z")
+                      on_behalf_of="ai-lead", ts="2026-01-02T00:00:00Z")
         e = rb.read(rid)
         self.assertEqual(e.status, "durchgefuert")
         # ts-Feld im Eintrag:

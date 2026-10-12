@@ -23,6 +23,9 @@ jobs:
           pip install -e packages/gradbuild -e packages/gw_core pytest
       - name: Tests (gradbuild + gw_core)
         run: python -m pytest tests_gradbuild tests_gwcore -v
+
+      - name: Demo-Pfad (Freigabe + Prüfung + Audit in einem Durchlauf)
+        run: python -m gw_core.demo --case examples/gw1-produktwissen-innendienst.json
       - name: Governance-Checks (Deckel, Injection, Log)
         run: python3 governance/checks/governance_check.py
       - name: Validate all examples

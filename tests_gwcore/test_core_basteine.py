@@ -10,8 +10,8 @@ from gw_core.verify import Zitat, pruefe_antwort
 class TestAuditTrail(unittest.TestCase):
     def test_append_only_log_und_query(self):
         a = AuditTrail()
-        rid1 = a.log(mandant="K1", prototyp="02", actor="Edin", action="freigabe")
-        rid2 = a.log(mandant="K1", prototyp="02", actor="Edin", action="zurueck")
+        rid1 = a.log(mandant="K1", prototyp="02", actor="ai-lead", action="freigabe")
+        rid2 = a.log(mandant="K1", prototyp="02", actor="ai-lead", action="zurueck")
         self.assertGreater(rid2, rid1)
         self.assertEqual(a.zähler(mandant="K1"), 2)
         rows = a.query(mandant="K1")
@@ -28,18 +28,18 @@ class TestAuditTrail(unittest.TestCase):
 
     def test_details_json_rundreise(self):
         a = AuditTrail()
-        a.log(mandant="K", prototyp="02", actor="Edin",
+        a.log(mandant="K", prototyp="02", actor="ai-lead",
               action="freigabe", details={"betrag": 1081.0, "iban": "CH93..."})
         row = a.query(mandant="K")[0]
         self.assertEqual(row["details"]["betrag"], 1081.0)
 
     def test_export_csv(self):
         a = AuditTrail()
-        a.log(mandant="K", prototyp="02", actor="Edin", action="x")
+        a.log(mandant="K", prototyp="02", actor="ai-lead", action="x")
         p = a.export("/tmp/audit_test.csv")
         inhalt = p.read_text(encoding="utf-8")
         self.assertIn("actor", inhalt)
-        self.assertIn("Edin", inhalt)
+        self.assertIn("ai-lead", inhalt)
 
 
 class TestApprovalQueue(unittest.TestCase):
@@ -51,9 +51,9 @@ class TestApprovalQueue(unittest.TestCase):
         q, audit = self._q()
         aid = q.vorschlage(mandant="K1", prototyp="02-rechnung",
                            titel="Rechnung buchen", payload={"betrag": 1081.0})
-        act = q.freigabe(aid, actor="Edin")
+        act = q.freigabe(aid, actor="ai-lead")
         self.assertEqual(act.status, "freigegeben")
-        self.assertEqual(act.erledigt_von, "Edin")
+        self.assertEqual(act.erledigt_von, "ai-lead")
         # Jede Entscheidung muss im Audit-Trail stehen (GB-11)
         acts = [r["action"] for r in audit.query(mandant="K1")]
         self.assertIn("aktion_vorgeschlagen", acts)
@@ -63,7 +63,7 @@ class TestApprovalQueue(unittest.TestCase):
         q, _ = self._q()
         aid = q.vorschlage(mandant="K", prototyp="24-mahnung",
                            titel="Mahnung senden", payload={"stufe": 2})
-        act = q.zurueckstellen(aid, actor="Edin", begruendung="Kunde ist Stammkunde")
+        act = q.zurueckstellen(aid, actor="ai-lead", begruendung="Kunde ist Stammkunde")
         self.assertEqual(act.status, "zurueckgestellt")
         self.assertIn("Stammkunde", act.anmerkungen)
 
@@ -71,7 +71,7 @@ class TestApprovalQueue(unittest.TestCase):
         q, _ = self._q()
         aid = q.vorschlage(mandant="K", prototyp="02", titel="buchen",
                            payload={"betrag": 1000.0})
-        act = q.anpassen(aid, actor="Edin", neue_payload={"betrag": 980.0})
+        act = q.anpassen(aid, actor="ai-lead", neue_payload={"betrag": 980.0})
         self.assertEqual(act.status, "angepasst")
         self.assertEqual(act.payload["betrag"], 980.0)
 
@@ -88,7 +88,7 @@ class TestApprovalQueue(unittest.TestCase):
         q, _ = self._q()
         q.vorschlage(mandant="K", prototyp="02", titel="a", payload={})
         a2 = q.vorschlage(mandant="K", prototyp="02", titel="b", payload={})
-        q.freigabe(a2, actor="Edin")
+        q.freigabe(a2, actor="ai-lead")
         offene = q.offene(mandant="K")
         self.assertEqual(len(offene), 1)
         self.assertEqual(offene[0].titel, "a")
@@ -98,9 +98,9 @@ class TestApprovalQueue(unittest.TestCase):
         a1 = q.vorschlage(mandant="K", prototyp="02", titel="a", payload={})
         a2 = q.vorschlage(mandant="K", prototyp="02", titel="b", payload={})
         a3 = q.vorschlage(mandant="K", prototyp="02", titel="c", payload={})
-        q.freigabe(a1, actor="Edin")
-        q.anpassen(a2, actor="Edin", neue_payload={})
-        q.zurueckstellen(a3, actor="Edin", begruendung="x")
+        q.freigabe(a1, actor="ai-lead")
+        q.anpassen(a2, actor="ai-lead", neue_payload={})
+        q.zurueckstellen(a3, actor="ai-lead", begruendung="x")
         s = q.einseiter(mandant="K")
         self.assertIn("Total Aktionen: 3", s)
         self.assertIn("Angepasst vom Menschen: 1", s)

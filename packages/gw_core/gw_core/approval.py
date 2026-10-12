@@ -90,9 +90,9 @@ class ApprovalQueue:
       aid = q.vorschlage(mandant="K1", prototyp="02-rechnung",
                          titel="Rechnung RE-2026-0042 buchen", payload={...},
                          vorgeschlagen_von="llm")
-      q.freigabe(aid, actor="Edin")            # App-Code führt sie danach aus
+      q.freigabe(aid, actor="ai-lead")            # App-Code führt sie danach aus
       # ODER
-      q.zurueckstellen(aid, actor="Edin", begruendung="Betrag falsch")
+      q.zurueckstellen(aid, actor="ai-lead", begruendung="Betrag falsch")
     """
 
     def __init__(

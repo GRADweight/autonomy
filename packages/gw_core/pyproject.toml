@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "GRADweight Governance-Bausteine: Approval-Queue, Audit-Trail, Zweitmodell-Pruefung, AuthZ, Tracing, Zielsystem-Adapter. Null Abhaengigkeiten ausser httpx (bexio)."
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "MIT" }
+license = { text = "All Rights Reserved (s. LICENSE)" }
 authors = [{ name = "GRADweight" }]
 dependencies = ["httpx>=0.24"]
 

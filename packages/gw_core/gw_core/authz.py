@@ -4,7 +4,7 @@ Prototyp freigeben.
 Bisherg: `freigabe_nur_an` als freier Text im Payload — ein Name im
 JSON-Feld, keine echte Prüfung. Damit gibt jeder, der den Namen kennt,
 frei. Genügt für eine lokale Demo, nicht für den Kunden (Revision:
-"Wie gewissen, dass 'Edin' wirklich Edin war?").
+"Wie gewissen, dass 'ai-lead' wirklich 'ai-lead' war?").
 
 Diese Lösung: Rollen-basierte Policy (JSON via Umgebungsvariable oder
 Datei), Prüfung an JEDER Freigabe, Entscheidungsgrund in den
