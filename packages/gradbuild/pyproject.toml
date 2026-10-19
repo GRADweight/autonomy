@@ -21,8 +21,8 @@ classifiers = [
 dependencies = []
 
 [project.urls]
-Homepage = "https://github.com/GRADweight/grad-autonomy"
-Issues = "https://github.com/GRADweight/grad-autonomy/issues"
+Homepage = "https://github.com/GRADweight/autonomy"
+Issues = "https://github.com/GRADweight/autonomy/issues"
 
 [project.scripts]
 gradbuild = "gradbuild.cli:main"

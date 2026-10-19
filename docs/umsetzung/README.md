@@ -1,6 +1,6 @@
 # Umsetzung je Autonomiegrad — technische Umsetzung im Unternehmen
 
-> **Stand:** 2026-10-12 · **Repo:** `GRADweight/grad-autonomy` (Org)
+> **Stand:** 2026-10-12 · **Repo:** `GRADweight/autonomy` (Org)
 >
 > **Was hier ist:** Für **jeden** Autonomiegrad (Level 0–5) eine eigene
 > technische Umsetzungsdoku — was im Unternehmen stehen muss, welche

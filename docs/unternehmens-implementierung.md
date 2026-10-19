@@ -1,6 +1,6 @@
 # Unternehmens-Implementierung — alle Autonomiegrade, Infrastruktur, Hardware, Standort
 
-> **Stand:** 2026-10-11 · **Repo:** `GRADweight/grad-autonomy`
+> **Stand:** 2026-10-11 · **Repo:** `GRADweight/autonomy`
 >
 > **Status: Entwurf (Soll) für den Deployment-Betrieb — nicht Code.**
 > Diese Seite beantwortet drei Fragen für **jeden** Autonomiegrad 01–05:

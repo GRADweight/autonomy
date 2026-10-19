@@ -1,4 +1,4 @@
-# Ruff-Konfiguration für grad-autonomy.
+# Ruff-Konfiguration für autonomy.
 #
 # Grundsatz (PROJEKT.md §4): `packages/` enthält (a) UNVERÄNDERT kopierten
 # Quell-Code aus den verifizierten Original-Projekten und (b) NEUE

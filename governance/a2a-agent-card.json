@@ -8,7 +8,7 @@
     "url": "https://gradweight.ch"
   },
   "version": "1.0.0",
-  "documentationUrl": "https://github.com/GRADweight/grad-autonomy/blob/main/docs/grad4-5-multiagent-design.md",
+  "documentationUrl": "https://github.com/GRADweight/autonomy/blob/main/docs/grad4-5-multiagent-design.md",
   "capabilities": {
     "streaming": false,
     "pushNotifications": true,

@@ -1,6 +1,6 @@
-# grad-autonomy — Autonomiegrade für KI in KMU-Prozessen
+# autonomy — Autonomiegrade für KI in KMU-Prozessen
 
-> **[CI](https://github.com/GRADweight/grad-autonomy/actions/workflows/ci.yml)** · Python 3.11 / 3.12 · **zero runtime dependencies** (outgoing httpx für den Bexio-Adapter) · Alle Rechte vorbehalten (Referenz-Nutzung + Attribution s. [LICENSE](LICENSE))
+> **[CI](https://github.com/GRADweight/autonomy/actions/workflows/ci.yml)** · Python 3.11 / 3.12 · **zero runtime dependencies** (outgoing httpx für den Bexio-Adapter) · Alle Rechte vorbehalten (Referenz-Nutzung + Attribution s. [LICENSE](LICENSE))
 
 **Ein Modell, ein Validator und neun getestete Bausteine, die festhalten:
 welcher Mensch greift bei welchem Schritt einer KI-Aktion ein — und was es

@@ -1,6 +1,6 @@
 # Level 4 — Delegiert (Modell plant, Mandat mit Limits im Zielsystem)
 
-> **Stand:** 2026-10-11 · **Repo:** `GRADweight/grad-autonomy` · **Level 4**
+> **Stand:** 2026-10-11 · **Repo:** `GRADweight/autonomy` · **Level 4**
 >
 > **Achsen** (`schema.py::ALLOWED_AXES[4]`):
 > - `(model, mandate)` — **Modell plant**, Mensch gibt **Mandat** mit

@@ -1,6 +1,6 @@
 # Level 2 — Copilot (Modell vorschlägt, Mensch freigibt je Aktion)
 
-> **Stand:** 2026-10-11 · **Repo:** `GRADweight/grad-autonomy` · **Level 2**
+> **Stand:** 2026-10-11 · **Repo:** `GRADweight/autonomy` · **Level 2**
 >
 > **Achsen** (`schema.py::ALLOWED_AXES[2]`): `(human, per_action)` oder
 > `(model, per_action)` — **der Mensch plant OR das Modell plant**, aber
