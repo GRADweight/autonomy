@@ -1,6 +1,6 @@
 # Technologie-Stack — was wir brauchen, was die Alternativen sind, warum
 
-> **Stand:** 2026-10-11 · **Repo:** `GRADweight/grad-autonomy`
+> **Stand:** 2026-10-11 · **Repo:** `GRADweight/autonomy`
 >
 > Diese Seite beantwortet drei Fragen für jeden Baustein, der noch fehlt
 > (und die zwei, die es jetzt schon gibt):

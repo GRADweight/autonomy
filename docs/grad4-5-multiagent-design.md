@@ -1,6 +1,6 @@
 # Design: Multi-Agent-System — Grad 4 (Agent) und 5 (Multi-Agent)
 
-> **Stand:** 2026-10-11 · **Repo:** `GRADweight/grad-autonomy`
+> **Stand:** 2026-10-11 · **Repo:** `GRADweight/autonomy`
 >
 > **Status: Entwurf (Soll), nicht Code.**
 > Diese Seite definiert den Entwurf eines Grad-4/5-Systems: das Agenten-Team,
@@ -291,7 +291,7 @@ Registry-Integration, §6 Punkt 4).
     "url": "https://gradweight.ch"
   },
   "version": "1.0.0",
-  "documentationUrl": "https://github.com/GRADweight/grad-autonomy/blob/main/docs/grad4-5-multiagent-design.md",
+  "documentationUrl": "https://github.com/GRADweight/autonomy/blob/main/docs/grad4-5-multiagent-design.md",
   "capabilities": {
     "streaming": false,
     "pushNotifications": true,

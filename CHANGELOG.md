@@ -1,4 +1,4 @@
-# CHANGELOG — grad-autonomy
+# CHANGELOG — autonomy
 
 Format: `## vX.Y.Z — Datum — Kurzfassung`, darunter was/warum.
 SemVer: major = inkompatibler Bruch, minor = neue Inhalte, patch = Korrektur.
@@ -26,7 +26,7 @@ ist mit diesem File abgedeckt.)
   Demo-Befehl, Testzahl 84 → 87.
 - **PROJEKT.md**: entfernt (internes Sitzungs-Mgmt «verbleibt privat je
   Edin-Entscheidung» — wird durch die Launch-Entscheidung 25.10 abgelöst;
-  Kanon-Artikel gehört in `grad-internal-kb`).
+  Kanon-Artikel gehört in `internal-kb`).
 - **`docs/umsetzung/README.md`**: Stand-Zeile (Entscheidung 25.10).
 - **R1 (Technik-Eröffnung) erfüllt**: Release-Prozess = SemVer +
   Changelog + Tag.
