@@ -1,6 +1,6 @@
 # autonomy — Autonomiegrade für KI in KMU-Prozessen
 
-> **[CI](https://github.com/GRADweight/autonomy/actions/workflows/ci.yml)** · Python 3.11 / 3.12 · **zero runtime dependencies** (outgoing httpx für den Bexio-Adapter) · Alle Rechte vorbehalten (Referenz-Nutzung + Attribution s. [LICENSE](LICENSE))
+> **[CI](https://github.com/GRADweight/autonomy/actions/workflows/ci.yml)** · Python 3.11 / 3.12 · **zero runtime dependencies** (outgoing httpx für den Bexio-Adapter) · **MIT** (Code) + **kommerzielle Vorbehalte** (GRADweight) — s. [LICENSE](LICENSE)
 
 **Ein Modell, ein Validator und neun getestete Bausteine, die festhalten:
 welcher Mensch greift bei welchem Schritt einer KI-Aktion ein — und was es
@@ -15,6 +15,14 @@ Grade 01 und 02 laufen.
 > **Grad 03, 04 und 05 sind als validierte Referenzfälle enthalten** —
 > mit den Regeln, die sie verlangen, und einer ehrlichen «was fehlt»-Liste.
 > Mehr Autonomie ist Custom Engineering, kein Produkt.
+
+## Für wen
+
+**KI in KMU-Prozessen** — für Teams, die eine KI-Handlung freigeben
+müssen (Rechnung buchen, Bestellung auslösen, Daten ändern) und dabei
+festlegen, **welcher Mensch bei welchem Schritt eingreift**.  Ideal für
+DSG-kritische KMU, die Autonomie mit einer klaren Grenze wollen, statt
+eines «alles-oder-nichts»-Pings.
 
 ## Die fünf Autonomiegrade
 
@@ -165,8 +173,11 @@ und das JSON-Schema in [packages/gradbuild/gradbuild/schema.py](packages/gradbui
 
 ## Lizenz
 
-Alle Rechte vorbehalten (GRADweight GmbH) — Referenz-Nutzung mit Attribution
-und Community-PRs: s. [LICENSE](LICENSE).
+**MIT** für den Code (frei nutzbar) + **kommerzielle Vorbehalte** (GRADweight
+GmbH): das kommerzielle Kalkulationsmaterial (Preise, Angebote) ist ein
+separates internes Repos (`GRADweight/preismaterial`, «Alle Rechte
+vorbehalten»).  Referenz-Nutzung mit Attribution und Community-PRs: s.
+[LICENSE](LICENSE).
 
 **Kein Rechtsrat.** Stand der Doku: 2026-10. Regulierung (Digital Omnibus
 VO (EU) 2026/1744 in Kraft 27.07.2026, DSG SR 235.1, ISO/IEC 42001) wird
