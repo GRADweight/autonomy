@@ -1,26 +1,45 @@
+# GRADweight · autonomy — MIT + kommerzielle Vorbehalte
+
+## MIT-Lizenz (für den Code)
+
 Copyright (c) 2026 GRADweight GmbH
-Alle Rechte vorbehalten.
 
-Dieses Repository enthält den Autonomie-Grad-Baustein der GRADweight GmbH:
-das Modell GB-01…16 + CLI-Validator (`packages/gradbuild/`), die neun
-getesteten Governance-Bausteine (`packages/gw_core/`) sowie validierte
-Referenzfälle (`examples/`) und die Doku des Vorgehens je Phase
-(`docs/`). Es handelt sich um ein geschütztes Werk.
+MIT License
 
-Alle Inhalte sind geistiges Eigentum der GRADweight GmbH.
-Wiedergabe, Vervielfältigung, öffentliche Nutzung oder Weitergabe an
-Dritte ist ohne vorherige schriftliche Genehmigung der GRADweight GmbH
-nicht gestattet.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-## Ausnahmen und Community
+The above copyright notice and this permission notice (including this
+"FOR-KUNDEN"-Zusatz) shall be included in all copies or substantial portions
+of the Software.
 
-- **Referenz-Nutzung**: Die Bausteine sind bewusst klein und lauffähig
-  gehalten. Ihre Verwendung als Ausgangspunkt für eigenen Code ist erlaubt,
-  mit Attribution („GRADweight GmbH, gw_core / gradbuild, v1.0.0").
-- **Beiträge** (neue GB-Regeln, Referenzfälle `examples/*.json`, Doku-
-  Korrekturen): willkommen via Pull Request — s. `CONTRIBUTING.md`.
-  Regel: jeder neue `examples/*.json`-Fall muss die CI (Validator +
-  Governance-Checks) bestehen; ein bewusst abgelehnter Fall
-  (`counterexample.json`) gehört zum Korpus.
-- Mit einem gemergten PR wird der Beitrag unter derselben Lizenz
-  veröffentlicht (Contributor-Assign, keine gesonderte Abrede nötig).
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+## Kommerzielle Vorbehalte (GRADweight) — FOR-KUNDEN
+
+KI-Autonomie-Grad (GB-01..16) — welches KMU welche Autonomie braucht.
+
+Zusätzlich zu den MIT-Rechten gilt:
+
+* **Der Code** dieses Repos ist frei nutzbar (MIT, s.o.).
+* **Nicht** Teil dieses Repos ist das kommerzielle Kalkulationsmaterial —
+  Preise, Angebotskataloge, ROI-Template, Verhandlungsplaybook.  Das liegt
+  intern (GRADweight/preismaterial, «Alle Rechte vorbehalten»).
+* **Der Berater-Dienst** (Installation, Betrieb, Schulung, SLA) ist ein
+  kommerzielles Angebot von GRADweight GmbH und unterliegt «Alle Rechte
+  vorbehalten», sofern nicht schriftlich abweichend vereinbart.
+* **Attribution**: Nutzung als Ausgangspunkt für eigenen Code ist erlaubt;
+  Attribution «GRADweight GmbH, autonomy, v1» wird empfohlen.
+
+GRADweight GmbH · gradweight.ch → GRADweight GmbH (ein KMU-Unternehmen)
+Kontakt: gradweight.ch
