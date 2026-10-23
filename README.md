@@ -67,8 +67,10 @@ Fur den kompletten Freigabe-Pfad (Vorschlag → Freigabe → Zweitmodell → Aud
 - 🔄 **im Aufbau:** Grad 03–05 als *validierte Referenzfalle* (Modell + Regeln);
   der Runtime ab Grad 04 ist Custom Engineering.
 - ⏳ **Next Step:** ein lauffahriger Agent-Runtime-Preset fur Grad 04
+
   (systemseitiges Limit + Rollback + Schattenbetrieb).
 
+- **Lizenz:** MIT (frei nutzbar, s. `LICENSE`)
 > **Ehrliche Grenze:** hier endet der Bereich „Antwort wurde erzeugt" und beginnt
 > „Aktion wurde freigegeben". Kein LLM-Framework, kein Rechtsrat, kein Produktkatalog.
 
