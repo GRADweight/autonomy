@@ -117,7 +117,7 @@ class PointerLocator:
     """Liefert die Position eines JSON Pointers in einem JSON-Text."""
 
     def __init__(self, text: str) -> None:
-        self._scanner = _Scanner(text.removeprefix("﻿"))
+        self._scanner = _Scanner(text.removeprefix("\ufeff"))
         self._ok = True
         try:
             self._scanner.value("")

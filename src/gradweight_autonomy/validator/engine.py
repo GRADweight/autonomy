@@ -127,7 +127,7 @@ def validate_text(
     """Einen Fall aus JSON-Text prüfen."""
     try:
         case = json.loads(
-            text.removeprefix("﻿"),
+            text.removeprefix("\ufeff"),
             object_pairs_hook=_no_duplicates,
             parse_constant=_reject_constant,
         )
