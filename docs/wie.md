@@ -100,12 +100,14 @@ erreichbar, und nur durch `ausfuehren(...)` im Zielsystem verändert.
 ## Die Rollen-Policy: was «Least Privilege» hier bedeutet
 
 ```python
-FreigabePolicy(policies={
-    "fachverantwortung": ["freigabe", "anpassen", "zurueckstellen"],
-    "admin":           ["freigabe", "anpassen", "zurueckstellen", "veto"],
-    # "modeller":  []   # ein Modell hat keine Rolle — es kann nur vorschlagen,
-                         # nicht entscheiden. Das ist der Punkt.
-})
+FreigabePolicy(
+    policies={
+        "fachverantwortung": ["freigabe", "anpassen", "zurueckstellen"],
+        "admin": ["freigabe", "anpassen", "zurueckstellen", "veto"],
+        # "modeller":  []   # ein Modell hat keine Rolle — es kann nur vorschlagen,
+        # nicht entscheiden. Das ist der Punkt.
+    }
+)
 ```
 
 - Die **Rolle** ist die Einheit, nicht die Person. Eine Person hat genau

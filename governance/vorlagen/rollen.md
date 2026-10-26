@@ -46,11 +46,13 @@ freigeben.)
 ```python
 from gw_core import FreigabePolicy
 
-policy = FreigabePolicy(policies={
-    "fachverantwortung":       ["freigabe", "anpassen", "zurueckstellen"],
-    "ki_verantwortlicher":     ["freigabe", "zurueckstellen", "veto", "kill_switch"],
-    "admin":                   ["freigabe", "anpassen", "zurueckstellen", "veto"],
-})
+policy = FreigabePolicy(
+    policies={
+        "fachverantwortung": ["freigabe", "anpassen", "zurueckstellen"],
+        "ki_verantwortlicher": ["freigabe", "zurueckstellen", "veto", "kill_switch"],
+        "admin": ["freigabe", "anpassen", "zurueckstellen", "veto"],
+    }
+)
 ```
 
 - Rolle-Änderung = Code-Änderung = PR mit Begründung (nicht: «wir machen

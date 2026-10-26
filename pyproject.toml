@@ -1,34 +1,126 @@
-# Ruff-Konfiguration für autonomy.
-#
-# Grundsatz: `packages/` enthält (a) UNVERÄNDERT kopierten
-# Quell-Code aus den verifizierten Original-Projekten und (b) NEUE
-# Governance-Bausteine, die wir im Rahmen der Autonomie-Roadmap gebaut
-# haben. Wir legen keine Style-/Bug-Regeln über den kopierten Code (der
-# darf nicht für die Lint-Linie umgeschrieben werden), aber unsere eigenen
-# Bausteine müssen die bug-relevanten Regeln einhalten.
-#
-# Geprüft wird die BUG-relevante Regelmenge (F = pyflakes, E/W = pycodestyle
-# Kern, SIM102/F601 = Logik-Bugs, RUF059 = gebrochene Unpacking).
-# Style-Fixes (UP006, I001, RUF012, RUF022, TRY004) sind bewusst AUS.
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "gradweight-autonomy"
+version = "2.0.0"
+description = "Autonomiegrade für KI in KMU-Prozessen: Policy-as-Code-Validator (GB-Regeln, SARIF) und Governance-Bausteine."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "GRADweight GmbH", email = "mail@gradweight.ch" }]
+keywords = ["ai-governance", "policy-as-code", "sarif", "audit-trail", "qr-bill", "kmu"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Information Technology",
+  "Natural Language :: German",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Security",
+  "Topic :: Office/Business :: Financial :: Accounting",
+  "Typing :: Typed",
+]
+# Bewusst keine Laufzeit-Abhängigkeiten: alles läuft mit der Standardbibliothek.
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/GRADweight/autonomy"
+Issues = "https://github.com/GRADweight/autonomy/issues"
+Changelog = "https://github.com/GRADweight/autonomy/blob/main/CHANGELOG.md"
+
+[project.scripts]
+gw-autonomy = "gradweight_autonomy.cli:main"
+
+[dependency-groups]
+dev = [
+  "pytest>=8.3",
+  "pytest-cov>=6.0",
+  "hypothesis>=6.120",
+  "jsonschema>=4.23",
+  "python-stdnum>=2.0",
+  "mypy>=1.14",
+  "ruff>=0.9",
+  "build>=1.2",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gradweight_autonomy"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "src",
+  "tests",
+  "examples",
+  "docs",
+  "README.md",
+  "CHANGELOG.md",
+  "LICENSE",
+  "pyproject.toml",
+]
 
 [tool.ruff]
 line-length = 100
-target-version = "py311"
+target-version = "py310"
+src = ["src", "tests"]
+# Übergang: packages/gradbuild wird im nächsten Schritt durch gradweight_autonomy.validator ersetzt.
+extend-exclude = ["packages", "tests_gradbuild"]
 
 [tool.ruff.lint]
-select = ["F", "E", "W", "SIM102", "SIM110", "F601", "RUF059"]
-ignore = ["E501", "E731", "E741"]
+select = [
+  "E", "W", "F", "I", "B", "UP", "SIM", "RUF", "S", "C4", "PT", "RET", "PTH",
+  "N", "ARG", "PIE", "T20", "TRY", "PL", "BLE", "DTZ", "ISC", "PGH",
+]
+ignore = [
+  "PLR0911",  # viele Rückgabepunkte sind in Prüffunktionen lesbarer als verschachtelte Logik
+  "PLR0912",
+  "PLR0913",
+  "PLR2004",  # Fachkonstanten (Längen, Grade) stehen bewusst im Prüfcode
+  "TRY003",   # sprechende Fehlermeldungen direkt am raise
+]
+allowed-confusables = ["–", "’", "«", "»", "×"]
 
-# Nur der UNVERÄNDERT kopierte Quell-Code ist von der Lint-Linie ausgenommen.
-# Die NEUEN Bausteine (exception_queue.py, sampling_audit.py, __init__.py,
-# governance/**, tests_*) werden voll geprüft.
 [tool.ruff.lint.per-file-ignores]
-# gradbuild: unveränderte Kopie aus dem Original-Projekt.
-"packages/gradbuild/**" = ["E", "W", "F", "SIM102", "SIM110", "F601", "RUF059"]
-# gw_core: die 6 unveränderten Original-Bausteine.
-"packages/gw_core/gw_core/audit.py" = ["E", "W", "F", "SIM102", "SIM110"]
-"packages/gw_core/gw_core/approval.py" = ["E", "W", "F", "SIM102", "SIM110"]
-"packages/gw_core/gw_core/authz.py" = ["E", "W", "F", "SIM102", "SIM110", "TRY004"]
-"packages/gw_core/gw_core/tracing.py" = ["E", "W", "F", "SIM102", "SIM110"]
-"packages/gw_core/gw_core/verify.py" = ["E", "W", "F", "SIM102", "SIM110"]
-"packages/gw_core/gw_core/bexio.py" = ["E", "W", "F", "SIM102", "SIM110"]
+"tests/**" = ["S101", "S105", "S106", "S108", "PLR0915", "ARG001", "T20"]
+"src/gradweight_autonomy/cli.py" = ["T20"]
+"src/gradweight_autonomy/demo.py" = ["T20"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.mypy]
+strict = true
+python_version = "3.10"
+files = ["src/gradweight_autonomy"]
+warn_unreachable = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "src"]
+addopts = ["-ra", "--strict-markers", "--strict-config", "--doctest-modules"]
+filterwarnings = [
+  "error",
+  # Tests verlassen sich für kurzlebige :memory:-Datenbanken teils auf die Garbage Collection;
+  # die Bausteine bieten close() und Kontextmanager (siehe test_context_manager_closes).
+  "ignore:unclosed database:ResourceWarning",
+]
+
+[tool.coverage.run]
+source = ["gradweight_autonomy"]
+branch = true
+
+[tool.coverage.report]
+fail_under = 90
+show_missing = true
+skip_covered = true
+exclude_also = [
+  "if TYPE_CHECKING:",
+  "raise NotImplementedError",
+  "if __name__ == .__main__.:",
+]

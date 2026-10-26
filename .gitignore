@@ -7,18 +7,26 @@ dist/
 .venv/
 venv/
 
+# Werkzeuge
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+
+# Lokale Prüfergebnisse
+*.sarif
+
+# Bibliothek: Abhängigkeiten werden nicht gesperrt (Mindestversionen in pyproject.toml)
+uv.lock
+
 # OS
 .DS_Store
 
-# Secrets & lokale Konfiguration
+# Secrets und lokale Konfiguration
 .env
 *.key
 *.pem
-
-# Test-Artefakte
-.pytest_cache/
-.coverage
-htmlcov/
-
-# uv-Lock aus gelegentlichen Validierungs-Läufen (Repo nutzt pip install -e)
-uv.lock

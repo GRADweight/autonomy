@@ -167,35 +167,35 @@ welcher Autorität, mit welcher Wirkung, und hat es ins Budget gepasst?*
 
 ```python
 @dataclass
-class FallZustand:            # Pseudocode — nicht Repo-Code
+class FallZustand:  # Pseudocode — nicht Repo-Code
     # Identität
-    fall_id: str              # uuid4, stabil über die ganze Lebensdauer
-    level: int                # 4 | 5
-    use_case: str             # "c-teile" | "standardretouren" | …
+    fall_id: str  # uuid4, stabil über die ganze Lebensdauer
+    level: int  # 4 | 5
+    use_case: str  # "c-teile" | "standardretouren" | …
     # Phase & Status
-    phase: str                # intakt|klassifiziert|vorschlag|geprueft|freigegeben|
-                              # ausgefuehrt|ausnahme|zurueckgerollt|erledigt
-    status: str               # laufend|abgeschlossen|abgebrochen|ausnahme
-    modus: str                # shadow | production   (unveränderlich pro Fall)
+    phase: str  # intakt|klassifiziert|vorschlag|geprueft|freigegeben|
+    # ausgefuehrt|ausnahme|zurueckgerollt|erledigt
+    status: str  # laufend|abgeschlossen|abgebrochen|ausnahme
+    modus: str  # shadow | production   (unveränderlich pro Fall)
     # Inhalt (nur strukturiert — roher Fremdtext bleibt im Audit-Store)
     strukturierte_falle: dict
-    text_hash: str            # Hash über den klassifizierten Input (Spur, kein Volltext)
-    vorschlag: dict | None    # {aktion, zielsystem, parameter, betrag, waehrung}
-    pruefung: list[dict]      # [{runde, resultat, grund}]  — ein Eintrag je Critic-Runde
+    text_hash: str  # Hash über den klassifizierten Input (Spur, kein Volltext)
+    vorschlag: dict | None  # {aktion, zielsystem, parameter, betrag, waehrung}
+    pruefung: list[dict]  # [{runde, resultat, grund}]  — ein Eintrag je Critic-Runde
     # Autorität (systemseitig, NIEMALS im Prompt)
-    mandats_limits: dict      # {money_limit, erlaubte_systeme, waehrung}
-    freigaben: list[dict]     # FreigabeEntscheid / ExceptionEntscheid (aus gw_core)
+    mandats_limits: dict  # {money_limit, erlaubte_systeme, waehrung}
+    freigaben: list[dict]  # FreigabeEntscheid / ExceptionEntscheid (aus gw_core)
     # Sicherheit & Budget
-    zähler: dict              # {llm_calls, tokens, critic_rounds, mensch_entscheide}
-    budget: dict              # {max_llm_calls: 8, max_tokens: 150_000,
-                              #  zeit_s: 600, critic_rounds_max: 2,
-                              #  mensch_entscheide_max: 2}
-    kill_state: bool          # True wenn Kill-Switch ausgelöst (GB-12)
-                              # — systemseitig, nicht im Prompt
+    zähler: dict  # {llm_calls, tokens, critic_rounds, mensch_entscheide}
+    budget: dict  # {max_llm_calls: 8, max_tokens: 150_000,
+    #  zeit_s: 600, critic_rounds_max: 2,
+    #  mensch_entscheide_max: 2}
+    kill_state: bool  # True wenn Kill-Switch ausgelöst (GB-12)
+    # — systemseitig, nicht im Prompt
     # Beleg
-    snapshots: dict           # {vorher: ref, nachher: ref}   (RollbackManager)
-    audit_refs: list[str]     # ID in der AuditTrail (append-only)
-    fingerprint: dict         # {model_id, prompt_hash, tool_list_hash} → Re-Validierungs-Trigger
+    snapshots: dict  # {vorher: ref, nachher: ref}   (RollbackManager)
+    audit_refs: list[str]  # ID in der AuditTrail (append-only)
+    fingerprint: dict  # {model_id, prompt_hash, tool_list_hash} → Re-Validierungs-Trigger
 ```
 
 Zwei bewusste Abwesenheiten: kein roher Kundentext (bleibt im Audit-Store
