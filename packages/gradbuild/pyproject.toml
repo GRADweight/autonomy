@@ -4,16 +4,14 @@ version = "0.2.0"
 description = "Autonomiegrade für KI in KMU-Prozessen: Modell, Regeln (GB-01…GB-16) und Validator — zero-deps."
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "All Rights Reserved (s. LICENSE)" }
-authors = [{ name = "Edin Avdija" }]
+license = "MIT"
+authors = [{ name = "GRADweight GmbH", email = "mail@gradweight.ch" }]
 keywords = ["ai-governance", "autonomy", "agents", "kmu", "audit"]
 classifiers = [
-  "Development Status :: 3 - Alpha",
+  "Development Status :: 4 - Beta",
   "Intended Audience :: Developers",
   "Intended Audience :: Information Technology",
-  "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.9",
   "Topic :: Security",
   "Topic :: Software Development :: Libraries :: Application Frameworks",
 ]
@@ -28,7 +26,7 @@ Issues = "https://github.com/GRADweight/autonomy/issues"
 gradbuild = "gradbuild.cli:main"
 
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]

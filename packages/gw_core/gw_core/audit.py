@@ -1,8 +1,6 @@
 """Audit-Trail — lückenlos append-only (wer/was/wann).
 
-Baustein 5 aus `docs/praxis-fit-review.md`: "Wer hat was wann gesehen/
-verändert? Schweizer KMU brauchen lückenlose Audit-Trails (v. a. regulierte
-Branchen: Treuhand, Versicherung, Gesundheit)."
+"Wer hat was wann gesehen oder verändert?"
 
 Design:
 - Append-only: es gibt NUR `log()`. Keine UPDATE/DELETE-Methode.

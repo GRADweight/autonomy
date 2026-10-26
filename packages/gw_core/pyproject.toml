@@ -1,15 +1,15 @@
 [project]
 name = "gw-core"
 version = "0.1.0"
-description = "GRADweight Governance-Bausteine: Approval-Queue, Audit-Trail, Zweitmodell-Pruefung, AuthZ, Tracing, Zielsystem-Adapter. Null Abhaengigkeiten ausser httpx (bexio)."
+description = "GRADweight Governance-Bausteine: Approval-Queue, Audit-Trail, Zahlen- und Quellenabgleich, AuthZ, Tracing, Zielsystem-Adapter. Null Abhaengigkeiten ausser httpx (bexio)."
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "All Rights Reserved (s. LICENSE)" }
-authors = [{ name = "GRADweight" }]
+license = "MIT"
+authors = [{ name = "GRADweight GmbH", email = "mail@gradweight.ch" }]
 dependencies = ["httpx>=0.24"]
 
 [build-system]
-requires = ["setuptools>=61"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]

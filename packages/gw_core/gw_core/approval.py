@@ -1,9 +1,7 @@
 """Approval-Queue — Freigabe / Anpassen / Zurückstellen je Aktion.
 
-Baustein aus `docs/praxis-fit-review.md` (Lücke 2/5) + Kern der
-Autonomie-Mappe (`docs/26-autonomie-mappe.md`): "Freigabe je Aktion" (Grad 2)
-fehlt bei ALLEN 25 Prototypen. Dies ist der gemeinsame Baustein, der jeden
-Prototypen von "Grad 1 (Vorschlag)" auf "Grad 2 (Freigabe)" hebt: die KI
+"Freigabe je Aktion" (Grad 2). Dies ist der gemeinsame Baustein, der einen
+Anwendungsfall von "Grad 1 (Vorschlag)" auf "Grad 2 (Freigabe)" hebt: die KI
 schlägt eine schreibende Aktion vor, ein Mensch gibt sie frei, ändert sie
 oder weist sie zurück. Jede Entscheidung landet im Audit-Trail (GB-08/GB-11).
 

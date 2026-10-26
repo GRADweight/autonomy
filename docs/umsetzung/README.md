@@ -35,10 +35,10 @@ GB-01…GB-16; die `counterexample.json` ist der bewusste Negativfall.
 
 In diesem Repo ist das **Level** die Nummer — `schema.ALLOWED_AXES` ist
 mit den Ganzzahlen **0–5** indexiert, die Beispiele heissen `gw0…gw5`. Die
-ältere PROJEKT.md-Narrative zählte «Grad 01–05» (1-basiert, ohne Level 0).
+ältere Doku zählte «Grad 01–05» (1-basiert, ohne Level 0).
 **Mapping, damit nichts vermischt wird:**
 
-| Level (Code, Beisp.) | PROJEKT.md-Narrativ (1-basiert) |
+| Level (Code, Beisp.) | ältere Zählung (1-basiert) |
 |---|---|
 | 0 (`gw0`, keine Autonomie) | (vor Grad 01 — Recherche/Mensch steuert) |
 | 1 (`gw1`) = Assistent | Grad 01 |
@@ -140,13 +140,13 @@ Standort/Infrastruktur je Grad in den Einzel-Dokus und
 - **Kill-Switch-Flag vs. Kill-Switch-Code:** `kill_switch_tested=true` im JSON
   wird nur geprüft (gb-12); ein *geprüfter*, getesteter Notausschalter im
   Deployment ist noch ein Mandanten-/Deployment-Baustein →
-  [../technik-eroeffnung.md](../technik-eroeffnung.md).
+  Deployment-Baustein.
 - **Mandat-/Limit-Engine:** `mandate.limits_in_system` wird nur auf `true`
   geprüft; die eigentliche Enforce-Schicht im Zielsystem (ERP/EDI) ist
   eine Mandantenaufgabe (README §9 Punkt 5, `bexio.py` = Referenz-Adapter).
 - **A2A Agent-Card + MCP:** Entwurf, nicht Code —
   [../grad4-5-multiagent-design.md](../grad4-5-multiagent-design.md) §4/§5 und
-  [../technik-eroeffnung.md](../technik-eroeffnung.md).
+  Deployment-Baustein.
 - **Kein Rechtsrat:** GB-15, DSG (SR 235.1), EU AI Act (Annex III, Digital
   Omnibus VO (EU) 2026/1744), Maschinenverordnung 2023/1230, ISO/IEC TR 5469
   sind hier **technische Grenzen** (Validator). Die rechtliche Würdigung ist

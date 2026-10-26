@@ -224,5 +224,5 @@ auf false**, nicht «umgangen».
 
 *Grundlage: `validate.py` (GB-01, 02, 03, 08, 09, 11, 12, 13, 14, 15),
 `schema.py::ALLOWED_AXES[4]`, `examples/gw4-c-teile-nachbestellen.json`,
-`../unternehmens-implementierung.md` §3, `../technik-eroeffnung.md`
+`../unternehmens-implementierung.md` §3
 (Mandat-Engine, Kill-Switch-Code, A2A/MCP). Keine Preise, kein Rechtsrat.*

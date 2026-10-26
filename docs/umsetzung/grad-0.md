@@ -140,5 +140,5 @@ Pragmatik-Vorteil des ersten Grades.
 
 *Grundlage: `validate.py` (GB-01…16), `schema.py::ALLOWED_AXES[0]`,
 `examples/gw0-marktforschung.json`, `../unternehmens-implementierung.md` §3
-(Infrastruktur/Hardware/Standort), `../technik-eroeffnung.md` (Möglichkeiten).
+(Infrastruktur/Hardware/Standort).
 Keine Preise, kein Rechtsrat.*

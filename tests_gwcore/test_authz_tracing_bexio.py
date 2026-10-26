@@ -138,7 +138,7 @@ class TestBexioLimits(unittest.TestCase):
 
     def test_betragueber_limit_wird_ablehnt(self):
         a = self._adapter()
-        err = a.pre_ckeck(betrag_brutto=99999.0)
+        err = a.pre_check(betrag_brutto=99999.0)
         self.assertIsNotNone(err)
         if err is None:  # für Typprüfer
             self.fail("Limit wurde nicht abgelehnt")
@@ -148,13 +148,13 @@ class TestBexioLimits(unittest.TestCase):
         a = self._adapter()
         # 5 Buchungen sind das Limit — die 5. wird erlaubt, die 6. nicht.
         a._zehler_tag = 5  # internes Test-Setup
-        err = a.pre_ckeck(betrag_brutto=100.0)
+        err = a.pre_check(betrag_brutto=100.0)
         self.assertIsNotNone(err)
         self.assertEqual(err.code, "limit_tagesvolumen")
 
     def test_innerhalb_der_limiten_durchlaesst(self):
         a = self._adapter()
-        self.assertIsNone(a.pre_ckeck(betrag_brutto=999.0))
+        self.assertIsNone(a.pre_check(betrag_brutto=999.0))
 
 
 if __name__ == "__main__":

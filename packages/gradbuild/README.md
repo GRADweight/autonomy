@@ -7,13 +7,6 @@
 
 **Version 0.2.0 · Zero-Deps (nur Python-Stdlib) · MIT**
 
-**Portfolio-Anschluss:** `docs/portfolio-gw-prototypen.md` verankert die
-25 Prototypen aus `github.com/eddavv/gw-prototypen` in diesem Modell:
-Beschreibung, Nutzung, technische Umsetzung, Autonomiegrad mit Deckeln
-und die Deployment-Diskussion für die Schweiz (DSG, AI Act, NIS2/BSIG,
-DORA, CRA, Maschinenverordnung). Die 25 Fälle werden dort maschinenlesbar
-gehalten und in der CI von gw-prototypen gegen genau diese Regeln geprüft.
-
 ---
 
 ## 1 · Was dieses Paket ist (und was nicht)
@@ -191,33 +184,6 @@ Juristische und lokale Compliance-Freigabe sind Pflicht.
 
 ---
 
-## 6a · Portfolio: die 25 Prototypen von gw-prototypen
-
-`docs/portfolio-gw-prototypen.md` führt das Portfolio Repo
-`github.com/eddavv/gw-prototypen` in dieses Modell ein:
-
-- **Was:** 25 angebotene KI-Prototypen für KMU; 2 implementierte
-  Referenz-Prototypen (#01 RAG-Chatbot, #02 Beleg-Extraktion); 8 gemeinsame
-  Governance-Bausteine (`gw_core`: Approval-Queue, Audit-Trail,
-  Zweitmodell-Prüfung, AuthZ, Tracing, Bexio-Adapter, KPI, Golden-Set).
-- **ZIEL-Grade (maschinell gevalidiert):** 20 × Grad 2 (Copilot,
-  `model/per_action`) + 5 × Grad 3 (Workflow, `fixed_chain/per_gate`):
-  #02, #13, #17, #19, #25. Alle fünf Grad-3-Fälle sind Deckel-Träger
-  (GB-03, GB-06, GB-09, GB-02). Kein Grad 4/5 im Portfolio (bewusst).
-- **IST-Code:** #02 durchgängig Grad 2 (Freigabe/AuthZ/Zielsystem/Audit/KPI);
-  #01 Grad 1 (Zweitmodell-Prüfung ja, Approval-Queue fehlt noch);
-  die übrigen 23 sind Doku-Prototypen ohne Code.
-- **Deployment Schweiz:** drei Optionen (On-Prem im Kunden-Netz,
-  GRADweight-SaaS in CH/EU, Hybrid) mit regulatorischen Pflichten je
-  Option; Anker: DSG (Art. 21, 16, 22, 24), EU AI Act (Art. 50 ab
-  02.08.2026, Annex III ab 2.12.2027 per Digital Omnibus), NIS2 (CHF
-  via Lieferkette; CH-Pendant ISG/CSV 24-h-Meldung), DORA (EU-Finanz-
-  Kunden, Art. 30 vertraglich), CRA (11.12.2027), Maschinenverordnung
-  2023/1230 (20.01.2027).
-- **Verbindung:** die CI von gw-prototypen (Job `autonomie-validate`)
-  installiert genau dieses Paket und prüft `autonomy/01.json…25.json`
-  gegen GB-01…GB-16.
-
 ## 7 · Terminologie
 
 | Begriff | Bedeutung in diesem Kontext |
@@ -286,4 +252,4 @@ referenziert):
 
 ## 10 · Lizenz
 
-© 2026 GRADweight GmbH — Alle Rechte vorbehalten (s. LICENSE im Repo-Root)
+MIT, © 2026 GRADweight GmbH (s. `LICENSE` im Repo-Root)

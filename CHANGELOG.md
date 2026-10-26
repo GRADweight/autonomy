@@ -2,10 +2,14 @@
 
 Format: `## vX.Y.Z — Datum — Kurzfassung`, darunter was/warum.
 SemVer: major = inkompatibler Bruch, minor = neue Inhalte, patch = Korrektur.
-(Gl. R1 in `docs/technik-eroeffnung.md` — Punkt «Release-Prozess-Definition»
-ist mit diesem File abgedeckt.)
+Release-Prozess: SemVer, Changelog, Tag.
 
 ---
+
+## Unreleased
+
+- Lizenz vereinheitlicht: MIT im Root und in allen Unterpaketen
+  (`license = "MIT"`); interne Notizen entfernt.
 
 ## v1.0.0 — 2026-10-12 — Public-Readiness (Launch 25.10.2026)
 
@@ -24,9 +28,6 @@ ist mit diesem File abgedeckt.)
 - **CI (erweitert)**: Demo-Schritt in `.github/workflows/ci.yml`.
 - **README**: Badges (CI, Py 3.11/3.12, zero-deps, Lizenz), Quickstart mit
   Demo-Befehl, Testzahl 84 → 87.
-- **PROJEKT.md**: entfernt (internes Sitzungs-Mgmt «verbleibt privat je
-  Edin-Entscheidung» — wird durch die Launch-Entscheidung 25.10 abgelöst;
-  Kanon-Artikel gehört in `internal-kb`).
 - **`docs/umsetzung/README.md`**: Stand-Zeile (Entscheidung 25.10).
 - **R1 (Technik-Eröffnung) erfüllt**: Release-Prozess = SemVer +
   Changelog + Tag.

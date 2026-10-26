@@ -177,5 +177,5 @@ vertraulich` + `residency=eu` → DSG/AI-Act-konsistent.
 
 *Grundlage: `validate.py` (GB-01, 02, 03, 04, 05, 07, 15), `schema.py::
 ALLOWED_AXES[2]`, `examples/gw2-bewerbungsvorsortierung.json`,
-`../unternehmens-implementierung.md` §3, `../technik-eroeffnung.md`.
+`../unternehmens-implementierung.md` §3.
 Keine Preise, kein Rechtsrat.*

@@ -23,9 +23,8 @@ einen gültigen Bearer-Token und sendet ihn.
 Einschränkungen, die in der Doku vermerkt sind:
 - API-Sandbox für Entwicklung ist bei bexio erforderlich
   (docs.bexio.com nennt das explizit).
-- Bexio gibt keine Implementierungsunterstützung — "JOSHMARTIN"
-  wird als Partener genannt. Dieser Adapter ist daher bewusst klein:
-  nur das, was freigegebene Buchungen benötigen.
+- Dieser Adapter ist bewusst klein: nur das, was freigegebene Buchungen
+  benötigen.
 
 Verbindungs-Limits: `max_buchungen_pro_tage` (GB-09: systemseitig!)
 ist hier implementiert, nicht im LLM. Das ist der Punkt, an dem
@@ -97,7 +96,7 @@ class BexioZielsystemAdapter:
     # ------------------------------------------------------------------- #
     # GB-09: Systemlimite — prüfen VOR jeder API-Aufrufe                   #
     # ------------------------------------------------------------------- #
-    def pre_ckeck(self, *, betrag_brutto: float, währung: str = "CHF") -> BexioFehler | None:
+    def pre_check(self, *, betrag_brutto: float, währung: str = "CHF") -> BexioFehler | None:
         """Systemseitige Limiten (GB-09).
 
         Diese Prüfung erfolgt in diesem Modul — NICHT im LLM-Prompt.
@@ -150,7 +149,7 @@ class BexioZielsystemAdapter:
 
         GB-09-Prüfung + Zähler-Aufruf passiert intern.
         """
-        fehler = self.pre_ckeck(betrag_brutto=betrag_brutto)
+        fehler = self.pre_check(betrag_brutto=betrag_brutto)
         if fehler is not None:
             raise BexioZielFehler(fehler)
 

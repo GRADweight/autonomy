@@ -211,5 +211,5 @@ Residency → DSG-konsistent bei `data_class=intern` + `safety_critical`.
 
 *Grundlage: `validate.py` (GB-01, 02, 03, 04, 05, 06, 12, 14, 15),
 `schema.py::ALLOWED_AXES[3]`, `examples/gw3-predictive-maintenance.json`,
-`../unternehmens-implementierung.md` §3, `../technik-eroeffnung.md`
+`../unternehmens-implementierung.md` §3
 (Mandat-Engine, Kill-Switch-Code). Keine Preise, kein Rechtsrat.*

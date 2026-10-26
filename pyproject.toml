@@ -1,6 +1,6 @@
 # Ruff-Konfiguration für autonomy.
 #
-# Grundsatz (PROJEKT.md §4): `packages/` enthält (a) UNVERÄNDERT kopierten
+# Grundsatz: `packages/` enthält (a) UNVERÄNDERT kopierten
 # Quell-Code aus den verifizierten Original-Projekten und (b) NEUE
 # Governance-Bausteine, die wir im Rahmen der Autonomie-Roadmap gebaut
 # haben. Wir legen keine Style-/Bug-Regeln über den kopierten Code (der

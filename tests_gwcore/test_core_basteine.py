@@ -36,8 +36,12 @@ class TestAuditTrail(unittest.TestCase):
     def test_export_csv(self):
         a = AuditTrail()
         a.log(mandant="K", prototyp="02", actor="ai-lead", action="x")
-        p = a.export("/tmp/audit_test.csv")
-        inhalt = p.read_text(encoding="utf-8")
+        import tempfile
+        from pathlib import Path
+
+        with tempfile.TemporaryDirectory() as tmp:
+            p = a.export(Path(tmp) / "audit_test.csv")
+            inhalt = p.read_text(encoding="utf-8")
         self.assertIn("actor", inhalt)
         self.assertIn("ai-lead", inhalt)
 

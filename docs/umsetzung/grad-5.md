@@ -245,8 +245,7 @@ bei `customer_facing=true` + `customer_text_in_decisions=true`.
 - **Kein Kill-Schalter (Code)** — `kill_switch_tested=true` im JSON
   ist nur die **Selbstaussage**; der **eigentliche** Kill-Schalter
   (Code, z. B. eine API-Call, ein Web-Button) ist ein
-  **Deployment-Baustein** →
-  [../technik-eroeffnung.md](../technik-eroeffnung.md).
+  **Deployment-Baustein**.
 - **Kein A2A/MCP (Code)** — die **Agent-Interaktion** (Agent-to-Agent,
   Multi-Agent) ist **entwurf** (nicht Code) →
   [../grad4-5-multiagent-design.md](../grad4-5-multiagent-design.md)
@@ -260,7 +259,7 @@ bei `customer_facing=true` + `customer_text_in_decisions=true`.
 
 *Grundlage: `validate.py` (GB-01, 02, 03, 05, 08, 09, 11, 12, 13, 14, 15),
 `schema.py::ALLOWED_AXES[5]`, `examples/gw5-standardretouren.json`,
-`../unternehmens-implementierung.md` §3, `../technik-eroeffnung.md`
+`../unternehmens-implementierung.md` §3
 (Mandat-Engine, Kill-Switch-Code, A2A/MCP, Mandant-Deployment),
 `../grad4-5-multiagent-design.md` (Multi-Agent-Architektur). Keine Preise,
 kein Rechtsrat.*

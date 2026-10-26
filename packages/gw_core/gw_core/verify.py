@@ -1,8 +1,6 @@
-"""Zweitmodell-Prüfung — Antwort gegen Fundstellen prüfen (be-legspflicht).
+"""Zahlen- und Quellenabgleich — Zahlen einer Antwort gegen Fundstellen prüfen.
 
-Baustein, den der Kunden-Angebot v0.6 verspricht ("Antwortprüfung mit
-Zweitmodell (Aussage-gegen-Fundstelle)") und den der bisherige Code nicht
-hielt.
+Kein Modell: deterministischer Abgleich von Zahlen-Entitäten.
 
 Mechanik (deterministisch, LLM-frei):
   1) Zahlen-Entitäten in der Antwort extrahieren (Betrag, Prozentsatz,

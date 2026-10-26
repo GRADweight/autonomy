@@ -139,4 +139,4 @@ jede Aktion (hier: «antworten senden», «Offerte übernehmen»).
 
 *Grundlage: `validate.py` (GB-01, 02, 10, 15, 06), `schema.py::ALLOWED_AXES[1]`,
 `examples/gw1-produktwissen-innendienst.json`, `../unternehmens-implementierung.md`
-§3, `../technik-eroeffnung.md`. Keine Preise, kein Rechtsrat.*
+§3. Keine Preise, kein Rechtsrat.*
