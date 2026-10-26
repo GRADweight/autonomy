@@ -1,0 +1,408 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:gradweight:autonomy:usecase:2.0",
+  "title": "Use-Case-Beschreibung (gradweight-autonomy, Schema 2.0)",
+  "description": "Beschreibt einen KI-Anwendungsfall: Autonomiegrad, Risikomerkmale, Daten, Kontrollen und die Nachweise dafür. Fachliche Regeln (GB-01 bis GB-22) prüft der Validator zusätzlich zu diesem Schema.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "title",
+    "level",
+    "who_plans",
+    "human_role",
+    "owner",
+    "risk",
+    "data",
+    "controls",
+    "evidence"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Optionaler Verweis auf dieses Schema (für Editoren)."
+    },
+    "schema_version": {
+      "const": "2.0",
+      "description": "Version dieses Schemas."
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,79}$",
+      "description": "Stabile ID des Anwendungsfalls (Kleinbuchstaben, Ziffern, . _ -)."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "description": {
+      "type": "string"
+    },
+    "level": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 5,
+      "description": "Deklarierter Autonomiegrad 0 bis 5."
+    },
+    "who_plans": {
+      "enum": ["human", "fixed_chain", "model"],
+      "description": "Achse 1: Wer bestimmt den Weg?"
+    },
+    "human_role": {
+      "enum": ["full_control", "per_action", "per_gate", "mandate", "exception_only"],
+      "description": "Achse 2: Wo greift der Mensch ein?"
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "description": "Verantwortliche Rolle (Funktion, keine Personennamen)."
+    },
+    "risk": {
+      "$ref": "#/$defs/risk"
+    },
+    "data": {
+      "$ref": "#/$defs/data"
+    },
+    "regulatory": {
+      "$ref": "#/$defs/regulatory"
+    },
+    "mandate": {
+      "$ref": "#/$defs/mandate"
+    },
+    "ceiling": {
+      "$ref": "#/$defs/ceiling"
+    },
+    "measurement": {
+      "$ref": "#/$defs/measurement"
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/step"
+      }
+    },
+    "controls": {
+      "$ref": "#/$defs/controls"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/evidence"
+      }
+    }
+  },
+  "$defs": {
+    "risk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "foreign_input",
+        "sensitive_data",
+        "external_action",
+        "money_effect",
+        "customer_facing",
+        "customer_text_in_decisions",
+        "safety_critical"
+      ],
+      "properties": {
+        "foreign_input": {
+          "type": "boolean",
+          "description": "[A] Verarbeitet Eingaben ausserhalb des kontrollierten Systems (E-Mail, Formular, externe API)."
+        },
+        "sensitive_data": {
+          "type": "boolean",
+          "description": "[B] Zugriff auf sensible Daten oder Systeme."
+        },
+        "external_action": {
+          "type": "boolean",
+          "description": "[C] Ändert Zustände oder kommuniziert nach aussen."
+        },
+        "money_effect": {
+          "type": "boolean",
+          "description": "Löst Zahlungen, Gutschriften, Bestellungen oder Buchungen aus."
+        },
+        "customer_facing": {
+          "type": "boolean",
+          "description": "Ergebnisse erreichen Kundinnen und Kunden direkt."
+        },
+        "customer_text_in_decisions": {
+          "type": "boolean",
+          "description": "Freitexte von Kundinnen und Kunden fliessen in Entscheide ein."
+        },
+        "safety_critical": {
+          "type": "boolean",
+          "description": "Berührt Schutzfunktionen (Maschinen, Anlagen, Personensicherheit)."
+        }
+      }
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classification", "residency", "personal_data"],
+      "properties": {
+        "classification": {
+          "enum": ["frei", "intern", "vertraulich", "geheim"]
+        },
+        "residency": {
+          "enum": ["on_prem", "ch", "eu", "public"],
+          "description": "Wo die Daten verarbeitet werden: eigene Infrastruktur, Schweiz, EU/EWR oder beliebige öffentliche Cloud."
+        },
+        "personal_data": {
+          "type": "boolean",
+          "description": "Es werden Personendaten bearbeitet (revDSG)."
+        },
+        "special_categories": {
+          "type": "boolean",
+          "description": "Besonders schützenswerte Personendaten (revDSG Art. 5 lit. c)."
+        },
+        "automated_individual_decisions": {
+          "type": "boolean",
+          "description": "Ausschliesslich automatisierte Entscheide mit Rechtsfolge oder erheblicher Beeinträchtigung (revDSG Art. 21)."
+        }
+      }
+    },
+    "regulatory": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "eu_ai_act_high_risk": {
+          "type": "boolean",
+          "description": "Hochrisiko-KI-System nach EU AI Act (Art. 6, Anhang III oder Anhang I)."
+        },
+        "eu_ai_act_category": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Fundstelle der Einstufung, z. B. 'Anhang III Nr. 4 lit. a'."
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "money_limit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["amount", "currency", "per"],
+      "properties": {
+        "amount": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "per": {
+          "enum": ["transaction", "day", "week", "month"]
+        }
+      }
+    },
+    "mandate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["limits_in_system", "enforced_by", "evidence"],
+      "properties": {
+        "limits_in_system": {
+          "type": "boolean",
+          "description": "Die Grenzen werden im Zielsystem durchgesetzt, nicht im Prompt."
+        },
+        "enforced_by": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Wo die Grenze technisch wirkt (z. B. 'ERP-Freigabestrategie Einkauf')."
+        },
+        "money_limit": {
+          "$ref": "#/$defs/money_limit"
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Empfängerkreis, Artikel, Zeitraum."
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence_refs"
+        }
+      }
+    },
+    "ceiling": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_level", "reason", "regulation"],
+      "properties": {
+        "max_level": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "regulation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "decided_by": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Gremium oder Rolle, die den Deckel beschlossen hat."
+        }
+      }
+    },
+    "measurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "evidence"],
+      "properties": {
+        "method": {
+          "enum": ["pass^k", "shadow"]
+        },
+        "k": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Anzahl Wiederholungen je Aufgabe bei pass^k."
+        },
+        "tasks": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "threshold": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence_refs"
+        }
+      }
+    },
+    "step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "planned_by", "human_role"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "planned_by": {
+          "enum": ["human", "fixed_chain", "model"]
+        },
+        "human_role": {
+          "enum": ["full_control", "per_action", "per_gate", "mandate", "exception_only", "none"]
+        },
+        "state_change": {
+          "type": "boolean"
+        },
+        "external": {
+          "type": "boolean"
+        },
+        "money": {
+          "type": "boolean"
+        }
+      }
+    },
+    "control": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": {
+          "enum": ["implemented", "planned", "not_applicable"]
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence_refs"
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Pflicht bei not_applicable."
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "controls": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "audit_log": { "$ref": "#/$defs/control" },
+        "agent_identity": { "$ref": "#/$defs/control" },
+        "exception_queue": { "$ref": "#/$defs/control" },
+        "sampling_audit": { "$ref": "#/$defs/control" },
+        "incident_process": { "$ref": "#/$defs/control" },
+        "automatic_rollback": { "$ref": "#/$defs/control" },
+        "kill_switch": { "$ref": "#/$defs/control" },
+        "change_management": { "$ref": "#/$defs/control" },
+        "shadow_run": { "$ref": "#/$defs/control" },
+        "proposal_mode_first": { "$ref": "#/$defs/control" },
+        "adoption_rate_monitoring": { "$ref": "#/$defs/control" },
+        "input_isolation": { "$ref": "#/$defs/control" },
+        "human_oversight": { "$ref": "#/$defs/control" },
+        "human_review_on_request": { "$ref": "#/$defs/control" }
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9._-]{0,79}$"
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "ref", "date", "description"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._-]{0,79}$"
+        },
+        "type": {
+          "enum": [
+            "test_report",
+            "approval_record",
+            "config",
+            "runbook",
+            "policy",
+            "measurement",
+            "log_extract",
+            "architecture"
+          ]
+        },
+        "ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500,
+          "pattern": "^(https://[^\\s]+|urn:[a-z0-9][a-z0-9-]{0,31}:[^\\s]+|(?!/)(?!.*(^|/)\\.\\.(/|$))[A-Za-z0-9._/-]+)$",
+          "description": "Relativer Pfad (ohne '..'), https-URL oder URN eines Dokumentensystems."
+        },
+        "date": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+          "description": "Datum des Nachweises (JJJJ-MM-TT)."
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "description": "Optionaler Hash der Datei; wird mit --check-evidence geprüft."
+        },
+        "approved_by": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Rolle, die den Nachweis abgenommen hat."
+        }
+      }
+    }
+  }
+}

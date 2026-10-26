@@ -52,7 +52,14 @@ jobs:
           enable-cache: false
       - name: Abhängigkeiten
         run: uv sync --python ${{ matrix.python-version }}
+      - name: OASIS-SARIF-Schema laden (fester Commit, SHA-256 geprüft)
+        run: |
+          curl -sSfL -o /tmp/sarif-schema-2.1.0.json \
+            https://raw.githubusercontent.com/oasis-tcs/sarif-spec/1742a253eb654bf8a4ed7c60eaef7412b2c23553/sarif-2.1/schema/sarif-schema-2.1.0.json
+          echo "c3b4bb2d6093897483348925aaa73af03b3e3f4bd4ca38cef26dcb4212a2682e  /tmp/sarif-schema-2.1.0.json" | sha256sum -c -
       - name: pytest mit Coverage (Schwelle 90 %)
+        env:
+          GW_SARIF_SCHEMA: /tmp/sarif-schema-2.1.0.json
         run: uv run --no-sync pytest --cov --cov-report=term-missing
 
   package:
@@ -77,6 +84,18 @@ jobs:
           cd /tmp
           /tmp/wheel-venv/bin/python -c "import gradweight_autonomy as g; print(g.__version__)"
           /tmp/wheel-venv/bin/python -c "import importlib.resources as r; assert r.files('gradweight_autonomy').joinpath('py.typed').is_file()"
+      - name: CLI-Smoke-Test mit installiertem Wheel
+        run: |
+          cd /tmp
+          /tmp/wheel-venv/bin/gw-autonomy --version
+          /tmp/wheel-venv/bin/gw-autonomy schema > /tmp/schema.json
+          /tmp/wheel-venv/bin/python -c "import json; json.load(open('/tmp/schema.json'))"
+          /tmp/wheel-venv/bin/gw-autonomy rules
+          /tmp/wheel-venv/bin/gw-autonomy validate --check-evidence "$GITHUB_WORKSPACE/examples"
+          if /tmp/wheel-venv/bin/gw-autonomy validate "$GITHUB_WORKSPACE/examples/negativ"; then
+            echo "Negativbeispiele müssen scheitern" >&2
+            exit 1
+          fi
       - name: sdist in frischem venv installieren
         run: |
           python -m venv /tmp/sdist-venv

@@ -1,37 +1,206 @@
 {
+  "$schema": "../src/gradweight_autonomy/validator/schemas/usecase-2.0.schema.json",
+  "schema_version": "2.0",
   "id": "gw5-standardretouren",
-  "title": "Standardretouren Ende-zu-Ende: Zustand per separatem Vision-Modell (ohne Tools), Gutschrift bis Limite",
+  "title": "Standardretouren Ende-zu-Ende: Zustand per isoliertem Klassifikationsmodell, Gutschrift bis Limite",
   "level": 5,
   "who_plans": "model",
   "human_role": "exception_only",
-  "foreign_input": false,
-  "sensitive_data": true,
-  "external_action": true,
-  "money_effect": true,
-  "customer_facing": true,
-  "customer_text_in_decisions": true,
-  "safety_critical": false,
-  "data_class": "intern",
-  "data_residency": "eu",
+  "owner": "Leitung Kundendienst",
+  "risk": {
+    "foreign_input": false,
+    "sensitive_data": true,
+    "external_action": true,
+    "money_effect": true,
+    "customer_facing": true,
+    "customer_text_in_decisions": true,
+    "safety_critical": false
+  },
+  "data": {
+    "classification": "intern",
+    "residency": "eu",
+    "personal_data": true
+  },
   "mandate": {
     "limits_in_system": true,
-    "money_limit": "pro Fall und pro Tag im ERP; nur auf ursprüngliches Zahlungsmittel"
+    "enforced_by": "ERP-Gutschriftlimit",
+    "money_limit": {
+      "amount": 150,
+      "currency": "CHF",
+      "per": "transaction"
+    },
+    "scope": "nur Gutschrift auf ursprüngliches Zahlungsmittel",
+    "evidence": [
+      "ret-limit"
+    ]
   },
   "measurement": {
-    "method": "shadow"
+    "method": "shadow",
+    "evidence": [
+      "ret-schatten"
+    ]
   },
-  "governance": {
-    "owner": "AI-Lead",
-    "audit_log": true,
-    "incident_log": true,
-    "automatic_rollback": true,
-    "kill_switch_tested": true,
-    "agent_identity_min_privilege": true,
-    "adoption_rate_monitored": true,
-    "exception_queue": true,
-    "sampling_audit": true,
-    "decides_new_on_model_prompt_tool_change": true,
-    "shadow_run_first": true,
-    "proposal_mode_first": true
-  }
+  "controls": {
+    "input_isolation": {
+      "status": "implemented",
+      "evidence": [
+        "ret-isolation",
+        "ret-isolation-test"
+      ]
+    },
+    "audit_log": {
+      "status": "implemented",
+      "evidence": [
+        "ret-audit"
+      ]
+    },
+    "agent_identity": {
+      "status": "implemented",
+      "evidence": [
+        "ret-identitaet"
+      ]
+    },
+    "exception_queue": {
+      "status": "implemented",
+      "evidence": [
+        "ret-ausnahmen"
+      ]
+    },
+    "sampling_audit": {
+      "status": "implemented",
+      "evidence": [
+        "ret-stichprobe"
+      ]
+    },
+    "incident_process": {
+      "status": "implemented",
+      "evidence": [
+        "ret-incident"
+      ]
+    },
+    "automatic_rollback": {
+      "status": "implemented",
+      "evidence": [
+        "ret-rollback"
+      ]
+    },
+    "kill_switch": {
+      "status": "implemented",
+      "evidence": [
+        "ret-notaus"
+      ]
+    },
+    "change_management": {
+      "status": "implemented",
+      "evidence": [
+        "ret-change"
+      ]
+    },
+    "shadow_run": {
+      "status": "implemented",
+      "evidence": [
+        "ret-schatten"
+      ]
+    },
+    "proposal_mode_first": {
+      "status": "implemented",
+      "evidence": [
+        "ret-vorschlag"
+      ]
+    }
+  },
+  "evidence": [
+    {
+      "id": "ret-isolation",
+      "type": "architecture",
+      "ref": "evidence/gw5-standardretouren/architektur-vorklassifikation.md",
+      "date": "2026-08-15",
+      "description": "Architektur: Kundentexte werden ohne Werkzeuge in ein festes Schema klassifiziert"
+    },
+    {
+      "id": "ret-isolation-test",
+      "type": "test_report",
+      "ref": "evidence/gw5-standardretouren/test-injection.md",
+      "date": "2026-09-20",
+      "description": "Test: Prompt-Injection in Kundentexten erreicht den Entscheid nicht"
+    },
+    {
+      "id": "ret-limit",
+      "type": "config",
+      "ref": "evidence/gw5-standardretouren/erp-gutschriftlimit.md",
+      "date": "2026-09-01",
+      "description": "ERP: Gutschrift bis CHF 150 je Fall, nur auf ursprüngliches Zahlungsmittel"
+    },
+    {
+      "id": "ret-schatten",
+      "type": "measurement",
+      "ref": "evidence/gw5-standardretouren/schattenbetrieb.md",
+      "date": "2026-07-31",
+      "description": "Schattenbetrieb 10 Wochen"
+    },
+    {
+      "id": "ret-stichprobe",
+      "type": "measurement",
+      "ref": "evidence/gw5-standardretouren/stichprobe-2026-10.md",
+      "date": "2026-10-15",
+      "description": "Stichproben-Audit Oktober 2026"
+    },
+    {
+      "id": "ret-ausnahmen",
+      "type": "config",
+      "ref": "evidence/gw5-standardretouren/ausnahme-policy.md",
+      "date": "2026-09-01",
+      "description": "Ausnahme-Policy"
+    },
+    {
+      "id": "ret-notaus",
+      "type": "test_report",
+      "ref": "evidence/gw5-standardretouren/notaus-test.md",
+      "date": "2026-09-25",
+      "description": "Testprotokoll Notaus Retourenagent"
+    },
+    {
+      "id": "ret-rollback",
+      "type": "test_report",
+      "ref": "evidence/gw5-standardretouren/rollback-test.md",
+      "date": "2026-09-25",
+      "description": "Test Storno einer Gutschrift"
+    },
+    {
+      "id": "ret-audit",
+      "type": "config",
+      "ref": "evidence/gw5-standardretouren/audit-konfiguration.md",
+      "date": "2026-09-01",
+      "description": "Audit-Trail mit HMAC"
+    },
+    {
+      "id": "ret-identitaet",
+      "type": "config",
+      "ref": "evidence/gw5-standardretouren/agentenkonto.md",
+      "date": "2026-09-01",
+      "description": "Agentenkonto Retouren"
+    },
+    {
+      "id": "ret-incident",
+      "type": "runbook",
+      "ref": "evidence/gw5-standardretouren/incident-prozess.md",
+      "date": "2026-09-01",
+      "description": "Incident-Prozess Kundendienst"
+    },
+    {
+      "id": "ret-change",
+      "type": "policy",
+      "ref": "evidence/gw5-standardretouren/aenderungsprozess.md",
+      "date": "2026-09-01",
+      "description": "Änderungsprozess"
+    },
+    {
+      "id": "ret-vorschlag",
+      "type": "approval_record",
+      "ref": "evidence/gw5-standardretouren/freigabe-autonomie.md",
+      "date": "2026-08-01",
+      "description": "Freigabe Grad 5 nach Vorschlagsphase",
+      "approved_by": "Geschäftsleitung"
+    }
+  ]
 }

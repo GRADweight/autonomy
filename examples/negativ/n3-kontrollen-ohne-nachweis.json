@@ -1,0 +1,64 @@
+{
+  "$schema": "../../src/gradweight_autonomy/validator/schemas/usecase-2.0.schema.json",
+  "schema_version": "2.0",
+  "id": "n3-kontrollen-ohne-nachweis",
+  "title": "FALSCH: Kontrollen nur angekreuzt, Nachweise fehlen oder passen nicht",
+  "level": 3,
+  "who_plans": "fixed_chain",
+  "human_role": "per_gate",
+  "owner": "IT-Leitung",
+  "risk": {
+    "foreign_input": false,
+    "sensitive_data": true,
+    "external_action": true,
+    "money_effect": false,
+    "customer_facing": false,
+    "customer_text_in_decisions": false,
+    "safety_critical": false
+  },
+  "data": {
+    "classification": "intern",
+    "residency": "ch",
+    "personal_data": false
+  },
+  "measurement": {
+    "method": "shadow",
+    "evidence": []
+  },
+  "controls": {
+    "kill_switch": {
+      "status": "implemented",
+      "evidence": [
+        "n3-notaus"
+      ]
+    },
+    "automatic_rollback": {
+      "status": "implemented"
+    },
+    "incident_process": {
+      "status": "implemented",
+      "evidence": [
+        "n3-zukunft"
+      ]
+    },
+    "adoption_rate_monitoring": {
+      "status": "not_applicable"
+    }
+  },
+  "evidence": [
+    {
+      "id": "n3-notaus",
+      "type": "config",
+      "ref": "evidence/fehlt/notaus.md",
+      "date": "2023-05-02",
+      "description": "Konfiguration Notaus (kein Testprotokoll)"
+    },
+    {
+      "id": "n3-zukunft",
+      "type": "runbook",
+      "ref": "evidence/fehlt/incident.md",
+      "date": "2031-01-01",
+      "description": "Incident-Prozess mit Datum in der Zukunft"
+    }
+  ]
+}
