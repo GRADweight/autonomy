@@ -1,39 +1,47 @@
-# Sicherheitsmeldungen
+# Sicherheitslücken melden
 
-Falls du eine Schwachstelle in diesem Repo findest, melde Sie bitte
-öffentlich **nicht** über die Issues, sondern direkt:
+Bitte melden Sie Schwachstellen **nicht** über öffentliche Issues, sondern auf
+einem dieser Wege:
 
-- **Website:** gradweight.ch
-- **Thema:** `[security] <kurze Beschreibung>`
+- **GitHub Private Vulnerability Reporting:** im Repository unter
+  «Security» → «Report a vulnerability»
+- **E-Mail:** mail@gradweight.ch, Betreff `[security] autonomy: <Kurzbeschreibung>`
 
-## Was wir als Sicherheitsmeldung ansehen
+Hilfreich sind: betroffene Version (`gw-autonomy --version`), Schritte zur
+Reproduktion, erwartetes und tatsächliches Verhalten. Bitte keine echten
+Personendaten oder Zugangsdaten mitschicken.
 
-- Eine Möglichkeit, eine Freigabe zu umgehen ohne die befohlene Rolle
-  (AuthZ-Break)
-- Eine Möglichkeit, den Audit-Trail zu löschen oder zurückzusetzen
-  (append-only-Break)
-- Eine Schwachstelle in der Zielsystem-Adapter-Limits-Logik
-  (Betrag-/Tagesvolumen-Blockade wird nicht erzwungen)
-- Ein Leck von Secrets oder PII in den Code, Tests oder Beispielen
+## Was wir als Sicherheitsproblem behandeln
 
-## Was wir NICHT als Sicherheitsmeldung ansehen
+- Eine Freigabe lässt sich ohne berechtigte Rolle, unter Umgehung des
+  Vier-Augen-Prinzips oder trotz fehlgeschlagener blockierender Vorprüfung
+  erteilen (`approval`, `authz`).
+- Eine Änderung, Löschung oder Umordnung im Audit-Trail bleibt bei
+  `verify()` unentdeckt, obwohl die dokumentierten Voraussetzungen erfüllt
+  sind (bei Kürzung: externer Kopf-Anker; bei Neuberechnung: HMAC-Schlüssel).
+- Der bexio-Adapter bucht trotz fehlender Belegprüfung oder über den
+  konfigurierten Limiten.
+- Der Validator lässt einen Fall durch, den eine dokumentierte Regel als
+  Fehler einstufen müsste (Umgehung des Policy-Gates).
+- Geheimnisse oder Personendaten im Code, in Tests oder Beispielen.
 
-- «Der Injection-Check hat Lücken» — das ist dokumentiert
-  (governance/README.md, «erste Schicht, keine Garantie»). Lücken sind
-  nicht Fehler, und wir arbeiten daran.
-- «Das Modell kann gehackt werden» — das ist ein Modell-Problem, nicht
-  ein Governance-Problem in diesem Repo.
+## Was kein Sicherheitsproblem ist
 
-## Unser Prozess
+- Grenzen, die in [docs/grenzen.md](docs/grenzen.md) beschrieben sind, z. B.
+  dass Selbstauskünfte in einer Use-Case-Beschreibung falsch sein können oder
+  dass jemand mit Schreibzugriff ohne HMAC-Schlüssel die ganze Kette neu
+  berechnen kann.
+- Fehlentscheide eines Sprachmodells an sich.
 
-1. **Eingang:** Wir bestätigen den Eingang innerhalb von 72h (Kalendertage).
-2. **Prüfung:** 5–10 Arbeitstage, je nach Komplexität. (Keine
-   SLA-Zusage von 24h — das wäre eine Lüge.)
-3. **Fix:** Wenn der Befund korrekt ist: Fix im nächsten Release,
-   mit Verweis auf den Issue-Referenz (keine Details öffentlich,
-   nur die Tatsache, dass es einen Fix gab).
-4. **Dank:** Kein öffentlicher «Hall of Fame» — die Person bleibt
-   anonym, die Arbeit wird im Changelog genannt.
+## Ablauf
 
-*Kein Rechtsrat.* Diese Seite ist der Meldeprozess, nicht eine
-Haftungsregel.
+Wir bestätigen den Eingang in der Regel innert fünf Arbeitstagen, prüfen den
+Befund und stimmen Behebung und Veröffentlichung mit Ihnen ab. Behobene
+Lücken erscheinen im [CHANGELOG](CHANGELOG.md); auf Wunsch nennen wir Sie dort.
+
+## Unterstützte Versionen
+
+| Version | Sicherheitskorrekturen |
+|---|---|
+| 2.x | ja |
+| 1.x | nein |

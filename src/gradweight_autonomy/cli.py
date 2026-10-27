@@ -199,6 +199,12 @@ def _cmd_audit(args: argparse.Namespace) -> int:
         return EXIT_OK
 
 
+def _cmd_demo(_: argparse.Namespace) -> int:
+    from gradweight_autonomy.demo import main as demo_main  # noqa: PLC0415 - nur bei Bedarf laden
+
+    return demo_main()
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="gw-autonomy",
@@ -256,6 +262,9 @@ def build_parser() -> argparse.ArgumentParser:
     vexp.add_argument("--hmac-key-env", help=key_help)
     vexp.add_argument("--expect-head", help=head_help)
     audit.set_defaults(func=_cmd_audit)
+
+    demo = sub.add_parser("demo", help="Durchgang Grad 2 mit fiktiven Daten (ohne Netzwerk)")
+    demo.set_defaults(func=_cmd_demo)
     return parser
 
 

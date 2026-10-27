@@ -1,21 +1,13 @@
-## Was ändert sich?
+## Was ändert sich und warum?
 
-(1–3 Sätze. Was ist anders als vorher?)
+<!-- Ein bis drei Sätze. -->
 
-## Warum?
+## Prüfpunkte
 
-(Nicht: «wir könnten». Sondern: «weil <konkreter Zustand> →
-<konkrete Folge>».)
-
-## Falls es an das Modell (GB-xx) ändert:
-
-- Regle-ID:
-- Was sich ändert (Text):
-- Welche Beispiele in `examples/` betroffen sind (Datei-Namen):
-- Welche neuen Tests du geschrieben hast (Datei + Name):
-
-## Prüfung
-
-- [ ] `pytest tests_gradbuild tests_gwcore` → grün
-- [ ] `python -m gradbuild.cli examples/...` → Exit 0 (betroffene Fälle)
-- [ ] Neue Regel/Baustein ist in `README.md` / `docs/` verlinkt
+- [ ] `uv run ruff check .` und `uv run ruff format --check .`
+- [ ] `uv run mypy`
+- [ ] `uv run pytest --cov` (Schwelle 90 %)
+- [ ] Bei Regeländerungen: Tests ergänzt und `docs/regeln.md` neu erzeugt
+- [ ] Fachliche Aussagen mit Quelle belegt
+- [ ] Nur erfundene oder öffentliche Daten
+- [ ] CHANGELOG unter «Unreleased» ergänzt

@@ -1,0 +1,67 @@
+name: "gradweight-autonomy Policy-Gate"
+description: "Prüft KI-Use-Case-Beschreibungen gegen die Regeln GB-01 bis GB-22 und schreibt SARIF 2.1.0."
+author: "GRADweight GmbH"
+branding:
+  icon: "shield"
+  color: "green"
+
+inputs:
+  paths:
+    description: "Dateien oder Verzeichnisse mit Use-Case-JSON (durch Leerzeichen getrennt)."
+    required: true
+  fail-on:
+    description: "Ab welchem Schweregrad der Schritt scheitert: error, warning, note oder never."
+    required: false
+    default: "error"
+  sarif-file:
+    description: "Pfad der SARIF-Datei, die erzeugt wird."
+    required: false
+    default: "gw-autonomy.sarif"
+  check-evidence:
+    description: "Lokale Nachweis-Dateien prüfen (Existenz, SHA-256): true oder false."
+    required: false
+    default: "true"
+  python-version:
+    description: "Python-Version für den Validator."
+    required: false
+    default: "3.12"
+
+outputs:
+  sarif-file:
+    description: "Pfad der erzeugten SARIF-Datei."
+    value: ${{ inputs.sarif-file }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Python einrichten
+      uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: gradweight-autonomy in eigenes venv installieren
+      shell: bash
+      env:
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        set -euo pipefail
+        python -m venv "$RUNNER_TEMP/gw-autonomy-venv"
+        "$RUNNER_TEMP/gw-autonomy-venv/bin/python" -m pip install --quiet --disable-pip-version-check "$ACTION_PATH"
+
+    - name: Use-Case-Beschreibungen prüfen
+      shell: bash
+      env:
+        GW_PATHS: ${{ inputs.paths }}
+        GW_FAIL_ON: ${{ inputs.fail-on }}
+        GW_SARIF: ${{ inputs.sarif-file }}
+        GW_CHECK_EVIDENCE: ${{ inputs.check-evidence }}
+      run: |
+        set -euo pipefail
+        args=(validate --format sarif --output "$GW_SARIF" --fail-on "$GW_FAIL_ON")
+        case "$GW_CHECK_EVIDENCE" in
+          true) args+=(--check-evidence) ;;
+          false) ;;
+          *) echo "check-evidence muss true oder false sein" >&2; exit 2 ;;
+        esac
+        read -r -a paths <<< "$GW_PATHS"
+        "$RUNNER_TEMP/gw-autonomy-venv/bin/gw-autonomy" "${args[@]}" "${paths[@]}"

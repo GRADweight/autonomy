@@ -1,0 +1,70 @@
+name: Policy-Gate
+
+# Testet die wiederverwendbare Action (action.yml) mit den Beispielen dieses Repos:
+# Positivbeispiele müssen bestehen, Negativbeispiele müssen scheitern, beide
+# SARIF-Dateien müssen dem OASIS-Schema 2.1.0 entsprechen.
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: policy-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  examples:
+    name: Beispiele über die Action prüfen
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Positivbeispiele (müssen bestehen)
+        id: positive
+        uses: ./
+        with:
+          paths: examples
+          sarif-file: positive.sarif
+
+      - name: Negativbeispiele (müssen scheitern)
+        id: negative
+        continue-on-error: true
+        uses: ./
+        with:
+          paths: examples/negativ
+          sarif-file: negative.sarif
+          check-evidence: "false"
+
+      - name: Gegenprobe auswerten
+        env:
+          OUTCOME: ${{ steps.negative.outcome }}
+        run: |
+          if [ "$OUTCOME" != "failure" ]; then
+            echo "Negativbeispiele wurden nicht abgelehnt (outcome=$OUTCOME)" >&2
+            exit 1
+          fi
+
+      - name: SARIF gegen OASIS-Schema prüfen (fester Commit, SHA-256)
+        run: |
+          curl -sSfL -o /tmp/sarif-schema-2.1.0.json \
+            https://raw.githubusercontent.com/oasis-tcs/sarif-spec/1742a253eb654bf8a4ed7c60eaef7412b2c23553/sarif-2.1/schema/sarif-schema-2.1.0.json
+          echo "c3b4bb2d6093897483348925aaa73af03b3e3f4bd4ca38cef26dcb4212a2682e  /tmp/sarif-schema-2.1.0.json" | sha256sum -c -
+          python3 -m venv /tmp/sarif-venv
+          /tmp/sarif-venv/bin/pip install --quiet "jsonschema==4.25.1"
+          /tmp/sarif-venv/bin/python - <<'PY'
+          import json
+          import jsonschema
+
+          schema = json.load(open("/tmp/sarif-schema-2.1.0.json", encoding="utf-8"))
+          for name in ("positive.sarif", "negative.sarif"):
+              doc = json.load(open(name, encoding="utf-8"))
+              jsonschema.Draft4Validator(schema).validate(doc)
+              results = doc["runs"][0]["results"]
+              print(f"{name}: gültig, {len(results)} Befunde")
+          PY
