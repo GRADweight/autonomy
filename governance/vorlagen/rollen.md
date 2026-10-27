@@ -1,61 +1,52 @@
-# Rollenmodell (Vorlage) — wer darf was, je Grad
+# Rollenmodell (Vorlage)
 
-> Rollen sind **Kontext-gebunden**: dieselbe Person ist in zwei Use-Cases
-> unterschiedlich befugt. Die Befugnis steht nicht an der Person, sondern
-> am (Anwendung × Aktion)-Paar. Das ist der ganze Zweck eines
-> Rollenmodells, das «Least Privilege» ernst meint.
+> Befugnisse hängen am Paar (Anwendung, Aktion), nicht an der Person. Dieselbe
+> Person kann in zwei Anwendungen unterschiedlich berechtigt sein.
 
-## Die drei Kernrollen (Pflicht in jedem KI-Projekt)
+## Kernrollen
 
-| Rolle | Mindest-Pflichten | Kann NIE |
+| Rolle | Aufgaben | Darf nie |
 |---|---|---|
-| **Fachverantwortlicher** (je Anwendung) | Freigabe der Aktionen seiner Anwendung; Adoption-Rate lesen; Incident melden | Anwendungen auf höheren Grad versetzen; Rollen ändern |
-| **KI-Verantwortlicher** (organisatorisch) | Grad-Freigabe; Register pflegen; Richtlinie pflegen; Kill-Switch auslösen | Aktionen einer bestimmten Anwendung freigeben (separation of duties) |
-| **Admin** | VETO über jede Freigabe; Rollen-Mutation; Systemzugang | Fachentscheide (VETO muss begründet werden, Begründung landet im Audit-Trail) |
+| **Fachverantwortung** (je Anwendung) | Aktionen der eigenen Anwendung freigeben, anpassen, zurückweisen; Übernahmequote verfolgen; Vorfälle melden | den Grad der eigenen Anwendung erhöhen |
+| **KI-Verantwortung** (Organisation) | Grade abnehmen, Register und Richtlinie pflegen, Notaus auslösen | im Tagesbetrieb Aktionen freigeben (Funktionstrennung) |
+| **Revision** | Stichproben, Prüfung der Audit-Kette, Einsicht in Nachweise | Aktionen freigeben |
 
-## Wer darf was — Matrix (Aktion × Rolle)
+## Matrix
 
-| Aktion | Fachverantwortl. | KI-Verantw. | Admin |
+| Aktion | Fachverantwortung | KI-Verantwortung | Revision |
 |---|---|---|---|
-| Aktion freigeben (Grad 02/03) | ja (eigene Anwendung) | nein | ja (VETO) |
-| Aktion anpassen | ja (eigene Anwendung) | nein | ja |
-| Aktion zurückstellen | ja | ja | ja |
-| **VETO** (jeden Fall) | — | ja | ja |
-| Grad erhöhen (z.B. 02 → 04) | nein | ja (mit validiertem Fall-JSON) | ja (VETO) |
-| Kill-Switch auslösen | nein | ja | ja |
-| Register-Eintrag anlegen/ändern | nein | ja | nein (nur VETO) |
-| Rollen ändern | — | ja (eigene Anwendungen) | ja |
+| Aktion freigeben oder anpassen | ja (eigene Anwendung) | nein | nein |
+| Aktion zurückweisen | ja | ja | nein |
+| Grad erhöhen | nein | ja (mit geprüftem Fall) | nein |
+| Notaus auslösen | nein | ja | nein |
+| Audit-Kette prüfen | nein | ja | ja |
 
-**Merksatz:** Die zwei wichtigsten Zellen in der Matrix sind die, in
-denen «nein» steht. (Fachverantwortlicher darf nicht selbst auf den
-nächsten Grad gehen, und der KI-Verantwortliche soll nicht im Tagesbetrieb
-freigeben.)
+Die wichtigsten Zellen sind die mit «nein».
 
-## Die Rollen, die es NICHT gibt
+## Rollen, die es nicht gibt
 
-- **«Modelle/Rolle KI»** — ein Modell hat keine Rolle, keine Freigabe-
-  Befugnis, kein Veto. Es erzeugt `Aktion`-Objekte in der Queue. Ende.
-- **«Junior-/Senior-Freigeber»** — Freigabe ist ein Ja/Nein mit Begründung
-  (bei VETO). Hierarchie ersetzt keine Kompetenz; die Befugnis ist an
-  die Anwendung gebunden, nicht an die Stufe.
-- **«Gast»** — ein Gast-Zugang auf eine live-App grad ≥ 02 ist ein
-  Befund, keine Rolle.
+- **«Rolle KI»:** Ein Modell schlägt Aktionen vor; Freigabe und Notaus sind
+  Menschen vorbehalten. Die Freigabe-Queue verweigert die Freigabe durch den
+  Vorschlagenden (Vier-Augen-Prinzip).
+- **Stillschweigende Superuser:** Wer für alle Anwendungen freigeben darf,
+  steht sichtbar in der Policy (Schlüssel `"*"`).
 
-## So veränderst du die Rollen-Policy (Praxis, `gw_core.authz`)
+## Umsetzung mit `ApprovalPolicy`
 
 ```python
-from gw_core import FreigabePolicy
+from gradweight_autonomy.authz import ApprovalPolicy
 
-policy = FreigabePolicy(
-    policies={
-        "fachverantwortung": ["freigabe", "anpassen", "zurueckstellen"],
-        "ki_verantwortlicher": ["freigabe", "zurueckstellen", "veto", "kill_switch"],
-        "admin": ["freigabe", "anpassen", "zurueckstellen", "veto"],
+policy = ApprovalPolicy(
+    {
+        "kreditoren": ["fachverantwortung-finanzen"],
+        "bewerbungen": ["fachverantwortung-hr"],
+        "default": [],  # nicht aufgeführte Anwendungen: niemand
     }
 )
+policy.check(role="fachverantwortung-finanzen", use_case="kreditoren").allowed  # True
 ```
 
-- Rolle-Änderung = Code-Änderung = PR mit Begründung (nicht: «wir machen
-  das schnell in der Config»).
-- Jede Rollen-Änderung wird im Audit-Trail protokolliert (wer hat die
-  Policy geändert, wann, warum).
+Die Policy kann auch aus `GW_APPROVAL_POLICY` (JSON) oder
+`GW_APPROVAL_POLICY_FILE` geladen werden; eine konfigurierte, aber fehlende
+Datei ist ein Fehler. Änderungen an der Policy laufen über einen Review
+(Pull Request mit Begründung).

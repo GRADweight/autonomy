@@ -5,7 +5,9 @@ from __future__ import annotations
 import json
 from typing import Any
 
+from gradweight_autonomy.validator.jsonschema_lite import load_usecase_schema
 from gradweight_autonomy.validator.model import (
+    ALLOWED_AXES,
     CONTROLS,
     EVIDENCE_TYPE_LABELS,
     EXCEPTION_ONLY_CONTROLS,
@@ -14,6 +16,7 @@ from gradweight_autonomy.validator.model import (
     LEVELS,
     MANDATE_EVIDENCE_TYPES,
     MEASUREMENT_EVIDENCE_TYPES,
+    SCHEMA_VERSION,
     Severity,
 )
 from gradweight_autonomy.validator.rules import RULES
@@ -49,6 +52,16 @@ def rules_markdown() -> str:
     out += [
         "",
         "Grade: " + "; ".join(f"{lv} = {name}" for lv, name in LEVEL_NAMES.items()) + ".",
+        "",
+        "## Zulässige Achsen je Grad (GB-02)",
+        "",
+        "| Grad | Name | Zulässige Kombinationen `who_plans` / `human_role` |",
+        "|---|---|---|",
+    ]
+    for lv in LEVELS:
+        combos = ", ".join(f"`{w}` / `{r}`" for w, r in sorted(ALLOWED_AXES[lv]))
+        out.append(f"| {lv} | {LEVEL_NAMES[lv]} | {combos} |")
+    out += [
         "",
         "## Regeln im Detail",
         "",
@@ -132,3 +145,95 @@ def rules_json() -> str:
 def rules_text() -> str:
     """Kurzliste für das Terminal."""
     return "\n".join(f"{r.id}  {r.default_severity.label:<8} {r.title}" for r in RULES) + "\n"
+
+
+def _type_text(node: dict[str, Any]) -> str:
+    if "const" in node:
+        return f"`{json.dumps(node['const'], ensure_ascii=False)}`"
+    if "enum" in node:
+        return " \\| ".join(f"`{v}`" for v in node["enum"])
+    kind = str(node.get("type", "–"))
+    limits = []
+    for key, label in (("minimum", ">="), ("maximum", "<="), ("exclusiveMinimum", ">")):
+        if key in node:
+            limits.append(f"{label} {node[key]}")
+    if "pattern" in node and kind == "string":
+        limits.append("Muster")
+    return kind + (f" ({', '.join(limits)})" if limits else "")
+
+
+def schema_markdown() -> str:
+    """Feldreferenz des Use-Case-Schemas (Quelle für ``docs/schema.md``)."""
+    schema = load_usecase_schema()
+    defs: dict[str, Any] = schema["$defs"]
+    rows: list[str] = []
+
+    def resolve(node: dict[str, Any]) -> dict[str, Any]:
+        ref = node.get("$ref")
+        return dict(defs[ref.rsplit("/", 1)[1]]) if isinstance(ref, str) else node
+
+    def walk(node: dict[str, Any], prefix: str) -> None:
+        node = resolve(node)
+        required = set(node.get("required", ()))
+        for name, raw in node.get("properties", {}).items():
+            if name == "$schema":
+                continue
+            child = dict(resolve(raw))
+            if "description" in raw:
+                child["description"] = raw["description"]
+            path = f"{prefix}{name}"
+            if prefix == "controls.":
+                continue
+            kind = child.get("type")
+            if kind == "array":
+                items = resolve(child["items"])
+                if items.get("type") == "object":
+                    rows.append(
+                        f"| `{path}[]` | Liste von Objekten | {_yes(name in required)} | "
+                        f"{child.get('description', '')} |"
+                    )
+                    walk(items, f"{path}[].")
+                else:
+                    rows.append(
+                        f"| `{path}[]` | Liste: {_type_text(items)} | "
+                        f"{_yes(name in required)} | {child.get('description', '')} |"
+                    )
+            elif name == "controls":
+                ids = ", ".join(f"`{c}`" for c in child["properties"])
+                rows.append(f"| `controls.<kontrolle>` | Objekt | nein | Eine von: {ids} |")
+                walk(defs["control"], "controls.<kontrolle>.")
+            elif kind == "object":
+                rows.append(
+                    f"| `{path}` | Objekt | {_yes(name in required)} | "
+                    f"{child.get('description', '')} |"
+                )
+                walk(child, f"{path}.")
+            else:
+                rows.append(
+                    f"| `{path}` | {_type_text(child)} | {_yes(name in required)} | "
+                    f"{child.get('description', '')} |"
+                )
+
+    walk(schema, "")
+    head = [
+        f"# Feldreferenz Use-Case-Schema {SCHEMA_VERSION}",
+        "",
+        (
+            "<!-- Automatisch erzeugt mit `gw-autonomy schema --format markdown`. Nicht von Hand "
+            "bearbeiten; ein Test vergleicht diese Datei mit dem Schema. -->"
+        ),
+        "",
+        (
+            "Schema: `src/gradweight_autonomy/validator/schemas/"
+            f"usecase-{SCHEMA_VERSION}.schema.json` (`$id` `{schema['$id']}`). "
+            "Unbekannte Felder sind nicht erlaubt."
+        ),
+        "",
+        "| Feld | Typ | Pflicht | Beschreibung |",
+        "|---|---|---|---|",
+    ]
+    return "\n".join(head + rows) + "\n"
+
+
+def _yes(flag: bool) -> str:
+    return "ja" if flag else "nein"

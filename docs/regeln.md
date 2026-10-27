@@ -33,6 +33,17 @@ Der Validator kennt 22 Regeln. Schweregrade: **F** = Fehler (Exit-Code 1), **W**
 
 Grade: 0 = Keine KI-Autonomie; 1 = Assistent; 2 = Copilot; 3 = Workflow; 4 = Agent mit Mandat; 5 = Autonom mit Ausnahmesteuerung.
 
+## Zulässige Achsen je Grad (GB-02)
+
+| Grad | Name | Zulässige Kombinationen `who_plans` / `human_role` |
+|---|---|---|
+| 0 | Keine KI-Autonomie | `human` / `full_control` |
+| 1 | Assistent | `human` / `full_control`, `human` / `per_action` |
+| 2 | Copilot | `human` / `per_action`, `model` / `per_action` |
+| 3 | Workflow | `fixed_chain` / `exception_only`, `fixed_chain` / `mandate`, `fixed_chain` / `per_gate`, `model` / `per_gate` |
+| 4 | Agent mit Mandat | `model` / `exception_only`, `model` / `mandate` |
+| 5 | Autonom mit Ausnahmesteuerung | `model` / `exception_only` |
+
 ## Regeln im Detail
 
 ### GB-01

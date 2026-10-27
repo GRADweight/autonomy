@@ -35,10 +35,12 @@
     "title": {
       "type": "string",
       "minLength": 1,
-      "maxLength": 200
+      "maxLength": 200,
+      "description": "Kurzbeschreibung des Anwendungsfalls."
     },
     "description": {
-      "type": "string"
+      "type": "string",
+      "description": "Optionale ausführliche Beschreibung."
     },
     "level": {
       "type": "integer",
@@ -47,11 +49,21 @@
       "description": "Deklarierter Autonomiegrad 0 bis 5."
     },
     "who_plans": {
-      "enum": ["human", "fixed_chain", "model"],
+      "enum": [
+        "human",
+        "fixed_chain",
+        "model"
+      ],
       "description": "Achse 1: Wer bestimmt den Weg?"
     },
     "human_role": {
-      "enum": ["full_control", "per_action", "per_gate", "mandate", "exception_only"],
+      "enum": [
+        "full_control",
+        "per_action",
+        "per_gate",
+        "mandate",
+        "exception_only"
+      ],
       "description": "Achse 2: Wo greift der Mensch ein?"
     },
     "owner": {
@@ -61,38 +73,47 @@
       "description": "Verantwortliche Rolle (Funktion, keine Personennamen)."
     },
     "risk": {
-      "$ref": "#/$defs/risk"
+      "$ref": "#/$defs/risk",
+      "description": "Risikomerkmale; [A], [B] und [C] sind die drei Eigenschaften der Rule of Two."
     },
     "data": {
-      "$ref": "#/$defs/data"
+      "$ref": "#/$defs/data",
+      "description": "Datenklasse, Verarbeitungsort und Personendaten."
     },
     "regulatory": {
-      "$ref": "#/$defs/regulatory"
+      "$ref": "#/$defs/regulatory",
+      "description": "Optionale regulatorische Einstufung."
     },
     "mandate": {
-      "$ref": "#/$defs/mandate"
+      "$ref": "#/$defs/mandate",
+      "description": "Mandat: Grenzen, innerhalb derer ein Modell ohne Freigabe je Aktion handeln darf."
     },
     "ceiling": {
-      "$ref": "#/$defs/ceiling"
+      "$ref": "#/$defs/ceiling",
+      "description": "Deckel: höchster zulässiger Grad für diesen Anwendungsfall."
     },
     "measurement": {
-      "$ref": "#/$defs/measurement"
+      "$ref": "#/$defs/measurement",
+      "description": "Wie die Zuverlässigkeit gemessen wird."
     },
     "steps": {
       "type": "array",
       "minItems": 1,
       "items": {
         "$ref": "#/$defs/step"
-      }
+      },
+      "description": "Optionale Schritte des Prozesses; wirksame Schritte bestimmen den Grad mit (GB-16)."
     },
     "controls": {
-      "$ref": "#/$defs/controls"
+      "$ref": "#/$defs/controls",
+      "description": "Kontrollen mit Status und Nachweisen; fehlende Einträge gelten als nicht umgesetzt."
     },
     "evidence": {
       "type": "array",
       "items": {
         "$ref": "#/$defs/evidence"
-      }
+      },
+      "description": "Nachweise, auf die Kontrollen, Mandat und Messung verweisen."
     }
   },
   "$defs": {
@@ -142,13 +163,28 @@
     "data": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["classification", "residency", "personal_data"],
+      "required": [
+        "classification",
+        "residency",
+        "personal_data"
+      ],
       "properties": {
         "classification": {
-          "enum": ["frei", "intern", "vertraulich", "geheim"]
+          "enum": [
+            "frei",
+            "intern",
+            "vertraulich",
+            "geheim"
+          ],
+          "description": "Datenklasse: frei, intern, vertraulich oder geheim."
         },
         "residency": {
-          "enum": ["on_prem", "ch", "eu", "public"],
+          "enum": [
+            "on_prem",
+            "ch",
+            "eu",
+            "public"
+          ],
           "description": "Wo die Daten verarbeitet werden: eigene Infrastruktur, Schweiz, EU/EWR oder beliebige öffentliche Cloud."
         },
         "personal_data": {
@@ -179,32 +215,49 @@
           "description": "Fundstelle der Einstufung, z. B. 'Anhang III Nr. 4 lit. a'."
         },
         "notes": {
-          "type": "string"
+          "type": "string",
+          "description": "Freie Anmerkungen zur Einstufung."
         }
       }
     },
     "money_limit": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["amount", "currency", "per"],
+      "required": [
+        "amount",
+        "currency",
+        "per"
+      ],
       "properties": {
         "amount": {
           "type": "number",
-          "exclusiveMinimum": 0
+          "exclusiveMinimum": 0,
+          "description": "Betragsgrenze."
         },
         "currency": {
           "type": "string",
-          "pattern": "^[A-Z]{3}$"
+          "pattern": "^[A-Z]{3}$",
+          "description": "Währung nach ISO 4217, z. B. CHF."
         },
         "per": {
-          "enum": ["transaction", "day", "week", "month"]
+          "enum": [
+            "transaction",
+            "day",
+            "week",
+            "month"
+          ],
+          "description": "Bezugsgrösse der Grenze: je Transaktion, Tag, Woche oder Monat."
         }
       }
     },
     "mandate": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["limits_in_system", "enforced_by", "evidence"],
+      "required": [
+        "limits_in_system",
+        "enforced_by",
+        "evidence"
+      ],
       "properties": {
         "limits_in_system": {
           "type": "boolean",
@@ -216,7 +269,8 @@
           "description": "Wo die Grenze technisch wirkt (z. B. 'ERP-Freigabestrategie Einkauf')."
         },
         "money_limit": {
-          "$ref": "#/$defs/money_limit"
+          "$ref": "#/$defs/money_limit",
+          "description": "Bezifferte Betragsgrenze (Pflicht bei Geldwirkung ohne Freigabe je Aktion)."
         },
         "scope": {
           "type": "string",
@@ -224,27 +278,35 @@
           "description": "Empfängerkreis, Artikel, Zeitraum."
         },
         "evidence": {
-          "$ref": "#/$defs/evidence_refs"
+          "$ref": "#/$defs/evidence_refs",
+          "description": "Nachweise für die Durchsetzung im Zielsystem (config, test_report)."
         }
       }
     },
     "ceiling": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["max_level", "reason", "regulation"],
+      "required": [
+        "max_level",
+        "reason",
+        "regulation"
+      ],
       "properties": {
         "max_level": {
           "type": "integer",
           "minimum": 0,
-          "maximum": 5
+          "maximum": 5,
+          "description": "Höchster zulässiger Grad."
         },
         "reason": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "description": "Begründung des Deckels."
         },
         "regulation": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "description": "Rechtliche oder interne Grundlage."
         },
         "decided_by": {
           "type": "string",
@@ -256,10 +318,17 @@
     "measurement": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["method", "evidence"],
+      "required": [
+        "method",
+        "evidence"
+      ],
       "properties": {
         "method": {
-          "enum": ["pass^k", "shadow"]
+          "enum": [
+            "pass^k",
+            "shadow"
+          ],
+          "description": "pass^k (wiederholte Testaufgaben) oder shadow (Schattenbetrieb)."
         },
         "k": {
           "type": "integer",
@@ -268,54 +337,86 @@
         },
         "tasks": {
           "type": "integer",
-          "minimum": 1
+          "minimum": 1,
+          "description": "Anzahl Testaufgaben."
         },
         "threshold": {
           "type": "number",
           "minimum": 0,
-          "maximum": 1
+          "maximum": 1,
+          "description": "Zielwert der Messung zwischen 0 und 1."
         },
         "evidence": {
-          "$ref": "#/$defs/evidence_refs"
+          "$ref": "#/$defs/evidence_refs",
+          "description": "Messberichte (measurement, test_report)."
         }
       }
     },
     "step": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["name", "planned_by", "human_role"],
+      "required": [
+        "name",
+        "planned_by",
+        "human_role"
+      ],
       "properties": {
         "name": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "description": "Bezeichnung des Schritts."
         },
         "planned_by": {
-          "enum": ["human", "fixed_chain", "model"]
+          "enum": [
+            "human",
+            "fixed_chain",
+            "model"
+          ],
+          "description": "Wer den Schritt plant."
         },
         "human_role": {
-          "enum": ["full_control", "per_action", "per_gate", "mandate", "exception_only", "none"]
+          "enum": [
+            "full_control",
+            "per_action",
+            "per_gate",
+            "mandate",
+            "exception_only",
+            "none"
+          ],
+          "description": "Wo der Mensch in diesem Schritt eingreift; 'none' nur für Schritte ohne Wirkung."
         },
         "state_change": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "Der Schritt ändert einen Zustand."
         },
         "external": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "Der Schritt wirkt nach aussen."
         },
         "money": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "Der Schritt hat Geldwirkung."
         }
       }
     },
     "control": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["status"],
+      "required": [
+        "status"
+      ],
       "properties": {
         "status": {
-          "enum": ["implemented", "planned", "not_applicable"]
+          "enum": [
+            "implemented",
+            "planned",
+            "not_applicable"
+          ],
+          "description": "implemented (mit Nachweis), planned oder not_applicable (mit Begründung)."
         },
         "evidence": {
-          "$ref": "#/$defs/evidence_refs"
+          "$ref": "#/$defs/evidence_refs",
+          "description": "IDs der Nachweise; bei implemented Pflicht."
         },
         "rationale": {
           "type": "string",
@@ -323,7 +424,8 @@
           "description": "Pflicht bei not_applicable."
         },
         "note": {
-          "type": "string"
+          "type": "string",
+          "description": "Freie Anmerkung."
         }
       }
     },
@@ -331,20 +433,48 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "audit_log": { "$ref": "#/$defs/control" },
-        "agent_identity": { "$ref": "#/$defs/control" },
-        "exception_queue": { "$ref": "#/$defs/control" },
-        "sampling_audit": { "$ref": "#/$defs/control" },
-        "incident_process": { "$ref": "#/$defs/control" },
-        "automatic_rollback": { "$ref": "#/$defs/control" },
-        "kill_switch": { "$ref": "#/$defs/control" },
-        "change_management": { "$ref": "#/$defs/control" },
-        "shadow_run": { "$ref": "#/$defs/control" },
-        "proposal_mode_first": { "$ref": "#/$defs/control" },
-        "adoption_rate_monitoring": { "$ref": "#/$defs/control" },
-        "input_isolation": { "$ref": "#/$defs/control" },
-        "human_oversight": { "$ref": "#/$defs/control" },
-        "human_review_on_request": { "$ref": "#/$defs/control" }
+        "audit_log": {
+          "$ref": "#/$defs/control"
+        },
+        "agent_identity": {
+          "$ref": "#/$defs/control"
+        },
+        "exception_queue": {
+          "$ref": "#/$defs/control"
+        },
+        "sampling_audit": {
+          "$ref": "#/$defs/control"
+        },
+        "incident_process": {
+          "$ref": "#/$defs/control"
+        },
+        "automatic_rollback": {
+          "$ref": "#/$defs/control"
+        },
+        "kill_switch": {
+          "$ref": "#/$defs/control"
+        },
+        "change_management": {
+          "$ref": "#/$defs/control"
+        },
+        "shadow_run": {
+          "$ref": "#/$defs/control"
+        },
+        "proposal_mode_first": {
+          "$ref": "#/$defs/control"
+        },
+        "adoption_rate_monitoring": {
+          "$ref": "#/$defs/control"
+        },
+        "input_isolation": {
+          "$ref": "#/$defs/control"
+        },
+        "human_oversight": {
+          "$ref": "#/$defs/control"
+        },
+        "human_review_on_request": {
+          "$ref": "#/$defs/control"
+        }
       }
     },
     "evidence_refs": {
@@ -353,16 +483,24 @@
       "items": {
         "type": "string",
         "pattern": "^[a-z0-9][a-z0-9._-]{0,79}$"
-      }
+      },
+      "description": "Liste von Nachweis-IDs."
     },
     "evidence": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "type", "ref", "date", "description"],
+      "required": [
+        "id",
+        "type",
+        "ref",
+        "date",
+        "description"
+      ],
       "properties": {
         "id": {
           "type": "string",
-          "pattern": "^[a-z0-9][a-z0-9._-]{0,79}$"
+          "pattern": "^[a-z0-9][a-z0-9._-]{0,79}$",
+          "description": "Eindeutige ID des Nachweises."
         },
         "type": {
           "enum": [
@@ -374,7 +512,8 @@
             "measurement",
             "log_extract",
             "architecture"
-          ]
+          ],
+          "description": "Art des Nachweises."
         },
         "ref": {
           "type": "string",
@@ -390,7 +529,8 @@
         },
         "description": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "description": "Was der Nachweis belegt."
         },
         "sha256": {
           "type": "string",

@@ -102,6 +102,18 @@ jobs:
           /tmp/sdist-venv/bin/pip install dist/*.tar.gz
           cd /tmp
           /tmp/sdist-venv/bin/python -c "import gradweight_autonomy"
+      - name: Schnellstart aus dem README wörtlich ausführen
+        run: |
+          python - > /tmp/quickstart.sh <<'PY'
+          import re, pathlib
+          text = pathlib.Path("README.md").read_text(encoding="utf-8")
+          block = re.search(r"<!-- quickstart:start -->\n```bash\n(.*?)\n```", text, re.S).group(1)
+          print("\n".join(l for l in block.splitlines() if not l.startswith(("git clone", "cd autonomy"))))
+          PY
+          cat /tmp/quickstart.sh
+          git archive --format=tar --prefix=quickstart/ HEAD | tar -x -C /tmp
+          cd /tmp/quickstart
+          bash -euo pipefail /tmp/quickstart.sh
 
   security:
     name: Security (gitleaks, pip-audit)

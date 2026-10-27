@@ -24,7 +24,12 @@ from gradweight_autonomy.audit import (
     parse_head,
     verify_jsonl,
 )
-from gradweight_autonomy.validator.docs import rules_json, rules_markdown, rules_text
+from gradweight_autonomy.validator.docs import (
+    rules_json,
+    rules_markdown,
+    rules_text,
+    schema_markdown,
+)
 from gradweight_autonomy.validator.engine import CaseReport, validate_path, validate_text
 from gradweight_autonomy.validator.jsonschema_lite import SCHEMA_RESOURCE
 from gradweight_autonomy.validator.model import Severity
@@ -121,7 +126,10 @@ def _cmd_rules(args: argparse.Namespace) -> int:
     return EXIT_OK
 
 
-def _cmd_schema(_: argparse.Namespace) -> int:
+def _cmd_schema(args: argparse.Namespace) -> int:
+    if args.format == "markdown":
+        sys.stdout.write(schema_markdown())
+        return EXIT_OK
     from importlib import resources  # noqa: PLC0415 - nur hier gebraucht
 
     text = (
@@ -242,6 +250,7 @@ def build_parser() -> argparse.ArgumentParser:
     rules.set_defaults(func=_cmd_rules)
 
     schema = sub.add_parser("schema", help="JSON Schema der Use-Case-Beschreibung ausgeben")
+    schema.add_argument("--format", choices=("json", "markdown"), default="json")
     schema.set_defaults(func=_cmd_schema)
 
     audit = sub.add_parser("audit", help="Audit-Trail prüfen und exportieren")

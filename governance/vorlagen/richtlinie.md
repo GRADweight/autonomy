@@ -1,78 +1,66 @@
-# KI-Richtlinie (Vorlage) — minimal, anpassbar
+# KI-Richtlinie (Vorlage)
 
-> **Stand:** 2026-10 · **Verantwortlich:** <name/Rolle> · **Freigabe:** <GK, Datum>
+> **Stand:** <Datum> · **Verantwortlich:** <Rolle> · **Beschlossen durch:** <Gremium, Datum>
 >
-> Diese Vorlage ist bewusst klein. Eine Richtlinie mit 40 Seiten wird von
-> niemandem gelesen und von niemandem verstanden. Diese hier ist so
-> geschrieben, dass ein Fachverantwortlicher sie in 20 Minuten lesen und
-> anwenden kann.
+> Kurz gehalten, damit sie gelesen und angewendet wird.
 
-## 1 · Geltungsbund
+## 1. Geltungsbereich
 
 Diese Richtlinie gilt für alle KI-gestützten Anwendungen, die
-a) auf Unternehmensdaten zugreifen, b) Aussenwirkung haben, oder
-c) in Entscheidungen mitwirken. Das gilt unabhängig davon, ob die
-Anwendung intern, extern (SaaS) oder von einem Dienstleister betrieben wird.
+a) auf Unternehmensdaten zugreifen, b) nach aussen wirken oder
+c) an Entscheiden mitwirken – unabhängig davon, ob sie selbst betrieben,
+als Cloud-Dienst bezogen oder von Dritten betrieben werden.
 
-## 2 · Autonomiegrade (verbindliche Definition)
+## 2. Autonomiegrade
 
-Jede Anwendung wird genau einem Grad zugeordnet (Definition:
-`docs/plan.md` in diesem Repo):
+Jede Anwendung wird einem Grad zugeordnet ([Definition](../../docs/autonomiegrade.md)):
 
-| Grad | Bezeichnung | Freigabe-Muster |
+| Grad | Bezeichnung | Freigabe |
 |---|---|---|
-| 01 | Assistent | Mensch kontrolliert jede Ausgabe; keine schreibende Aussenwirkung |
-| 02 | Copilot | Jeder schreibende Schritt wird einzeln freigegeben (Approval) |
-| 03 | Workflow | Feste Kette; Freigabe je Gate; systemseitige Limits |
-| 04 | Agent | Modell plant; Mandat mit systemseitigen Limits; Schattenbetrieb vor Go-live |
-| 05 | Multi-Agent | Modell orchestriert; nur Ausnahmen an den Menschen; Sampling-Audit |
+| 0 | Keine KI-Autonomie | Menschen handeln, KI liefert höchstens Recherche |
+| 1 | Assistent | Menschen handeln selbst; keine Aussenwirkung der KI |
+| 2 | Copilot | jede schreibende Aktion wird einzeln freigegeben |
+| 3 | Workflow | feste Kette, Freigabe an definierten Toren |
+| 4 | Agent mit Mandat | Modell handelt innerhalb technisch erzwungener Grenzen |
+| 5 | Autonom mit Ausnahmesteuerung | Menschen bearbeiten Ausnahmen und Stichproben |
 
-**Regel:** Eine Anwendung läuft nur auf dem Grad, der im Autonomie-Fall
-validiert wurde (gradBuild-Validator, `examples/` als Referenz). Höhere
-Grade erfordern ein neues, validiertes Fall-JSON und eine neue Freigabe.
+Eine Anwendung läuft nur auf dem Grad, für den ihre Fall-Beschreibung mit
+`gw-autonomy validate --check-evidence` geprüft und abgenommen ist.
 
-## 3 · Harte Grenzen (gelten ohne Ausnahme)
+## 3. Harte Grenzen
 
-1. **Rule of Two:** Eine Anwendung mit Aussenwirkung verarbeitet nicht
-   gleichzeitig fremde, unvertrauenswürdige Eingaben und sensible Daten —
-   bei Grad ≥ 04 muss einer der drei Faktoren strukturell weg sein.
-2. **Schutzfunktionen:** KI ist max. Grad 03 und nie in der Schutzkette
-   (Qualität, Maintenance, Sicherheit).
-3. **Geld:** Grad ≥ 04 mit Geldwirkung nur mit systemseitigen Limits
-   im Zielsystem (Buchhaltung/ERP) — nie im Prompt, nie als «bitte nicht
-   über 5'000 CHF».
+1. **Rule of Two:** Ohne Mensch in der Kette (ab Grad 4) verarbeitet eine
+   Anwendung nicht gleichzeitig fremde Eingaben und sensible Daten und wirkt
+   nach aussen.
+2. **Schutzfunktionen:** KI berät, liegt aber nie in der Sicherheitskette;
+   höchstens Grad 3.
+3. **Geld:** Ohne Freigabe je Aktion nur mit bezifferter Betragsgrenze, die im
+   Zielsystem durchgesetzt wird – nie als Bitte im Prompt.
 
-## 4 · Rollen und Freigabe
+## 4. Rollen und Freigabe
 
-| Rolle | Kann |
-|---|---|
-| Fachverantwortlicher (je Anwendung) | Freigabe, Anpassen, Zurückstellen der Aktionen seiner Anwendung |
-| KI-Verantwortlicher (organisatorisch) | Grad-Freigabe, Register, Richtlinienpflege, Kill-Switch-Freigabe |
-| Admin | VETO über alle Freigaben (Begründungspflicht) |
+Siehe [Rollenmodell](rollen.md). Ein Modell hat keine Rolle: Es schlägt vor,
+es entscheidet nicht. Wer vorschlägt, gibt nicht selbst frei.
 
-Ein Modell hat keine Rolle. Es kann Aktionen vorschlagen, nicht entscheiden.
+## 5. Nachweise und Protokoll
 
-## 5 · Audit und Nachweis
+- Jede als umgesetzt deklarierte Kontrolle verweist auf einen Nachweis
+  (Testprotokoll, Konfiguration, Messbericht); Notaus- und Rollback-Tests
+  werden mindestens jährlich wiederholt.
+- Freigaben, Rückweisungen und Buchungen werden im Audit-Trail mit
+  Hash-Kette protokolliert; der Kopf-Hash wird regelmässig ausserhalb der
+  Datenbank abgelegt.
+- Jeder Wechsel von Modell, Prompt oder Werkzeug löst eine neue Prüfung aus.
 
-- Jede freigegebene und jede zurückgestellte Aktion landet im
-  append-only-Audit-Trail (wer/was/wann, CSV-Export möglich).
-- Der Trail wird bei Ausserbetriebnahme archiviert, nicht gelöscht.
-- VETO und Kill-Switch-Ereignisse sind Teil des Trails und werden
-  mindestens einmal pro Quartal geprüft (KI-Verantwortlicher).
+## 6. Ausserbetriebnahme
 
-## 6 · Ausserbetriebnahme
+1. Notaus dauerhaft aktiv, keine offenen Aktionen.
+2. Zugänge und Rollen des Anwendungsfalls entzogen.
+3. Registereintrag auf «ausser Betrieb» mit Datum und Begründung.
+4. Audit-Trail exportiert (`gw-autonomy audit export`) und archiviert.
 
-Eine Anwendung kann nur ausserbetriebgenommen werden, wenn:
-1. Kill-Switch aktiv für ≥ 72h (keine offenen Aktionen),
-2. Zugangsrechte für den Use-Case entzogen,
-3. Register-Eintrag auf `ausserbetrieb` mit Datum und Begründung,
-4. Audit-Trail exportiert und archiviert.
+## 7. Was diese Richtlinie nicht ist
 
-## 7 · Was diese Richtlinie nicht ist
-
-- Kein Rechtsrat. Klassifizierung (AI Act), Haftung und Vertragsklauseln
-  klärt die Rechtsberatung. Diese Richtlinie dokumentiert den
-  Freigabe-Prozess und die technischen Schranken — sie ersetzt keine
-  juristische Einordnung.
-- Kein Verbot von KI. Sie setzt Schranken je Grad, statt pauschal zu
-  verbieten. (Pauschale Verbote werden umgangen; Grade werden überwacht.)
+Kein Rechtsrat und keine Einstufung nach EU AI Act oder Datenschutzrecht; sie
+regelt Freigaben und technische Grenzen und ist Grundlage für diese
+Beurteilung.
