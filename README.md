@@ -62,7 +62,7 @@ Fur den kompletten Freigabe-Pfad (Vorschlag → Freigabe → Zweitmodell → Aud
 
 ## Status
 
-- ✅ **lauft:** Grad 01 + 02 implementiert und getestet; uber 100 pytest-Tests,
+- ✅ **lauft:** Grad 01 + 02 implementiert und getestet; 87 pytest-Tests,
   CI grun (Python 3.11 / 3.12).
 - 🔄 **im Aufbau:** Grad 03–05 als *validierte Referenzfalle* (Modell + Regeln);
   der Runtime ab Grad 04 ist Custom Engineering.
