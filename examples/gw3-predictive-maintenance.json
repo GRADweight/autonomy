@@ -1,38 +1,118 @@
 {
+  "$schema": "../src/gradweight_autonomy/validator/schemas/usecase-2.0.schema.json",
+  "schema_version": "2.0",
   "id": "gw3-predictive-maintenance",
-  "title": "OPC UA → Historian → Anomalieerkennung (ohne LLM im Datenpfad) → Ticket + Fenstervorschlag; Freigabe im CMMS",
+  "title": "Sensordaten -> Anomalieerkennung -> Wartungsticket mit Terminvorschlag; Freigabe im CMMS",
   "level": 3,
   "who_plans": "fixed_chain",
   "human_role": "per_gate",
-  "foreign_input": false,
-  "sensitive_data": true,
-  "external_action": true,
-  "money_effect": false,
-  "customer_facing": false,
-  "customer_text_in_decisions": false,
-  "safety_critical": true,
-  "data_class": "intern",
-  "data_residency": "on_prem",
+  "owner": "Leitung Instandhaltung",
+  "risk": {
+    "foreign_input": false,
+    "sensitive_data": true,
+    "external_action": true,
+    "money_effect": false,
+    "customer_facing": false,
+    "customer_text_in_decisions": false,
+    "safety_critical": true
+  },
+  "data": {
+    "classification": "intern",
+    "residency": "on_prem",
+    "personal_data": false
+  },
   "ceiling": {
     "max_level": 3,
-    "reason": "Schutzfunktionen bleiben ausserhalb der KI; Maschinenverordnung + ISO/IEC TR 5469",
-    "regulation": "EU Machinery Regulation 2023/1230; ISO/IEC TR 5469:2024"
+    "reason": "Schutzfunktionen bleiben ausserhalb der KI",
+    "regulation": "VO (EU) 2023/1230; ISO/IEC TR 5469:2024",
+    "decided_by": "Geschäftsleitung"
   },
   "measurement": {
-    "method": "shadow"
+    "method": "shadow",
+    "evidence": [
+      "pm-schatten"
+    ]
   },
-  "governance": {
-    "owner": "AI-Lead",
-    "audit_log": true,
-    "incident_log": true,
-    "automatic_rollback": true,
-    "kill_switch_tested": true,
-    "agent_identity_min_privilege": true,
-    "adoption_rate_monitored": true,
-    "exception_queue": true,
-    "sampling_audit": true,
-    "decides_new_on_model_prompt_tool_change": true,
-    "shadow_run_first": true,
-    "proposal_mode_first": false
-  }
+  "controls": {
+    "shadow_run": {
+      "status": "implemented",
+      "evidence": [
+        "pm-schatten"
+      ]
+    },
+    "kill_switch": {
+      "status": "implemented",
+      "evidence": [
+        "pm-notaus-test"
+      ]
+    },
+    "automatic_rollback": {
+      "status": "implemented",
+      "evidence": [
+        "pm-rollback"
+      ]
+    },
+    "incident_process": {
+      "status": "implemented",
+      "evidence": [
+        "pm-incident"
+      ]
+    },
+    "change_management": {
+      "status": "implemented",
+      "evidence": [
+        "pm-change"
+      ]
+    },
+    "adoption_rate_monitoring": {
+      "status": "implemented",
+      "evidence": [
+        "pm-uebernahme"
+      ]
+    }
+  },
+  "evidence": [
+    {
+      "id": "pm-schatten",
+      "type": "measurement",
+      "ref": "evidence/gw3-predictive-maintenance/schattenbetrieb-2026-q2.md",
+      "date": "2026-07-20",
+      "description": "Messbericht Schattenbetrieb Anomalieerkennung (12 Wochen)"
+    },
+    {
+      "id": "pm-notaus-test",
+      "type": "test_report",
+      "ref": "evidence/gw3-predictive-maintenance/notaus-test-2026-09.md",
+      "date": "2026-09-12",
+      "description": "Testprotokoll Notaus der Ticket-Kette"
+    },
+    {
+      "id": "pm-rollback",
+      "type": "runbook",
+      "ref": "evidence/gw3-predictive-maintenance/runbook-rueckstufung.md",
+      "date": "2026-08-30",
+      "description": "Runbook Rückstufung auf manuelle Wartungsplanung"
+    },
+    {
+      "id": "pm-incident",
+      "type": "runbook",
+      "ref": "evidence/gw3-predictive-maintenance/incident-prozess.md",
+      "date": "2026-08-30",
+      "description": "Incident-Prozess Instandhaltung"
+    },
+    {
+      "id": "pm-change",
+      "type": "policy",
+      "ref": "evidence/gw3-predictive-maintenance/aenderungsprozess.md",
+      "date": "2026-08-30",
+      "description": "Änderungsprozess für Modell- und Schwellenwechsel"
+    },
+    {
+      "id": "pm-uebernahme",
+      "type": "measurement",
+      "ref": "evidence/gw3-predictive-maintenance/uebernahmequote-gate-2026-q3.md",
+      "date": "2026-10-01",
+      "description": "Übernahmequote am Freigabe-Gate im CMMS"
+    }
+  ]
 }

@@ -1,20 +1,25 @@
-name: "Doku-Korrektur"
-about: "Eine Regulierung hat sich geändert oder die Doku ist unklar"
+name: "Doku- oder Quellenkorrektur"
+description: "Eine Aussage zu Gesetz, Norm oder Verhalten ist veraltet oder falsch"
 title: "[doku] "
-labels: ["doku"]
+labels: ["documentation"]
 body:
-  - type: textarea
+  - type: input
+    id: datei
     attributes:
-      label: "Welche Datei?"
-      description: "Pfad im Repo, z.B. docs/plan.md"
-    required: true
+      label: "Datei und Abschnitt"
+      placeholder: "docs/regulatorik.md, Abschnitt EU AI Act"
+    validations:
+      required: true
   - type: textarea
+    id: korrektur
     attributes:
-      label: "Was ist veraltet oder falsch?"
-      description: "Aktuelle Aussage, korrekte Aussage, Quelle."
-    required: true
-  - type: textarea
+      label: "Bisherige und korrekte Aussage"
+    validations:
+      required: true
+  - type: input
+    id: quelle
     attributes:
-      label: "Quelle (Pflicht)"
-      description: "Gesetz/Norm, Artikel/Anhang, Stand/Datum, URL bei Verfügbarkeit."
-    required: true
+      label: "Quelle"
+      description: "Erlass oder Norm mit Artikel und Stand, möglichst Primärquelle (URL)."
+    validations:
+      required: true

@@ -1,37 +1,193 @@
 {
+  "$schema": "../src/gradweight_autonomy/validator/schemas/usecase-2.0.schema.json",
+  "schema_version": "2.0",
   "id": "gw4-c-teile-nachbestellen",
-  "title": "C-Teile beim Rahmenlieferanten nachbestellen, Mandat bis CHF 2'000 pro Bestellung (nur EDI/ERP, keine Freitext-Eingaben)",
+  "title": "C-Teile beim Rahmenlieferanten nachbestellen, Mandat bis CHF 2'000 je Bestellung (nur EDI/ERP-Daten)",
   "level": 4,
   "who_plans": "model",
   "human_role": "mandate",
-  "foreign_input": false,
-  "sensitive_data": true,
-  "external_action": true,
-  "money_effect": true,
-  "customer_facing": false,
-  "customer_text_in_decisions": false,
-  "safety_critical": false,
-  "data_class": "intern",
-  "data_residency": "ch",
+  "owner": "Leitung Einkauf",
+  "risk": {
+    "foreign_input": false,
+    "sensitive_data": true,
+    "external_action": true,
+    "money_effect": true,
+    "customer_facing": false,
+    "customer_text_in_decisions": false,
+    "safety_critical": false
+  },
+  "data": {
+    "classification": "intern",
+    "residency": "ch",
+    "personal_data": false
+  },
   "mandate": {
     "limits_in_system": true,
-    "money_limit": "CHF 2000 pro Bestellung (ERP-Freigabestrategie)"
+    "enforced_by": "ERP-Freigabestrategie Einkauf",
+    "money_limit": {
+      "amount": 2000,
+      "currency": "CHF",
+      "per": "transaction"
+    },
+    "scope": "nur Artikel mit Rahmenvertrag",
+    "evidence": [
+      "ct-erp-limit",
+      "ct-limit-test"
+    ]
   },
   "measurement": {
-    "method": "pass^k"
+    "method": "pass^k",
+    "k": 5,
+    "tasks": 40,
+    "threshold": 0.95,
+    "evidence": [
+      "ct-passk"
+    ]
   },
-  "governance": {
-    "owner": "AI-Lead",
-    "audit_log": true,
-    "incident_log": true,
-    "automatic_rollback": true,
-    "kill_switch_tested": true,
-    "agent_identity_min_privilege": true,
-    "adoption_rate_monitored": true,
-    "exception_queue": true,
-    "sampling_audit": true,
-    "decides_new_on_model_prompt_tool_change": true,
-    "shadow_run_first": true,
-    "proposal_mode_first": true
-  }
+  "steps": [
+    {
+      "name": "Bestand und Verbrauch lesen",
+      "planned_by": "model",
+      "human_role": "none"
+    },
+    {
+      "name": "Bestellung beim Rahmenlieferanten auslösen",
+      "planned_by": "model",
+      "human_role": "mandate",
+      "state_change": true,
+      "external": true,
+      "money": true
+    }
+  ],
+  "controls": {
+    "audit_log": {
+      "status": "implemented",
+      "evidence": [
+        "ct-audit"
+      ]
+    },
+    "agent_identity": {
+      "status": "implemented",
+      "evidence": [
+        "ct-identitaet"
+      ]
+    },
+    "incident_process": {
+      "status": "implemented",
+      "evidence": [
+        "ct-incident"
+      ]
+    },
+    "automatic_rollback": {
+      "status": "implemented",
+      "evidence": [
+        "ct-rollback"
+      ]
+    },
+    "kill_switch": {
+      "status": "implemented",
+      "evidence": [
+        "ct-notaus"
+      ]
+    },
+    "change_management": {
+      "status": "implemented",
+      "evidence": [
+        "ct-change"
+      ]
+    },
+    "shadow_run": {
+      "status": "implemented",
+      "evidence": [
+        "ct-schatten"
+      ]
+    },
+    "proposal_mode_first": {
+      "status": "implemented",
+      "evidence": [
+        "ct-vorschlag"
+      ]
+    }
+  },
+  "evidence": [
+    {
+      "id": "ct-erp-limit",
+      "type": "config",
+      "ref": "evidence/gw4-c-teile-nachbestellen/erp-freigabestrategie.md",
+      "date": "2026-09-03",
+      "description": "ERP-Freigabestrategie: Agentenkonto bis CHF 2'000 je Bestellung, nur Rahmenlieferanten"
+    },
+    {
+      "id": "ct-limit-test",
+      "type": "test_report",
+      "ref": "evidence/gw4-c-teile-nachbestellen/test-betragsgrenze.md",
+      "date": "2026-09-04",
+      "description": "Test: Bestellung über CHF 2'000 wird vom ERP abgewiesen"
+    },
+    {
+      "id": "ct-passk",
+      "type": "measurement",
+      "ref": "evidence/gw4-c-teile-nachbestellen/pass-k-messung.md",
+      "date": "2026-08-28",
+      "description": "Messbericht pass^k (k=5, 40 Aufgaben aus Testdaten)"
+    },
+    {
+      "id": "ct-notaus",
+      "type": "test_report",
+      "ref": "evidence/gw4-c-teile-nachbestellen/notaus-test.md",
+      "date": "2026-09-18",
+      "description": "Testprotokoll Notaus Agent Einkauf",
+      "sha256": "7a6e3db9728482ee49bbb8ca753a9be8c2265a66e799c8265bba2294f0c95d65"
+    },
+    {
+      "id": "ct-rollback",
+      "type": "test_report",
+      "ref": "evidence/gw4-c-teile-nachbestellen/rollback-test.md",
+      "date": "2026-09-18",
+      "description": "Test Rollback: Bestellung storniert über ERP-Schnittstelle"
+    },
+    {
+      "id": "ct-audit",
+      "type": "config",
+      "ref": "evidence/gw4-c-teile-nachbestellen/audit-konfiguration.md",
+      "date": "2026-09-01",
+      "description": "Audit-Trail mit HMAC, Kopf-Anker täglich"
+    },
+    {
+      "id": "ct-identitaet",
+      "type": "config",
+      "ref": "evidence/gw4-c-teile-nachbestellen/agentenkonto.md",
+      "date": "2026-09-01",
+      "description": "Agentenkonto mit minimalen Rechten"
+    },
+    {
+      "id": "ct-incident",
+      "type": "runbook",
+      "ref": "evidence/gw4-c-teile-nachbestellen/incident-prozess.md",
+      "date": "2026-09-01",
+      "description": "Incident-Prozess Einkauf"
+    },
+    {
+      "id": "ct-change",
+      "type": "policy",
+      "ref": "evidence/gw4-c-teile-nachbestellen/aenderungsprozess.md",
+      "date": "2026-09-01",
+      "description": "Neubeurteilung bei Modell-, Prompt- oder Toolwechsel"
+    },
+    {
+      "id": "ct-schatten",
+      "type": "measurement",
+      "ref": "evidence/gw4-c-teile-nachbestellen/schattenbetrieb.md",
+      "date": "2026-06-30",
+      "description": "Schattenbetrieb 8 Wochen"
+    },
+    {
+      "id": "ct-vorschlag",
+      "type": "approval_record",
+      "ref": "evidence/gw4-c-teile-nachbestellen/freigabe-mandat.md",
+      "date": "2026-08-31",
+      "description": "Freigabe des Mandats nach Vorschlagsphase",
+      "approved_by": "Leitung Einkauf"
+    }
+  ]
 }

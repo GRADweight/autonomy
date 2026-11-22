@@ -1,0 +1,35 @@
+{
+  "$schema": "../../src/gradweight_autonomy/validator/schemas/usecase-2.0.schema.json",
+  "schema_version": "2.0",
+  "id": "n1-dunkelbuchung-grad5",
+  "title": "FALSCH: Kreditorenbuchung als Grad 5 mit fremden Eingaben, sensiblen Daten und Aussenwirkung",
+  "level": 5,
+  "who_plans": "model",
+  "human_role": "exception_only",
+  "owner": "Controlling",
+  "risk": {
+    "foreign_input": true,
+    "sensitive_data": true,
+    "external_action": true,
+    "money_effect": true,
+    "customer_facing": false,
+    "customer_text_in_decisions": false,
+    "safety_critical": false
+  },
+  "data": {
+    "classification": "vertraulich",
+    "residency": "eu",
+    "personal_data": false
+  },
+  "mandate": {
+    "limits_in_system": false,
+    "enforced_by": "Hinweis im Prompt",
+    "evidence": []
+  },
+  "controls": {
+    "audit_log": {
+      "status": "planned"
+    }
+  },
+  "evidence": []
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "../../src/gradweight_autonomy/validator/schemas/usecase-2.0.schema.json",
+  "schema_version": "2.0",
+  "id": "n2-geldwirkung-ohne-aussenwirkung",
+  "title": "FALSCH: Rule of Two auf dem Papier erfüllt, indem Geldwirkung nicht als Aussenwirkung zählt",
+  "level": 3,
+  "who_plans": "fixed_chain",
+  "human_role": "per_gate",
+  "owner": "Leitung Finanzen",
+  "risk": {
+    "foreign_input": true,
+    "sensitive_data": true,
+    "external_action": false,
+    "money_effect": true,
+    "customer_facing": false,
+    "customer_text_in_decisions": false,
+    "safety_critical": false
+  },
+  "data": {
+    "classification": "vertraulich",
+    "residency": "ch",
+    "personal_data": false
+  },
+  "controls": {},
+  "evidence": []
+}

@@ -1,0 +1,74 @@
+{
+  "$schema": "../src/gradweight_autonomy/validator/schemas/usecase-2.0.schema.json",
+  "schema_version": "2.0",
+  "id": "gw2-kreditorenrechnung",
+  "title": "Lieferantenrechnungen erfassen und als Buchungsvorschlag in bexio vorlegen; Buchhaltung gibt jede Buchung frei",
+  "level": 2,
+  "who_plans": "model",
+  "human_role": "per_action",
+  "owner": "Leitung Finanzen",
+  "risk": {
+    "foreign_input": true,
+    "sensitive_data": true,
+    "external_action": true,
+    "money_effect": true,
+    "customer_facing": false,
+    "customer_text_in_decisions": false,
+    "safety_critical": false
+  },
+  "data": {
+    "classification": "vertraulich",
+    "residency": "ch",
+    "personal_data": true
+  },
+  "steps": [
+    {
+      "name": "Rechnung lesen und Felder extrahieren",
+      "planned_by": "fixed_chain",
+      "human_role": "none"
+    },
+    {
+      "name": "Belegprüfung (IBAN, Referenz, MWST)",
+      "planned_by": "fixed_chain",
+      "human_role": "none"
+    },
+    {
+      "name": "Buchung in bexio anlegen",
+      "planned_by": "model",
+      "human_role": "per_action",
+      "state_change": true,
+      "external": true,
+      "money": true
+    }
+  ],
+  "controls": {
+    "adoption_rate_monitoring": {
+      "status": "implemented",
+      "evidence": [
+        "kred-uebernahmequote"
+      ]
+    },
+    "audit_log": {
+      "status": "implemented",
+      "evidence": [
+        "kred-audit-config"
+      ]
+    }
+  },
+  "evidence": [
+    {
+      "id": "kred-uebernahmequote",
+      "type": "measurement",
+      "ref": "evidence/gw2-kreditorenrechnung/uebernahmequote-2026-09.md",
+      "date": "2026-10-02",
+      "description": "Messbericht Übernahmequote Kreditorenvorschläge September 2026"
+    },
+    {
+      "id": "kred-audit-config",
+      "type": "config",
+      "ref": "evidence/gw2-kreditorenrechnung/audit-konfiguration.md",
+      "date": "2026-09-10",
+      "description": "Konfiguration Audit-Trail und Belegprüfung vor Buchung"
+    }
+  ]
+}

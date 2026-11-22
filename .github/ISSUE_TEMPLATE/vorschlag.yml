@@ -1,25 +1,25 @@
 name: "Vorschlag"
-about: "Einen neuen Fall oder ein neues Feature vorschlagen"
+description: "Neue Regel, neuer Baustein oder neues Beispiel"
 title: "[vorschlag] "
-labels: ["neuer-vorschlag"]
+labels: ["enhancement"]
 body:
   - type: textarea
+    id: problem
     attributes:
-      label: "Was ist die Idee?"
-      description: "Ein Satz. Was soll es geben, was es heute nicht gibt?"
-    required: true
+      label: "Welches Problem löst der Vorschlag?"
+      description: "Konkrete Situation und Folge, nicht «man könnte»."
+    validations:
+      required: true
   - type: textarea
+    id: beispiel
     attributes:
-      label: "Welches Problem löst es?"
-      description: "Nicht 'wir könnten', sondern: wenn <Zustand>, dann <Folge>."
-    required: true
+      label: "Minimalbeispiel"
+      description: "Use-Case-JSON, Test oder Pseudocode."
+    validations:
+      required: false
   - type: textarea
+    id: grenzen
     attributes:
-      label: "Minimalfall (konkretes Beispiel)"
-      description: "JSON, Test oder Skript — je konkreter, desto besser."
-    required: false
-  - type: textarea
-    attributes:
-      label: "Was es NICHT ist"
-      description: "1–2 Sätze Grenzen, z.B. 'ersetzt keine Rollen-Policy'."
-    required: false
+      label: "Was der Vorschlag nicht leistet"
+    validations:
+      required: false

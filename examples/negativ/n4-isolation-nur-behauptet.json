@@ -1,0 +1,33 @@
+{
+  "$schema": "../../src/gradweight_autonomy/validator/schemas/usecase-2.0.schema.json",
+  "schema_version": "2.0",
+  "id": "n4-isolation-nur-behauptet",
+  "title": "FALSCH: Kundentexte im Entscheid, foreign_input=false ohne belegte Isolation",
+  "level": 2,
+  "who_plans": "model",
+  "human_role": "per_action",
+  "owner": "Leitung Kundendienst",
+  "risk": {
+    "foreign_input": false,
+    "sensitive_data": true,
+    "external_action": true,
+    "money_effect": false,
+    "customer_facing": true,
+    "customer_text_in_decisions": true,
+    "safety_critical": false
+  },
+  "data": {
+    "classification": "intern",
+    "residency": "ch",
+    "personal_data": true
+  },
+  "controls": {
+    "input_isolation": {
+      "status": "planned"
+    },
+    "adoption_rate_monitoring": {
+      "status": "planned"
+    }
+  },
+  "evidence": []
+}

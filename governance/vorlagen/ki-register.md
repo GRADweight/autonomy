@@ -1,47 +1,37 @@
-# KI-Register (Vorlage) — eine Tabelle, keine Blackbox
+# KI-Register (Vorlage)
 
-> Ein KI-Register ist nicht eine «Datenbank aller KI-Tools». Es ist die
-> Beleg-Sammlung für die Frage: «Welche KI-Anwendungen haben Aussenwirkung,
-> auf welchem Grad, und wer ist dafür verantwortlich?»
->
-> **Format:** Markdown-Tabelle (anpassbar, versionierbar, diffbar).
-> Wer ein XLSX braucht: exportieren. Wer beides will: Tabelle als Source
-> of Truth, XLSX davon abgeleitet.
+> Das Register beantwortet: Welche KI-Anwendungen sind im Einsatz, auf welchem
+> Grad, mit welcher Wirkung, und wer ist verantwortlich? Format: Markdown-Tabelle
+> (versionierbar, diffbar); bei Bedarf als CSV exportieren.
 
 ## Legende
 
-- **Grad:** 0 = keine schreibende Aktion … 5 = Multi-Agent (Def.: `docs/plan.md`)
-- **Zustand:** `shadow` / `live` / `degraded` / `stopp` / `ausserbetrieb`
-- **Fall-JSON:** der validierte Autonomie-Fall (Pfad im Repo oder im System)
-- **Freigabe:** Datum der letzten Grad-Freigabe + Rolle der Freigabenden
+- **Grad:** 0 bis 5 gemäss [Autonomiemodell](../../docs/autonomiegrade.md)
+- **Zustand:** `schatten` / `live` / `zurueckgestuft` / `gestoppt` / `ausser_betrieb`
+- **Fall:** Pfad der Use-Case-Beschreibung, die mit `gw-autonomy validate` geprüft ist
+- **Abnahme:** Datum und Rolle der letzten Abnahme des Grads
 
-## Das Register
+## Register
 
-| # | Anwendung | Zweck | Grad | Zustand | Fremde Eingaben | Sensible Daten | Aussenwirkung | Geld | Datenklasse | Owner | Fall-JSON | Freigabe (Rolle, Datum) |
+| Nr. | Anwendung | Zweck | Grad | Zustand | Fremde Eingaben | Sensible Daten | Aussenwirkung | Geld | Datenklasse | Verantwortlich (Rolle) | Fall | Abnahme |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 1 | Beleg: RAG-Interne-Dokumente | Wissenssuche für Fachbereiche | 01 | live | nein | ja (intern) | nein | nein | intern | <name> | `examples/gw1-...json` | fachverantwortlich, 2026-10 |
-| 2 | Beleg: Rechnungs-Extraktion | Extraktion + Führung in Buchhaltung | 02 | live | nein | ja (vertraulich) | ja (Buchhaltung) | ja | vertraulich | <name> | `examples/gw2-...json` | fachverantwortlich, 2026-10 |
+| 1 | Produktwissen Innendienst | Antworten aus Katalog und Offerten | 1 | live | nein | ja | nein | nein | intern | Leitung Innendienst | `examples/gw1-produktwissen-innendienst.json` | Leitung Innendienst, 2026-09 |
+| 2 | Kreditorenrechnungen | Buchungsvorschlag, Freigabe je Buchung | 2 | live | ja | ja | ja | ja | vertraulich | Leitung Finanzen | `examples/gw2-kreditorenrechnung.json` | Leitung Finanzen, 2026-10 |
 | 3 | (eigener Eintrag) | | | | | | | | | | | |
 
-## Regeln fürs Register
+## Regeln
 
-1. **Eine Zeile pro Anwendung.** Nicht pro Abteilung, nicht pro Dienstleister.
-   Eine Anwendung, die in mehreren Abteilungen genutzt wird, hat einen
-   Owner und eine Zeile.
-2. **Neue Anwendung → neue Zeile VOR dem ersten Live-Tag.** Nicht danach.
-   (Die häufigste Ausnahme ist auch die teuerste: die Anwendung existiert
-   erst, als jemand sie im Register suchen will.)
-3. **Grad-Änderung = neue Freigabe.** Eine Zeile mit «Grad 02 → 04»
-   braucht einen neuen validierten Fall-JSON, eine neue Freigabe und ein
-   neues Datum. Das alte Datum bleibt sichtbar (Verlaufsbeleg).
-4. **Keine Zeile ohne Fall-JSON.** Ein Anwendungs-Name ohne validierten
-   Prüffall ist ein Wunsch, kein Register-Eintrag.
-5. **`stopp` und `ausserbetrieb` bleiben im Register.** Ein gelochtes
-   Register lügt. Gelöschte Anwendungen sind `ausserbetrieb` mit Datum
-   und Begründung — die Zeile bleibt, der Zustand wechselt.
+1. **Eine Zeile je Anwendung**, unabhängig davon, wie viele Abteilungen sie nutzen.
+2. **Eintrag vor dem ersten produktiven Einsatz**, nicht danach.
+3. **Grad-Änderung heisst neue Abnahme:** neue Fall-Beschreibung, neue Prüfung,
+   neues Datum. Der frühere Stand bleibt in der Versionsgeschichte sichtbar.
+4. **Keine Zeile ohne geprüften Fall.** Ein Name ohne Fall-Beschreibung ist ein
+   Vorhaben, kein Registereintrag.
+5. **Gestoppte und ausser Betrieb genommene Anwendungen bleiben** im Register,
+   mit Datum und Begründung.
 
-## Export-Beispiel (CSV-Spalten, identisch zur Tabelle)
+## CSV-Spalten
 
-```
-nr,anwendung,zweck,grad,zustand,fremde_eingaben,sensible_daten,aussenwirkung,geld,datenklasse,owner,fall_json,freigabe_rolle,freigabe_datum
+```text
+nr,anwendung,zweck,grad,zustand,fremde_eingaben,sensible_daten,aussenwirkung,geld,datenklasse,verantwortlich,fall,abnahme
 ```

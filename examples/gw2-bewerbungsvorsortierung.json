@@ -1,35 +1,79 @@
 {
+  "$schema": "../src/gradweight_autonomy/validator/schemas/usecase-2.0.schema.json",
+  "schema_version": "2.0",
   "id": "gw2-bewerbungsvorsortierung",
   "title": "Bewerbungen mit Begründung vorsortieren; Recruiter entscheidet jeden Fall",
   "level": 2,
   "who_plans": "model",
   "human_role": "per_action",
-  "foreign_input": true,
-  "sensitive_data": true,
-  "external_action": false,
-  "money_effect": false,
-  "customer_facing": false,
-  "customer_text_in_decisions": false,
-  "safety_critical": false,
-  "data_class": "vertraulich",
-  "data_residency": "eu",
+  "owner": "HR-Leitung",
+  "risk": {
+    "foreign_input": true,
+    "sensitive_data": true,
+    "external_action": false,
+    "money_effect": false,
+    "customer_facing": false,
+    "customer_text_in_decisions": false,
+    "safety_critical": false
+  },
+  "data": {
+    "classification": "vertraulich",
+    "residency": "eu",
+    "personal_data": true,
+    "special_categories": true,
+    "automated_individual_decisions": false
+  },
+  "regulatory": {
+    "eu_ai_act_high_risk": true,
+    "eu_ai_act_category": "Anhang III Nr. 4 lit. a (Auswahl von Bewerbungen)"
+  },
   "ceiling": {
     "max_level": 2,
-    "reason": "Anhang III AI Act (Arbeitswelt) + Art. 21 DSG + Automation-Bias-Risiko",
-    "regulation": "EU AI Act Annex III (in Kraft ab 2.12.2027); DSG Art. 21"
+    "reason": "Hochrisiko nach EU AI Act und Automation-Bias-Risiko",
+    "regulation": "VO (EU) 2024/1689 Art. 6 und Anhang III; revDSG Art. 21",
+    "decided_by": "Geschäftsleitung"
   },
-  "governance": {
-    "owner": "AI-Lead",
-    "audit_log": true,
-    "incident_log": true,
-    "automatic_rollback": true,
-    "kill_switch_tested": true,
-    "agent_identity_min_privilege": true,
-    "adoption_rate_monitored": true,
-    "exception_queue": true,
-    "sampling_audit": true,
-    "decides_new_on_model_prompt_tool_change": true,
-    "shadow_run_first": false,
-    "proposal_mode_first": false
-  }
+  "controls": {
+    "adoption_rate_monitoring": {
+      "status": "implemented",
+      "evidence": [
+        "gw2-uebernahmequote"
+      ]
+    },
+    "human_oversight": {
+      "status": "implemented",
+      "evidence": [
+        "gw2-aufsicht"
+      ]
+    },
+    "audit_log": {
+      "status": "implemented",
+      "evidence": [
+        "gw2-audit-config"
+      ]
+    }
+  },
+  "evidence": [
+    {
+      "id": "gw2-uebernahmequote",
+      "type": "measurement",
+      "ref": "evidence/gw2-bewerbungsvorsortierung/uebernahmequote-2026-q3.md",
+      "date": "2026-10-05",
+      "description": "Messbericht Übernahmequote Q3 2026"
+    },
+    {
+      "id": "gw2-aufsicht",
+      "type": "runbook",
+      "ref": "evidence/gw2-bewerbungsvorsortierung/runbook-menschliche-aufsicht.md",
+      "date": "2026-09-01",
+      "description": "Runbook menschliche Aufsicht Bewerbungsvorsortierung"
+    },
+    {
+      "id": "gw2-audit-config",
+      "type": "config",
+      "ref": "evidence/gw2-bewerbungsvorsortierung/audit-konfiguration.md",
+      "date": "2026-09-01",
+      "description": "Konfiguration Audit-Trail (Hash-Kette, HMAC, Kopf-Anker täglich)"
+    }
+  ]
 }

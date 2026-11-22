@@ -1,30 +1,42 @@
 {
+  "$schema": "../src/gradweight_autonomy/validator/schemas/usecase-2.0.schema.json",
+  "schema_version": "2.0",
   "id": "gw1-produktwissen-innendienst",
-  "title": "Produktwissen Innendienst aus Katalog und früheren Offerten, mit Quelle",
+  "title": "Produktwissen im Innendienst aus Katalog und früheren Offerten, mit Quellenangabe",
   "level": 1,
   "who_plans": "human",
   "human_role": "per_action",
-  "foreign_input": false,
-  "sensitive_data": true,
-  "external_action": false,
-  "money_effect": false,
-  "customer_facing": false,
-  "customer_text_in_decisions": false,
-  "safety_critical": false,
-  "data_class": "intern",
-  "data_residency": "ch",
-  "governance": {
-    "owner": "AI-Lead",
-    "audit_log": true,
-    "incident_log": true,
-    "automatic_rollback": true,
-    "kill_switch_tested": true,
-    "agent_identity_min_privilege": true,
-    "adoption_rate_monitored": true,
-    "exception_queue": true,
-    "sampling_audit": true,
-    "decides_new_on_model_prompt_tool_change": true,
-    "shadow_run_first": false,
-    "proposal_mode_first": false
-  }
+  "owner": "Leitung Innendienst",
+  "risk": {
+    "foreign_input": false,
+    "sensitive_data": true,
+    "external_action": false,
+    "money_effect": false,
+    "customer_facing": false,
+    "customer_text_in_decisions": false,
+    "safety_critical": false
+  },
+  "data": {
+    "classification": "intern",
+    "residency": "ch",
+    "personal_data": false
+  },
+  "controls": {
+    "change_management": {
+      "status": "implemented",
+      "evidence": [
+        "gw1-quellenpflicht"
+      ]
+    }
+  },
+  "evidence": [
+    {
+      "id": "gw1-quellenpflicht",
+      "type": "policy",
+      "ref": "evidence/gw1-produktwissen-innendienst/weisung-quellenangabe.md",
+      "date": "2026-09-15",
+      "description": "Weisung: Antworten nur mit Quellenangabe, Zahlenabgleich vor Weitergabe",
+      "approved_by": "Leitung Innendienst"
+    }
+  ]
 }
